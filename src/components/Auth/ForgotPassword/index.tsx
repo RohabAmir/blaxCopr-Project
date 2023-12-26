@@ -1,9 +1,10 @@
 "use client";
 import React, { FC } from "react";
 import { Flex, Input, Button, Form, message, Typography } from "antd";
+import { LeftOutlined } from "@ant-design/icons";
 import Link from "next/link";
 
-const SignIn: FC = () => {
+const ForgotPassword: FC = () => {
   const [form] = Form.useForm();
   const { Title, Text } = Typography;
   const onFinish = () => {
@@ -15,22 +16,26 @@ const SignIn: FC = () => {
   };
 
   return (
-    <Flex
-      vertical
-      align="center"
-      justify="space-between"
-      gap={50}
-      style={{ width: "400px", margin: "auto" }}
-    >
-      <Flex vertical align="center" justify="flex-start">
-        <Title level={3}>Log in to Blaxcorp</Title>
-        <Text style={{ color: "#454745" }}>
-          Don't have an account?
-          <Link href="/sign-up">
-            <Text underline style={{ textUnderlineOffset: "4px" }} strong>
-              Sign up
-            </Text>
-          </Link>
+    <Flex vertical justify="space-between" gap={50} style={{ width: "400px" }}>
+      <Button
+        type="primary"
+        icon={<LeftOutlined />}
+        style={{
+          width: "86px",
+          height: "46px",
+          padding: "12px 20px 12px 12px" /* top right bottom left */,
+          borderRadius: "100px",
+          background: "#16330014",
+          color: " #163300",
+        }}
+      >
+        Back
+      </Button>
+      <Flex vertical align="start" justify="start">
+        <Title level={2}>Forgot Password?</Title>
+        <Text style={{ color: "#0E0F0C" }}>
+          Enter the email adress you used when you joined and we’ll send you
+          instructions to reset your password.{" "}
         </Text>
       </Flex>
 
@@ -50,9 +55,7 @@ const SignIn: FC = () => {
         <Form.Item name="email" label="Enter your email">
           <Input type="email" style={{ padding: "10px", height: "48px" }} />
         </Form.Item>
-        <Form.Item name="password" label="Enter Your password">
-          <Input type="password" style={{ padding: "10px", height: "48px" }} />
-        </Form.Item>
+
         <Form.Item>
           <Button
             type="primary"
@@ -68,7 +71,7 @@ const SignIn: FC = () => {
               fontSize: "16px",
             }}
           >
-            Log in
+            Reset Password
           </Button>
         </Form.Item>
       </Form>
@@ -76,4 +79,4 @@ const SignIn: FC = () => {
   );
 };
 
-export default SignIn;
+export default ForgotPassword;

@@ -1,7 +1,6 @@
 "use client";
 import React, { FC } from "react";
 import { Flex, Input, Button, Form, message, Typography } from "antd";
-import Link from "next/link";
 
 const SignIn: FC = () => {
   const [form] = Form.useForm();
@@ -17,20 +16,17 @@ const SignIn: FC = () => {
   return (
     <Flex
       vertical
-      align="center"
+      align="flex-start"
       justify="space-between"
-      gap={50}
-      style={{ width: "400px", margin: "auto" }}
+      style={{ width: "400px" }}
     >
-      <Flex vertical align="center" justify="flex-start">
-        <Title level={3}>Log in to Blaxcorp</Title>
-        <Text style={{ color: "#454745" }}>
-          Don't have an account?
-          <Link href="/sign-up">
-            <Text underline style={{ textUnderlineOffset: "4px" }} strong>
-              Sign up
-            </Text>
-          </Link>
+      <Flex vertical align="flex-start">
+        <Title style={{ color: "#0E0F0C" }} level={2}>
+          Password Reset
+        </Title>
+        <Text style={{ color: "#0E0F0C", marginBottom: "50px" }}>
+          Enter a new password for your account. After creating a new password,
+          use it to sign in.{" "}
         </Text>
       </Flex>
 
@@ -47,10 +43,10 @@ const SignIn: FC = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item name="email" label="Enter your email">
-          <Input type="email" style={{ padding: "10px", height: "48px" }} />
+        <Form.Item name="email" label="Enter new password">
+          <Input type="password" style={{ padding: "10px", height: "48px" }} />
         </Form.Item>
-        <Form.Item name="password" label="Enter Your password">
+        <Form.Item name="password" label="Confirm new password">
           <Input type="password" style={{ padding: "10px", height: "48px" }} />
         </Form.Item>
         <Form.Item>
@@ -68,7 +64,7 @@ const SignIn: FC = () => {
               fontSize: "16px",
             }}
           >
-            Log in
+            Save new password
           </Button>
         </Form.Item>
       </Form>
