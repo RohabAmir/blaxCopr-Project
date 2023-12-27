@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import styles from "./style.module.css";
+import styles from "../style.module.scss";
 import Card from "./Card";
 interface CardDetails {
   status: string;
@@ -9,6 +9,7 @@ interface CardDetails {
   company: string;
   date: string;
 }
+
 const CardContainer: FC = () => {
   const CardList: Array<CardDetails> = [
     {
@@ -50,11 +51,9 @@ const CardContainer: FC = () => {
   return (
     <>
       <div className={styles.grid}>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {
+          CardList.map((data, idx) => <Card key={idx} data={data} />)
+        }
       </div>
     </>
   );

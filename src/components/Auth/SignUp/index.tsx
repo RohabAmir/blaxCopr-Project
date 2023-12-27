@@ -82,7 +82,7 @@ const SignUp: FC = () => {
               padding: "10px",
               height: "48px",
               fontWeight: "600",
-              fontSize: "16px",
+              fontSize: "16px"
             }}
           >
             Create account
