@@ -1,6 +1,8 @@
 "use client";
 import React, { FC } from "react";
 import { Flex, Input, Button, Form, message, Typography } from "antd";
+import CheckIcon from "./../../../../public/icons/Check.svg"
+import Image from "next/image";
 
 const SignIn: FC = () => {
   const [form] = Form.useForm();
@@ -49,6 +51,20 @@ const SignIn: FC = () => {
         <Form.Item name="password" label="Confirm new password">
           <Input type="password" style={{ padding: "10px", height: "48px" }} />
         </Form.Item>
+        <Flex vertical align="flex-start" justify="center">
+          <div >
+            <Image src={CheckIcon} alt="check" />
+            <span color="#163300" style={{marginLeft:'10px'}}>6 or more characters </span>
+          </div>
+          <div >
+            <h1  style={{ color: 'red',fontWeight:"900",display:'inline'}}>.</h1 >
+            <span style={{ color: 'red',padding:'0',marginLeft:'10px' }}>Upper and lower case </span>
+          </div>
+          <div >
+            <h1  style={{ color: 'red',fontWeight:"900",display:'inline' }}>.</h1 >
+            <span style={{ color: 'red',padding:'0',marginLeft:'10px' }}>Special character</span>
+          </div>
+        </Flex>
         <Form.Item>
           <Button
             type="primary"
