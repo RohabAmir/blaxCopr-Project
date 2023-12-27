@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import ResetPassword_C from "../../../components/ResetPassword";
+import ResetPassword_C from "../../../components/Auth/ResetPassword";
 
-const ForgotPassword: FC = () => <ResetPassword_C />;
+const ResetPassword: FC = () => <ResetPassword_C />;
 
-export default ResetPassword_C;
+export default ResetPassword;
