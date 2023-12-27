@@ -1,0 +1,112 @@
+.cardContainer {
+  background-color: rgba(22, 51, 0, 0.08);
+  border-radius: 40px;
+  padding: 19px 26px;
+  max-width: 100%;
+}
+.flexContainerCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 100px;
+}
+.button {
+  width: 56px;
+  height: 56px;
+  padding: 16px;
+  border-radius: 100px;
+  gap: 4px;
+  background-color: #9fe870;
+}
+.titleScreen {
+  font-family: Inter;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 34px;
+  letter-spacing: -0.025em;
+  text-align: left;
+}
+.heading {
+  font-size: 48px;
+  /* padding: 35px 0 0 0; */
+  font-weight: 600;
+  margin: 25px 0 0 0;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.main {
+  width: 1400px;
+  margin: 0 auto;
+}
+.flexContainerRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+.flexRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+.thirdHeading {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0.0125em;
+  text-align: center;
+}
+.secondHeading {
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  text-align: left;
+}
+.cardContainerMain {
+  background-color: rgba(22, 51, 0, 0.08);
+  border-radius: 40px;
+  padding: 19px 30px;
+  max-width: 100%;
+}
+.btn {
+  width: 123px;
+  height: 48px;
+  padding: 12px 24px 12px 24px; /* top right bottom left */
+  border-radius: 100px;
+  gap: 8px;
+  background: rgba(159, 232, 112, 1);
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: Inter;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(22, 51, 0, 0.08);
+  margin-bottom: 24px;
+  width: 1400px;
+  /* height: 104px; */
+  padding-right: 12px;
+  margin-top: 12px;
+  border-radius: 16px;
+  top: 120px;
+  left: 100px;
+  overflow: hidden;
+}
+.iconVector {
+  margin-left: 3px;
+}
+.nav {
+  margin: 48px 0 36px 0;
+}

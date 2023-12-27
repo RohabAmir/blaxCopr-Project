@@ -2,7 +2,6 @@
 import React, { FC } from "react";
 import { Flex, Input, Button, Form, message, Typography } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
-import Link from "next/link";
 
 const ForgotPassword: FC = () => {
   const [form] = Form.useForm();
