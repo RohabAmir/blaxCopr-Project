@@ -1,11 +1,12 @@
 "use client";
 import React, { FC } from "react";
-import { Flex, Input, Button, Form, Typography } from "antd";
+import { Flex, Typography } from "antd";
 import CheckIcon from "./../../../../public/icons/Check.svg"
 import Image from "next/image";
 import { FormProvider, useForm } from "react-hook-form";
 import AuthButton from "@/components/Shared/Buttons/Auth";
 import PasswordInput from "@/components/Shared/Inputs/Password";
+import styles from "../style.module.scss"
 
 const SignIn: FC = () => {
   const methods = useForm()
@@ -27,14 +28,7 @@ const SignIn: FC = () => {
           use it to sign in.{" "}
         </Text>
       </Flex>
-      <form
-        style={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-        }}
-      >
+      <form className={styles.formWrapper}>
         <FormProvider {...methods}>
           <PasswordInput name="email" label="Enter new password" />
           <PasswordInput name="password" label="Confirm new password" />

@@ -2,26 +2,17 @@
 import React, { FC } from "react";
 import { Flex, message, Typography } from "antd";
 import Link from "next/link";
-import CheckIcon from "./../../../../public/icons/Check.svg"
+import { FormProvider, useForm } from "react-hook-form";
 import Image from "next/image";
+import CheckIcon from "./../../../../public/icons/Check.svg"
 import TextInput from "@/components/Shared/Inputs/Text";
 import PasswordInput from "@/components/Shared/Inputs/Password";
-
-import { FormProvider, useForm } from "react-hook-form";
 import AuthButton from "@/components/Shared/Buttons/Auth";
-
+import styles from "../style.module.scss"
 
 const SignUp: FC = () => {
   const { Title, Text } = Typography;
   const methods = useForm()
-  const onFinish = () => {
-    message.success("Submit success!");
-  };
-
-  const onFinishFailed = () => {
-    message.error("Submit failed!");
-  };
-
   return (
     <Flex
       vertical
@@ -42,14 +33,7 @@ const SignUp: FC = () => {
         </Text>
       </Flex>
 
-      <form
-        style={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-        }}
-      >
+      <form className={styles.formWrapper}>
         <FormProvider {...methods}>
           <TextInput name="email" label="Enter your email" />
           <PasswordInput name="password" label="Create Your password" />

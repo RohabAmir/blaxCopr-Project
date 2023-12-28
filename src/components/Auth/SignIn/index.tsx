@@ -2,6 +2,7 @@
 import React, { FC } from "react";
 import { Flex, Typography } from "antd";
 import Link from "next/link";
+import styles from "../style.module.scss"
 import { FormProvider, useForm } from "react-hook-form";
 import TextInput from "@/components/Shared/Inputs/Text";
 import PasswordInput from "@/components/Shared/Inputs/Password";
@@ -31,14 +32,7 @@ const SignIn: FC = () => {
         </Text>
       </Flex>
 
-      <form
-        style={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-        }}
-      >
+      <form className={styles.formWrapper}>
         <FormProvider {...methods}>
           <TextInput name="email" label="Enter your email" />
           <PasswordInput name="password" label="Enter Your password" />

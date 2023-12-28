@@ -10,7 +10,6 @@
 
 .leftSubRoot {
     height: 100%;
-
     &__img {
         width: 100%;
         height: 100%;
@@ -24,7 +23,6 @@
     display: flex;
     flex-direction: column;
     height: 90%;
-    
 }
 
 .formContainer {
@@ -33,4 +31,11 @@
     &__top {
         width: 100%;
     }
+}
+
+.formWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px
 }

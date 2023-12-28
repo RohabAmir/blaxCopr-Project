@@ -5,6 +5,7 @@ import { LeftOutlined } from "@ant-design/icons";
 import { FormProvider, useForm } from "react-hook-form";
 import TextInput from "@/components/Shared/Inputs/Text";
 import AuthButton from "@/components/Shared/Buttons/Auth";
+import styles from "../style.module.scss"
 
 const ForgotPassword: FC = () => {
   const methods = useForm()
@@ -34,18 +35,11 @@ const ForgotPassword: FC = () => {
         </Text>
       </Flex>
 
-      <form
-        style={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-        }}
-      >
+      <form className={styles.formWrapper}>
         <FormProvider {...methods}>
           <TextInput name="email" label="Enter your email" />
-          <div style={{marginTop:'40px'}}> 
-          <AuthButton name="Reset password" />
+          <div style={{ marginTop: '40px' }}>
+            <AuthButton name="Reset password" />
           </div>
         </FormProvider>
       </form>
