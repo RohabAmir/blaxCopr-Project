@@ -4,7 +4,7 @@ import { Flex, Typography } from "antd";
 import CheckIcon from "./../../../public/icons/Check.svg"
 import Image from "next/image";
 import { FormProvider, useForm } from "react-hook-form";
-import AuthButton from "@/components/Shared/Buttons/Auth";
+import Button from "@/components/Shared/Button";
 import PasswordInput from "@/components/Shared/Inputs/Password";
 import styles from "./style.module.scss"
 
@@ -46,7 +46,7 @@ const SignIn: FC = () => {
               <span style={{ color: 'red', padding: '0', marginLeft: '10px' }}>Special character</span>
             </div>
           </Flex>
-          <AuthButton name="Save new password" />
+          <Button name="Save new password" fullWidth  size="large"/>
         </FormProvider>
       </form>
     </Flex>

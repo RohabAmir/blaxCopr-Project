@@ -1,11 +1,11 @@
 "use client";
 import React, { FC } from "react";
-import { Flex, Button, Typography } from "antd";
-import { LeftOutlined } from "@ant-design/icons";
+import { Flex, Typography } from "antd";
 import { FormProvider, useForm } from "react-hook-form";
 import TextInput from "@/components/Shared/Inputs/Text";
-import AuthButton from "@/components/Shared/Buttons/Auth";
+import Button from "@/components/Shared/Button";
 import styles from "./style.module.scss";
+import { ButtonType, IconType } from "@/types";
 
 const ForgotPassword: FC = () => {
   const methods = useForm()
@@ -13,20 +13,7 @@ const ForgotPassword: FC = () => {
 
   return (
     <Flex vertical justify="space-between" gap={50} style={{ width: "400px" }}>
-      <Button
-        type="primary"
-        icon={<LeftOutlined />}
-        style={{
-          width: "86px",
-          height: "46px",
-          padding: "12px 20px 12px 12px" /* top right bottom left */,
-          borderRadius: "100px",
-          background: "#16330014",
-          color: " #163300",
-        }}
-      >
-        Back
-      </Button>
+      <Button name="Back" leftIcon={IconType.BackArrow} type={ButtonType.Secondary}/>
       <Flex vertical align="start" justify="start">
         <Title level={2}>Forgot Password?</Title>
         <Text style={{ color: "#0E0F0C" }}>
@@ -39,7 +26,7 @@ const ForgotPassword: FC = () => {
         <FormProvider {...methods}>
           <TextInput name="email" label="Enter your email" />
           <div style={{ marginTop: '40px' }}>
-            <AuthButton name="Reset password" />
+            <Button name="Reset password" fullWidth  size="large" />
           </div>
         </FormProvider>
       </form>

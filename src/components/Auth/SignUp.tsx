@@ -7,7 +7,7 @@ import Image from "next/image";
 import CheckIcon from "./../../../public/icons/Check.svg"
 import TextInput from "@/components/Shared/Inputs/Text";
 import PasswordInput from "@/components/Shared/Inputs/Password";
-import AuthButton from "@/components/Shared/Buttons/Auth";
+import Button from "@/components/Shared/Button";
 import styles from "./style.module.scss"
 
 const SignUp: FC = () => {
@@ -51,7 +51,7 @@ const SignUp: FC = () => {
               <span style={{ color: 'red', padding: '0', marginLeft: '10px' }}>Special character</span>
             </div>
           </Flex>
-          <AuthButton name="Create account" />
+          <Button name="Create account" fullWidth size="large"/>
         </FormProvider>
 
       </form>

@@ -6,7 +6,7 @@ import styles from "./style.module.scss"
 import { FormProvider, useForm } from "react-hook-form";
 import TextInput from "@/components/Shared/Inputs/Text";
 import PasswordInput from "@/components/Shared/Inputs/Password";
-import AuthButton from "@/components/Shared/Buttons/Auth";
+import Button from "@/components/Shared/Button";
 
 const SignIn: FC = () => {
   const methods = useForm()
@@ -35,8 +35,8 @@ const SignIn: FC = () => {
       <form className={styles.formWrapper}>
         <FormProvider {...methods}>
           <TextInput name="email" label="Enter your email" />
-          <PasswordInput name="password" label="Enter Your password" />
-          <AuthButton name="Log in" />
+          <PasswordInput name="password" label="Enter Your password" forgotPassword/>
+          <Button name="Log in" fullWidth  size="large"/>
         </FormProvider>
       </form>
     </Flex>

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import StyledComponentsRegistry from '../lib/Antd/AntdRegistery';
+import { theme } from "./../lib/Antd/Config"
 import './globals.scss'
+import { ConfigProvider } from 'antd';
 
 export const metadata: Metadata = {
   title: 'Blaxcorp',
@@ -16,7 +18,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <StyledComponentsRegistry>
-          {children}
+          <ConfigProvider theme={theme}>
+            {children}
+          </ConfigProvider>
         </StyledComponentsRegistry>
       </body>
     </html>
