@@ -7,8 +7,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import Button from "@/components/Shared/Button";
 import PasswordInput from "@/components/Shared/Inputs/Password";
 import styles from "./style.module.scss";
-import { ROUTES } from "@/constants";
-import { useRouter } from "next/router";
 
 const SignIn: FC = () => {
   const methods = useForm();
