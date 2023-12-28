@@ -1,0 +1,94 @@
+.flexDetails {
+  width: 240px;
+  padding: 32px 16px;
+  border-radius: 24px;
+  background: #fff;
+
+  /* box-shadow/large */
+  box-shadow: 0px 20px 66px 0px rgba(34, 48, 73, 0.2);
+  position: absolute;
+  top: 72px;
+  right: -12px;
+}
+.flexContent {
+  display: flex;
+  padding: 12px 16px;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+}
+.icon {
+  width: 24px;
+  height: 24px;
+}
+/* notifications*/
+.container {
+  width: 350px;
+  padding: 32px 32px;
+  border-radius: 24px;
+  background: #fff;
+  position: absolute;
+  top: 72px;
+  right: 200px;
+  /* box-shadow/large */
+  box-shadow: 0px 20px 66px 0px rgba(34, 48, 73, 0.2);
+}
+.mainContainerNotifictions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.notifications {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+.flexText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 4px;
+}
+.markAsRead {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.text {
+  margin: 0;
+  overflow: hidden;
+  color: #454745;
+  text-overflow: ellipsis;
+
+  /* Body/Default */
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 157.143% */
+  letter-spacing: 0.14px;
+}
+.textTitle {
+  overflow: hidden;
+  color: #454745;
+  text-overflow: ellipsis;
+
+  /* Body/Large Bold */
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 150% */
+  letter-spacing: 0.08px;
+  margin: 0;
+}
+.img {
+  width: 44px;
+  height: 44px;
+}
+.textHeading {
+  margin-bottom: 12px;
+}

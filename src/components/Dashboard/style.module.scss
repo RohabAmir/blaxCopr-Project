@@ -1,22 +1,27 @@
+.main {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 .cardContainer {
   background-color: rgba(22, 51, 0, 0.08);
   border-radius: 40px;
   padding: 19px 26px;
   max-width: 100%;
 }
-.flexContainerCol {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 100px;
-}
+
 .button {
   width: 56px;
   height: 56px;
-  padding: 16px;
   border-radius: 100px;
   gap: 4px;
   background-color: #9fe870;
+  display: block;
+  margin-bottom: 80px;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: #b0f188;
 }
 .titleScreen {
   font-family: Inter;
@@ -25,6 +30,8 @@
   line-height: 34px;
   letter-spacing: -0.025em;
   text-align: left;
+  font-size: 30px;
+  margin-bottom: 0;
 }
 .heading {
   font-size: 48px;
@@ -71,7 +78,7 @@
 .cardContainerMain {
   background-color: rgba(22, 51, 0, 0.08);
   border-radius: 40px;
-  padding: 19px 30px;
+  padding: 17px 26px;
   max-width: 100%;
 }
 .btn {
@@ -88,7 +95,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
+
 .header {
   display: flex;
   align-items: center;

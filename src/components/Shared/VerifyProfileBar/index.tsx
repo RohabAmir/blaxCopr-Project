@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Image from "next/image";
-import styles from "../style.module.scss";
+import styles from "./style.module.scss";
 import TargetIcon from "../../../../public/icons/Target.svg";
 import VectorIcon from "../../../../public/icons/Vector.svg";
 

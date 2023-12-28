@@ -16,10 +16,10 @@ interface CardDetails {
 }
 
 interface ICard {
-  data: CardDetails
+  data: CardDetails;
 }
 const Card: FC<ICard> = ({ data }) => {
-  const { status, type, price, company, date } = data
+  const { status, type, price, company, date } = data;
   return (
     <>
       <div className={styles.cardContainerMain}>

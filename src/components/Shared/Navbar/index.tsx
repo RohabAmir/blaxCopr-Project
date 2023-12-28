@@ -12,7 +12,6 @@ interface ITag {
 interface Nav {
     title: string;
     link: string;
-
 }
 interface INavbar {
     navs: Array<Nav>;

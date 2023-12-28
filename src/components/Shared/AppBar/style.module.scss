@@ -1,0 +1,92 @@
+.mainContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100%;
+  margin-bottom: 48px;
+  margin-top: 24px;
+  position: relative;
+}
+.routesContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+.iconsContainer {
+  display: flex;
+  width: 166.974px;
+  height: 32px;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 14.669px;
+  flex-shrink: 0;
+}
+.iconMask {
+  width: 28.089px;
+  height: 31.229px;
+  flex-shrink: 0;
+}
+.iconBlaxCorp {
+  width: 124.216px;
+  height: 27.777px;
+  flex-shrink: 0;
+}
+.button {
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 150% */
+  letter-spacing: 0.08px;
+  background-color: transparent;
+  border: none;
+}
+.icons {
+  padding: 12px 11px;
+  background-color: rgba(22, 51, 0, 0.08);
+  border-radius: 100px;
+  border: none;
+  position: relative;
+  cursor: pointer;
+}
+.icons:hover {
+  background-color: rgba(56, 94, 31, 0.08);
+}
+.icon {
+  width: 28px;
+  height: 22px;
+}
+
+.text {
+  padding: 12px 11px;
+  background-color: rgba(22, 51, 0, 0.08);
+  border-radius: 100px;
+  font-size: 20px;
+  color: #0e0f0c;
+  font-weight: 600;
+}
+.flexContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  border: none;
+  padding: 8px;
+  background-color: transparent;
+  cursor: pointer;
+}
+.flexContent:hover {
+  background-color: #16330014;
+}
+.flexContentActive {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  border: none;
+  padding: 8px;
+  background-color: #16330014;
+}
