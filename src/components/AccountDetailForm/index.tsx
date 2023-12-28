@@ -46,7 +46,6 @@ const CreateAccountDetails: FC = () => {
             </Flex>
             <Navbar navs={NavList} activeNav={activeNav} navClickHandler={navClickHandler} />
             <FormProvider {...methods}>
-
                 {getActiveSectionUI(activeNav)}
             </FormProvider>
         </Flex>

@@ -7,7 +7,7 @@ import TextInput from "@/components/Shared/Inputs/Text";
 import AuthButton from "@/components/Shared/Buttons/Auth";
 
 const ForgotPassword: FC = () => {
-  const methods=useForm()
+  const methods = useForm()
   const { Title, Text } = Typography;
 
   return (
@@ -44,8 +44,9 @@ const ForgotPassword: FC = () => {
       >
         <FormProvider {...methods}>
           <TextInput name="email" label="Enter your email" />
-          
+          <div style={{marginTop:'40px'}}> 
           <AuthButton name="Reset password" />
+          </div>
         </FormProvider>
       </form>
     </Flex>
