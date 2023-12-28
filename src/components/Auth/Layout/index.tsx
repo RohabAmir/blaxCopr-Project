@@ -41,7 +41,7 @@ const Layout: FC<ILayout> = ({ children }) => {
             </Flex>
           </Flex>
           {!isResetPassword && (
-            <Flex vertical align='center' justify='center' gap={30}>
+            <Flex vertical align='center' justify='center'  gap={30} style={{marginTop:'40px'}}>
               <Text style={{ color: '#454745' }}>
                 Or log in with
               </Text >

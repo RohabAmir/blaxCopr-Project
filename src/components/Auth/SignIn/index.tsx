@@ -1,18 +1,15 @@
 "use client";
 import React, { FC } from "react";
-import { Flex, Input, Button, Form, message, Typography } from "antd";
+import { Flex, Typography } from "antd";
 import Link from "next/link";
+import { FormProvider, useForm } from "react-hook-form";
+import TextInput from "@/components/Shared/Inputs/Text";
+import PasswordInput from "@/components/Shared/Inputs/Password";
+import AuthButton from "@/components/Shared/Buttons/Auth";
 
 const SignIn: FC = () => {
-  const [form] = Form.useForm();
+  const methods = useForm()
   const { Title, Text } = Typography;
-  const onFinish = () => {
-    message.success("Submit success!");
-  };
-
-  const onFinishFailed = () => {
-    message.error("Submit failed!");
-  };
 
   return (
     <Flex
@@ -34,44 +31,20 @@ const SignIn: FC = () => {
         </Text>
       </Flex>
 
-      <Form
+      <form
         style={{
           width: "100%",
           display: "flex",
           flexDirection: "column",
-          gap: "10px",
+          gap: "20px",
         }}
-        form={form}
-        layout="vertical"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
       >
-        <Form.Item name="email" label="Enter your email">
-          <Input type="email" style={{ padding: "10px", height: "48px" }} />
-        </Form.Item>
-        <Form.Item name="password" label="Enter Your password">
-          <Input type="password" style={{ padding: "10px", height: "48px" }} />
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{
-              width: "100%",
-              background: "#9FE870",
-              borderRadius: "20px",
-              color: "black",
-              padding: "10px",
-              height: "48px",
-              fontWeight: "600",
-              fontSize: "16px",
-            }}
-          >
-            Log in
-          </Button>
-        </Form.Item>
-      </Form>
+        <FormProvider {...methods}>
+          <TextInput name="email" label="Enter your email" />
+          <PasswordInput name="password" label="Enter Your password" />
+          <AuthButton name="Log in" />
+        </FormProvider>
+      </form>
     </Flex>
   );
 };

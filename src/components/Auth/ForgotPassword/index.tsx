@@ -1,18 +1,14 @@
 "use client";
 import React, { FC } from "react";
-import { Flex, Input, Button, Form, message, Typography } from "antd";
+import { Flex, Button, Typography } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
+import { FormProvider, useForm } from "react-hook-form";
+import TextInput from "@/components/Shared/Inputs/Text";
+import AuthButton from "@/components/Shared/Buttons/Auth";
 
 const ForgotPassword: FC = () => {
-  const [form] = Form.useForm();
+  const methods=useForm()
   const { Title, Text } = Typography;
-  const onFinish = () => {
-    message.success("Submit success!");
-  };
-
-  const onFinishFailed = () => {
-    message.error("Submit failed!");
-  };
 
   return (
     <Flex vertical justify="space-between" gap={50} style={{ width: "400px" }}>
@@ -38,42 +34,20 @@ const ForgotPassword: FC = () => {
         </Text>
       </Flex>
 
-      <Form
+      <form
         style={{
           width: "100%",
           display: "flex",
           flexDirection: "column",
-          gap: "10px",
+          gap: "20px",
         }}
-        form={form}
-        layout="vertical"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
       >
-        <Form.Item name="email" label="Enter your email">
-          <Input type="email" style={{ padding: "10px", height: "48px" }} />
-        </Form.Item>
-
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{
-              width: "100%",
-              background: "#9FE870",
-              borderRadius: "20px",
-              color: "black",
-              padding: "10px",
-              height: "48px",
-              fontWeight: "600",
-              fontSize: "16px",
-            }}
-          >
-            Reset Password
-          </Button>
-        </Form.Item>
-      </Form>
+        <FormProvider {...methods}>
+          <TextInput name="email" label="Enter your email" />
+          
+          <AuthButton name="Reset password" />
+        </FormProvider>
+      </form>
     </Flex>
   );
 };
