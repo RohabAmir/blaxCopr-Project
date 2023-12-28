@@ -4,11 +4,11 @@ import { Flex, message, Typography } from "antd";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
 import Image from "next/image";
-import CheckIcon from "./../../../../public/icons/Check.svg"
+import CheckIcon from "./../../../public/icons/Check.svg"
 import TextInput from "@/components/Shared/Inputs/Text";
 import PasswordInput from "@/components/Shared/Inputs/Password";
 import AuthButton from "@/components/Shared/Buttons/Auth";
-import styles from "../style.module.scss"
+import styles from "./style.module.scss"
 
 const SignUp: FC = () => {
   const { Title, Text } = Typography;

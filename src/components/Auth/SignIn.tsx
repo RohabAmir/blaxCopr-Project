@@ -2,7 +2,7 @@
 import React, { FC } from "react";
 import { Flex, Typography } from "antd";
 import Link from "next/link";
-import styles from "../style.module.scss"
+import styles from "./style.module.scss"
 import { FormProvider, useForm } from "react-hook-form";
 import TextInput from "@/components/Shared/Inputs/Text";
 import PasswordInput from "@/components/Shared/Inputs/Password";

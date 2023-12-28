@@ -5,7 +5,7 @@ import { LeftOutlined } from "@ant-design/icons";
 import { FormProvider, useForm } from "react-hook-form";
 import TextInput from "@/components/Shared/Inputs/Text";
 import AuthButton from "@/components/Shared/Buttons/Auth";
-import styles from "../style.module.scss"
+import styles from "./style.module.scss";
 
 const ForgotPassword: FC = () => {
   const methods = useForm()

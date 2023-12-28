@@ -1,12 +1,12 @@
 "use client";
 import React, { FC } from "react";
 import { Flex, Typography } from "antd";
-import CheckIcon from "./../../../../public/icons/Check.svg"
+import CheckIcon from "./../../../public/icons/Check.svg"
 import Image from "next/image";
 import { FormProvider, useForm } from "react-hook-form";
 import AuthButton from "@/components/Shared/Buttons/Auth";
 import PasswordInput from "@/components/Shared/Inputs/Password";
-import styles from "../style.module.scss"
+import styles from "./style.module.scss"
 
 const SignIn: FC = () => {
   const methods = useForm()

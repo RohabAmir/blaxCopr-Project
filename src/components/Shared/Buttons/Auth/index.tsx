@@ -1,25 +1,18 @@
 import { Button } from 'antd'
 import React, { FC } from 'react'
+import styles from "../style.module.scss"
 interface IButton {
     name: string;
-    buttonHandler?: () => void
+    buttonHandler?: () => void;
+    width?:string
 }
-const AuthButton: FC<IButton> = ({ name, buttonHandler }) => {
+const AuthButton: FC<IButton> = ({ name, buttonHandler,width="fit-content" }) => {
     return (
         <Button
         onClick={buttonHandler}
             type="primary"
             htmlType="submit"
-            style={{
-                width: "100%",
-                background: "#9FE870",
-                borderRadius: "20px",
-                color: "black",
-                padding: "10px",
-                height: "48px",
-                fontWeight: "600",
-                fontSize: "16px",
-            }}
+            className={styles[`${width==='fit-content'?'root':'rootFullWidth'}`]}
         >
             {name}
         </Button>
