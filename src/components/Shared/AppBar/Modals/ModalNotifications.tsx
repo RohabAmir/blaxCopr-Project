@@ -1,13 +1,20 @@
-import { FC } from "react";
+import { FC, useRef, useEffect } from "react";
 import DashIcon from "../../../../../public/icons/Dash.svg";
 import CheckIcon from "../../../../../public/icons/Check.svg";
 import ClockIcon from "../../../../../public/icons/Clock.svg";
 import Image from "next/image";
 import styles from "./styles.module.scss";
-const ModalNotifications: FC = () => {
+import { useDetectClickOutside } from "react-detect-click-outside";
+interface ModalDetailsProps {
+  onClose: () => void;
+}
+
+const ModalNotifications: FC<ModalDetailsProps> = ({ onClose }) => {
+  const ref = useDetectClickOutside({ onTriggered: onClose });
+
   return (
     <>
-      <div className={styles.container}>
+      <div className={styles.container} ref={ref}>
         <div className={styles.mainContainerNotifictions}>
           <h3 className={styles.textHeading}>Notifications</h3>
           <h3 className={styles.textHeading}>Mark all as read</h3>

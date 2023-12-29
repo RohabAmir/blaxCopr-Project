@@ -1,7 +1,7 @@
 "use client";
 import React, { FC } from "react";
 import { Flex, Typography } from "antd";
-import CheckIcon from "./../../../public/icons/Check.svg";
+import OkIcon from "./../../../public/icons/Ok.svg";
 import Image from "next/image";
 import { FormProvider, useForm } from "react-hook-form";
 import Button from "@/components/Shared/Button";
@@ -9,6 +9,7 @@ import PasswordInput from "@/components/Shared/Inputs/Password";
 import styles from "./style.module.scss";
 import { ROUTES } from "@/constants";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const SignIn: FC = () => {
   const methods = useForm();
@@ -35,8 +36,8 @@ const SignIn: FC = () => {
           <PasswordInput name="email" label="Enter new password" />
           <PasswordInput name="password" label="Confirm new password" />
           <Flex vertical align="flex-start" justify="center">
-            <div>
-              <Image src={CheckIcon} alt="check" />
+            <div className={styles.flex}>
+              <Image className={styles.icon} src={OkIcon} alt="check" />
               <span color="#163300" style={{ marginLeft: "10px" }}>
                 6 or more characters{" "}
               </span>
@@ -62,7 +63,9 @@ const SignIn: FC = () => {
               </span>
             </div>
           </Flex>
-          <Button name="Save new password" fullWidth size="large" />
+          <Link href="/forgot-password">
+            <Button name="Save new password" fullWidth size="large" />
+          </Link>
         </FormProvider>
       </form>
     </Flex>

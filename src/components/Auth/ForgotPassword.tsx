@@ -6,17 +6,10 @@ import TextInput from "@/components/Shared/Inputs/Text";
 import Button from "@/components/Shared/Button";
 import styles from "./style.module.scss";
 import { ButtonType, IconType } from "@/types";
-import { ROUTES } from "@/constants";
-import { useRouter } from "next/router";
 
 const ForgotPassword: FC = () => {
   const methods = useForm();
   const { Title, Text } = Typography;
-  const router = useRouter();
-  const resetButtonHandler = () => {
-    console.log("button clicked");
-    router.push(ROUTES.RESET_PASSWORD);
-  };
 
   return (
     <Flex vertical justify="space-between" gap={50} style={{ width: "400px" }}>
@@ -37,12 +30,7 @@ const ForgotPassword: FC = () => {
         <FormProvider {...methods}>
           <TextInput name="email" label="Enter your email" />
           <div style={{ marginTop: "40px" }}>
-            <Button
-              name="Reset password"
-              fullWidth
-              size="large"
-              onClickHandler={resetButtonHandler}
-            />
+            <Button name="Reset password" fullWidth size="large" />
           </div>
         </FormProvider>
       </form>

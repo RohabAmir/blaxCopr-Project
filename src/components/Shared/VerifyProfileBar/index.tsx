@@ -12,7 +12,7 @@ const Header: FC = () => {
         <p className={styles.secondHeading}>Verify your profile</p>
       </div>
       <button className={styles.btn}>
-        verify
+        Verify
         <Image
           className={styles.iconVector}
           src={VectorIcon}

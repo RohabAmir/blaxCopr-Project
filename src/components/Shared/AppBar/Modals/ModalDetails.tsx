@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useRef, useEffect } from "react";
 import QuestionIcon from "../../../../../public/icons/Question.svg";
 import SignOutIcon from "../../../../../public/icons/SignOut.svg";
 import SettingIcon from "../../../../../public/icons/Setting.svg";
@@ -6,14 +6,21 @@ import Image from "next/image";
 import styles from "./styles.module.scss";
 import { ROUTES } from "@/constants";
 import Link from "next/link";
+import { useDetectClickOutside } from "react-detect-click-outside";
 
-const ModalDetails: FC = () => {
+interface ModalDetailsProps {
+  onClose: () => void;
+}
+
+const ModalDetails: FC<ModalDetailsProps> = ({ onClose }) => {
+  const ref = useDetectClickOutside({ onTriggered: onClose });
+
   return (
     <>
-      <div className={styles.flexDetails}>
+      <div className={styles.flexDetails} ref={ref}>
         <div className={styles.flexContent}>
           <Image className={styles.icon} src={SettingIcon} alt="setting icon" />
-          <Link href={ROUTES.ACCOUNT_DETAILS_FORM}>
+          <Link className={styles.link} href={ROUTES.ACCOUNT_DETAILS_FORM}>
             <p>Account Details</p>
           </Link>
         </div>

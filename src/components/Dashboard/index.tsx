@@ -10,7 +10,7 @@ import { Nav } from "@/types";
 const Dashboard: FC = () => {
   const NavList: Array<Nav> = [
     { title: "All", link: "all" },
-    { title: "Action Required", link: "action required" },
+    { title: "Action required", link: "action required" },
     { title: "Open", link: "open" },
     { title: "Closed", link: "closed" },
   ];

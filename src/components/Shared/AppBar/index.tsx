@@ -8,6 +8,7 @@ import Image from "next/image";
 import { ROUTES } from "@/constants";
 import styles from "./style.module.scss";
 import ModalDetails from "./Modals/ModalDetails";
+import Link from "next/link";
 
 import { useState } from "react";
 import ModalNotifications from "./Modals/ModalNotifications";
@@ -15,35 +16,49 @@ const AppBar: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNotifModalOpen, setIsNotifModalOpen] = useState(false);
 
-  function openModal() {
-    setIsModalOpen((modal) => !modal);
-  }
+  const handleDetail = () => {
+    if (!isModalOpen) {
+      setIsModalOpen(true);
+      setIsNotifModalOpen(false);
+    } else {
+      setIsModalOpen(false);
+    }
+  };
 
-  function notificationModalOpen() {
-    setIsNotifModalOpen((modal) => !modal);
-  }
+  const handleNotifModal = () => {
+    if (!isNotifModalOpen) {
+      setIsNotifModalOpen(true);
+      setIsModalOpen(false);
+    } else {
+      setIsNotifModalOpen(false);
+    }
+  };
 
   return (
     <>
       <div className={styles.mainContainer}>
         <div className={styles.iconsContainer}>
-          <Image className={styles.iconMask} src={MaskIcon} alt="mask icon" />
-          <Image
-            className={styles.iconBlaxCorp}
-            src={BlaxCorpIcon}
-            alt="BlaxCorp icon"
-          />
+          <Link href="/">
+            <Image className={styles.iconMask} src={MaskIcon} alt="mask icon" />
+            <Image
+              className={styles.iconBlaxCorp}
+              src={BlaxCorpIcon}
+              alt="BlaxCorp icon"
+            />
+          </Link>
         </div>
         <div className={styles.routesContainer}>
           <button className={styles.button}>About</button>
           <button className={styles.button}>Help</button>
           <button className={styles.button}>Refer a friend</button>
-          <button className={styles.icons} onClick={notificationModalOpen}>
+          <button className={styles.icons} onClick={handleNotifModal}>
             <Image className={styles.icon} src={BellIcon} alt="bell icon" />
           </button>
-          {isNotifModalOpen && <ModalNotifications />}
+          {isNotifModalOpen && (
+            <ModalNotifications onClose={handleNotifModal} />
+          )}
           <button
-            onClick={openModal}
+            onClick={handleDetail}
             className={
               isModalOpen ? styles.flexContentActive : styles.flexContent
             }
@@ -56,7 +71,7 @@ const AppBar: FC = () => {
               <Image src={UpIcon} alt="up icon" />
             )}
           </button>
-          {isModalOpen && <ModalDetails />}
+          {isModalOpen && <ModalDetails onClose={handleDetail} />}
         </div>
       </div>
     </>

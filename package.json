@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export":"next export"
+    "export": "next export"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.18.1",
@@ -17,6 +17,7 @@
     "next": "14.0.4",
     "next-auth": "^4.24.5",
     "react": "^18",
+    "react-detect-click-outside": "^1.1.7",
     "react-dom": "^18",
     "react-hook-form": "^7.49.2",
     "react-redux": "^9.0.4"

@@ -91,4 +91,13 @@
 }
 .textHeading {
   margin-bottom: 12px;
+  cursor: pointer;
+}
+.textHeading:hover {
+  transform: translateY(-3px);
+  color: #454745;
+}
+.link {
+  text-decoration: none;
+  color: #000;
 }

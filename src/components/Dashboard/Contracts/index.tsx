@@ -20,38 +20,40 @@ interface CardContainerProps {
 const CardContainer: FC<CardContainerProps> = ({ activeNav }) => {
   const CardList: Array<CardDetails> = [
     {
-      status: "action required",
+      status: "Action required",
       type: "seller",
-      price: "$11,270",
+      price: "11,270",
       company: "LLC. Blaxcorp",
       date: "Created 12 Dec",
     },
     {
-      status: "closed",
+      status: "Closed",
       type: "seller",
-      price: "$15,000",
+      price: "15,000",
       company: "John Doe LLC. Property",
       date: "Created 12 Dec",
     },
     {
-      status: "open",
+      status: "Open",
       type: "buyer",
-      price: "$15,000",
+      price: "15,000",
       company: "Jane Doe LLC. Property",
       date: "Created 12 Dec",
     },
 
     {
-      status: "action required",
+      status: "Action required",
       type: "seller",
-      price: "$11,270",
+      price: "11,270",
       company: "Jane Doe LLC. Property",
       date: "Created 12 Dec",
     },
   ];
   const filteredCardList =
     activeNav !== "all"
-      ? CardList.filter((data) => data.status === activeNav.toLowerCase())
+      ? CardList.filter(
+          (data) => data.status.toLowerCase() === activeNav.toLowerCase()
+        )
       : CardList;
 
   return (
