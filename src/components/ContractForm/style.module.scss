@@ -1,0 +1,48 @@
+.mainContainer {
+  width: 850px;
+  padding-right: 12px;
+  background-color: beige;
+  margin: 0 auto;
+}
+.content {
+  display: flex;
+
+  align-items: center;
+  gap: 96px;
+}
+.iconDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 0 12px;
+}
+.inputs {
+  display: flex;
+  // width: 320px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 13px;
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.img {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 16px;
+}
+.inputField {
+  margin-bottom: 24px;
+}
+.heading {
+  margin-bottom: 0 0 8px 0;
+}
+.description {
+  margin: 0;
+}
