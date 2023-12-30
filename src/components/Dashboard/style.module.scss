@@ -75,6 +75,7 @@
 }
 .cardContainerMain {
   background-color: rgba(22, 51, 0, 0.08);
+  // background-color: #163300;
   border-radius: 40px;
   padding: 17px 26px;
   max-width: 100%;
@@ -123,7 +124,19 @@
 }
 .btnIcon {
   cursor: pointer;
+  color: #33000b;
 }
 .btnIcon:hover {
   transform: translate(3px);
+}
+//   color: #163300;
+// card background: rgba(22, 51, 0, 0.08);
+
+.closed {
+  background-color: rgba(115, 155, 84, 0.08);
+  // background-color: #163300;  background-color: rgba(22, 51, 0, 0.08);
+
+  border-radius: 40px;
+  padding: 17px 26px;
+  max-width: 100%;
 }

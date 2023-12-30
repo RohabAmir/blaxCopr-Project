@@ -26,35 +26,60 @@ const Card: FC<ICard> = ({ data }) => {
     setActiveType((active) => !active);
   }
   const { status, type, price, company, date } = data;
+  const closedstyles =
+    status == "Closed"
+      ? {
+          color: "#747a67",
+        }
+      : {};
+
   return (
     <>
-      <div className={styles.cardContainerMain}>
+      <div
+        className={
+          status === "Closed" ? styles.closed : styles.cardContainerMain
+        }
+      >
         <div className={styles.flexContainerRow}>
           <div className={styles.flexRow}>
             {status === "Action required" && (
               <Image src={DashIcon} alt="dash icon" />
             )}
             {status === "Closed" && (
-              <Image className={styles.icon} src={CheckIcon} alt="check icon" />
+              <Image
+                className={styles.icon}
+                src={CheckIcon}
+                alt="check icon"
+                style={closedstyles}
+              />
             )}
             {status === "Open" && <Image src={LockIcon} alt="lock icon" />}
-            <p className={styles.thirdHeading}>{status}</p>
+            <p className={styles.thirdHeading} style={closedstyles}>
+              {status}
+            </p>
           </div>
           <div className={styles.flexRow}>
             <Image
               onClick={handleActiveType}
               className={styles.btnIcon}
+              style={closedstyles}
               src={activeType ? SecondaryButton : TagIcon}
               alt="dash icon"
             />
           </div>
         </div>
-        <h1 className={styles.heading}>${price}</h1>
+        <h1 className={styles.heading} style={closedstyles}>
+          ${price}
+        </h1>
         <div className={styles.flexContainerRow}>
           <div className={styles.flexRow}>
-            <p className={styles.secondHeading}>{company}</p>
+            <p className={styles.secondHeading} style={closedstyles}>
+              {company}
+            </p>
           </div>
-          <p className={styles.thirdHeading}>{date}</p>
+          <p className={styles.thirdHeading} style={closedstyles}>
+            {date}
+          </p>
         </div>
       </div>
     </>

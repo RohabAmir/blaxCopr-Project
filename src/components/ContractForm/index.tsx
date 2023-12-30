@@ -5,12 +5,14 @@ import Image from "next/image";
 import styles from "./style.module.scss";
 import TextInput from "../Shared/Inputs/Text";
 import { FormProvider, useForm } from "react-hook-form";
+import Stepper from "./Stepper";
 
 const ContractForm: FC = () => {
   const methods = useForm();
 
   return (
     <>
+      <Stepper />
       <FormProvider {...methods}>
         <div className={styles.mainContainer}>
           <div className={styles.content}>

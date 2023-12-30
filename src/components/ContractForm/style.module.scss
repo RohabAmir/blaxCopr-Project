@@ -1,7 +1,6 @@
 .mainContainer {
   width: 850px;
   padding-right: 12px;
-  background-color: beige;
   margin: 0 auto;
 }
 .content {
@@ -45,4 +44,12 @@
 }
 .description {
   margin: 0;
+}
+
+//
+//
+.customSteps {
+  max-width: 700px !important;
+  margin: 36px auto 72px auto !important;
+  height: 36px;
 }
