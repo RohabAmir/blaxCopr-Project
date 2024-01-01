@@ -29,7 +29,12 @@ const TextInput: FC<ITextInput> = ({
             type={type}
             {...field}
             placeholder={placeholder}
-            style={{ padding: "10px", height: "48px", width: "100%" }}
+            style={{
+              padding: "10px",
+              height: "48px",
+              width: "100%",
+              marginBottom: "24px",
+            }}
           />
         )}
         control={control}

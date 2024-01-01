@@ -11,14 +11,13 @@ const ContractForm: FC = () => {
   return (
     <>
       <Stepper />
-      <FormProvider {...methods} >
+      <FormProvider {...methods}>
         <Flex vertical align="center">
           {/* <Create /> */}
-          <StepDetail/>
+          <StepDetail />
         </Flex>
       </FormProvider>
     </>
   );
 };
 export default ContractForm;
-

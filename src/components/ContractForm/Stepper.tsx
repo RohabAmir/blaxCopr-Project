@@ -16,7 +16,7 @@ const YourStepper: FC = () => {
     <Steps
       current={currentStep}
       progressDot={customDot}
-      className={styles.customSteps} // Use your CSS module class here
+      className={styles.customSteps} // Use your CSS module className here
       onChange={handleStepChange}
     >
       <Steps.Step title="Create" />

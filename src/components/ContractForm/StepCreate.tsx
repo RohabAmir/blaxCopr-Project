@@ -1,47 +1,62 @@
-import React, { FC } from 'react'
-import styles from "./style.module.scss"
-import { Col, Flex, Row } from 'antd'
-import { TextInput, Dropdown, Button } from '../Shared'
-import { ButtonType, IconType } from '@/types'
-import Title from 'antd/es/typography/Title'
-
-const Create: FC = ({ }) => {
+import React, { FC } from "react";
+import styles from "./style.module.scss";
+import { Col, Flex, Row } from "antd";
+import { TextInput, Dropdown, Button } from "../Shared";
+import { ButtonType, IconType } from "@/types";
+import Title from "antd/es/typography/Title";
+import Image from "next/image";
+import ShieldIcon from "../../../public/icons/shield.svg";
+const Create: FC = ({}) => {
   const roleOptions = [
-    { value: 'buyer', label: 'Buyer' },
-    { value: 'seller', label: 'Seller' },
-  ]
+    { value: "buyer", label: "Buyer" },
+    { value: "seller", label: "Seller" },
+  ];
   return (
-    <Flex vertical gap={20} style={{ width: '760', margin: "auto" }}>
-      <Flex align='center' justify='space-between'>
-        <Button name='Back' leftIcon={IconType.BackArrow} type={ButtonType.Secondary} />
-        <Title level={2}> Create new contract</Title>
+    <Flex vertical gap={64} style={{ width: "760", margin: "auto" }}>
+      <Flex align="center" gap="164px">
+        <Button
+          name="Back"
+          leftIcon={IconType.BackArrow}
+          type={ButtonType.Secondary}
+        />
+        <Title level={2} className={styles.headingMain}>
+          {" "}
+          Create new contract
+        </Title>
         <span></span>
       </Flex>
-      <Row justify={"space-between"} className={styles.mainContainer}>
+      <Row className={styles.mainContainer}>
         <Col span={9}>
           <TextInput name="contractName" label="Contract Name" />
-          <Dropdown name="role" label="Contract Name" options={roleOptions} />
-          <Dropdown name="currency" label="Currency" options={roleOptions} />
-          <Dropdown name="Inspection Period(day)" label="Contract Name" options={roleOptions} />
+          <Dropdown name="role" label="My role" options={roleOptions} />
+          <Dropdown name="Currency" label="Currency" options={roleOptions} />
+          <Dropdown
+            name="Inspection Period(day)"
+            label="Inspection Period(days)"
+            options={roleOptions}
+          />
         </Col>
         <Col span={9}>
           <Flex>
             <div className={styles.text}>
-              <h2 className={styles.heading}>ASE</h2>
+              <Image
+                className={styles.img}
+                src={ShieldIcon}
+                alt="shield icon"
+              />
+              <h2 className={styles.heading}>AES-256 encryption</h2>
               <p className={styles.description}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod
-                assumenda optio debitis non porro dolore temporibus voluptatem
-                eaque unde. Eveniet aspernatur minima eligendi veritatis earum
-                pariatur quia deleniti mollitia neque?
+                Every contract is secured using SHA-256 hashing, AES-256
+                encryption, and TLS 1.3 protocol to ensure the highest level of
+                data integrity, confidentiality, and security.
               </p>
             </div>
           </Flex>
         </Col>
       </Row>
-      <Button name='Next' />
+      <Button name="Next" />
     </Flex>
+  );
+};
 
-  )
-}
-
-export default Create
+export default Create;
