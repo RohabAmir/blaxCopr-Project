@@ -17,7 +17,7 @@ const TextInput: FC<ITextInput> = ({
 }) => {
   const { control } = useFormContext();
   return (
-    <div>
+    <>
       {label && (
         <div style={{ margin: "5px 0", color: "#454745", fontSize: "14px" }}>
           {label}
@@ -35,7 +35,7 @@ const TextInput: FC<ITextInput> = ({
         control={control}
         name={name}
       />
-    </div>
+    </>
   );
 };
 
