@@ -3,12 +3,14 @@
   padding-right: 12px;
   margin: 0 auto;
 }
+
 .content {
   display: flex;
 
   align-items: center;
   gap: 96px;
 }
+
 .iconDetails {
   display: flex;
   flex-direction: column;
@@ -17,12 +19,14 @@
   gap: 16px;
   padding: 0 12px;
 }
+
 .inputs {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 13px;
 }
+
 .text {
   display: flex;
   flex-direction: column;
@@ -30,17 +34,21 @@
   align-items: center;
   gap: 8px;
 }
+
 .img {
   width: 200px;
   height: 200px;
   margin-bottom: 16px;
 }
+
 .inputField {
   margin-bottom: 24px;
 }
+
 .heading {
   margin-bottom: 0 0 8px 0;
 }
+
 .description {
   margin: 0;
 }
@@ -51,4 +59,33 @@
   max-width: 700px !important;
   margin: 36px auto 72px auto !important;
   height: 36px;
+}
+
+.dragDropContainer {
+  border-radius: 16px;
+  border: 1px dashed rgba(22, 51, 0, 0.16);
+  background: #FAFAFA;
+  box-sizing: border-box;
+  aspect-ratio: 1;
+  width: 400px;
+
+}
+
+.listItem {
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+}
+
+.listItemLeft, .listItemRight{
+  display: flex;
+  gap: 4px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: nowrap;
+  word-break: break-all;
+}
+
+.listItemLeft{
+  width: 60%;
 }
