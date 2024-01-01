@@ -14,8 +14,8 @@ const ContractForm: FC = () => {
       <Stepper />
       <Flex vertical align="center">
         {/* <Create /> */}
-        {/* <StepDetail /> */}
-        <StepCompliance />
+        <StepDetail />
+        {/* <StepCompliance /> */}
       </Flex>
     </FormProvider>
   );
