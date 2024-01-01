@@ -9,15 +9,13 @@ import StepDetail from "./StepDetail";
 const ContractForm: FC = () => {
   const methods = useForm();
   return (
-    <>
+    <FormProvider {...methods}>
       <Stepper />
-      <FormProvider {...methods}>
-        <Flex vertical align="center">
-          {/* <Create /> */}
-          <StepDetail />
-        </Flex>
-      </FormProvider>
-    </>
+      <Flex vertical align="center">
+        {/* <Create /> */}
+        <StepDetail />
+      </Flex>
+    </FormProvider>
   );
 };
 export default ContractForm;
