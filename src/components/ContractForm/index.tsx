@@ -1,5 +1,5 @@
 "use client";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import Stepper from "./Stepper";
 import { Flex } from "antd";
@@ -9,13 +9,14 @@ import StepCompliance from "./StepCompliance";
 
 const ContractForm: FC = () => {
   const methods = useForm();
+  const [currentStep, setCurrentStep] = useState<number>(1);
   return (
     <FormProvider {...methods}>
-      <Stepper />
+      <Stepper currentStep={currentStep} setCurrentStep={setCurrentStep} />
       <Flex vertical align="center">
-        {/* <Create /> */}
-        <StepDetail />
-        {/* <StepCompliance /> */}
+        {currentStep === 0 && <Create />}
+        {currentStep === 1 && <StepDetail />}
+        {currentStep === 2 && <StepCompliance />}
       </Flex>
     </FormProvider>
   );

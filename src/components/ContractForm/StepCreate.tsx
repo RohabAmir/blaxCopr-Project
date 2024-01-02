@@ -36,8 +36,8 @@ const Create: FC = ({}) => {
             options={roleOptions}
           />
         </Col>
-        <Col span={9}>
-          <Flex>
+        <Col span={9} offset={3}>
+          <Flex vertical>
             <div className={styles.text}>
               <Image
                 className={styles.img}

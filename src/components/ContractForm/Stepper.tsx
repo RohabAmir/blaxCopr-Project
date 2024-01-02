@@ -5,8 +5,8 @@ import styles from "./style.module.scss"; // Import your CSS module
 
 const customDot: StepsProps["progressDot"] = (dot) => <Popover>{dot}</Popover>;
 
-const YourStepper: FC = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+const YourStepper: FC<any> = ({currentStep,setCurrentStep}) => {
+  
 
   const handleStepChange = (current: number) => {
     setCurrentStep(current);
