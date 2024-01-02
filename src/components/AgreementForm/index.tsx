@@ -1,48 +1,84 @@
-'use client'
-import { Flex } from 'antd'
-import React, { FC, ReactNode } from 'react'
-import styles from "./style.module.scss"
-import { ButtonType, IconType } from '@/types'
-import { Button, VerifyProfileBar } from '../Shared'
-import Title from 'antd/es/typography/Title'
-import StepAgreement from './StepAgreement'
+"use client";
+import { Flex } from "antd";
+import React, { FC, ReactNode } from "react";
+import styles from "./style.module.scss";
+import { ButtonType, IconType } from "@/types";
+import { Button, VerifyProfileBar } from "../Shared";
+import Title from "antd/es/typography/Title";
+import StepAgreement from "./StepAgreement";
+import Image from "next/image";
+import CopyIcon from "../../../public/icons/Copy.svg";
+import UserIcon from "../../../public/icons/User.svg";
+import CalenderIcon from "../../../public/icons/Calendar.svg";
+import XIcon from "../../../public/icons/X.svg";
 
 // interface IAgreementForm {
 //     children: ReactNode
 // }
 const AgreementForm: FC = () => {
-    return (
-        <Flex vertical className="w-full" align='flex-start'>
-            <VerifyProfileBar />
-            <Button name='Back' leftIcon={IconType.BackArrow} type={ButtonType.Secondary} />
-            <Flex justify='space-between' align='center' className='w-full'>
-                <Flex>
-                    <Title level={3}>Contract Name</Title>
-                    {/* <Text>Transaction</Text> */}
-                    <span></span>
-                    <span></span>
-                </Flex>
-                <Flex gap={20} align='center' justify='center'>
-                    <div>
-                        Buyer
-                    </div>
-                    <div>
-                        Buyer
-                    </div>
-                    <div>
-                        Buyer
-                    </div>
-                </Flex>
-            </Flex>
-            <Flex vertical align='center'>
-                {/* <Stepper></Stepper> */}
-                <Flex vertical align='center'>
-                    <StepAgreement/>
-                </Flex>
-
-            </Flex>
+  return (
+    <Flex vertical className="w-full">
+      <VerifyProfileBar />
+      <Button
+        name="Back"
+        leftIcon={IconType.BackArrow}
+        type={ButtonType.Secondary}
+      />
+      <Flex justify="space-between" align="center" className="w-full">
+        <Flex vertical>
+          <Title level={2}>Contract Name</Title>
+          {/* <Text>Transaction</Text> */}
+          <div className={styles.flexTransaction}>
+            <span className={styles.transactionText}>
+              Transaction #10942007{" "}
+            </span>
+            <span>
+              <Image
+                className={styles.copyIcon}
+                src={CopyIcon}
+                alt="copy icon"
+              />
+            </span>
+          </div>
+          <div className={styles.transactionDetails}>
+            <span style={{ color: "#006ACC" }}>example@gmail.com</span> is
+            buying a <span style={{ fontWeight: "600" }}>domain name</span> from
+            <span style={{ color: "#006ACC" }}> name@gmail.com.</span>
+            <br /> The{" "}
+            <span style={{ fontWeight: "600" }}>inspection period</span> for
+            this transaction is{" "}
+            <span style={{ fontWeight: "600" }}>3 calendar days.</span>
+          </div>
         </Flex>
-    )
-}
+        <Flex gap={20} align="center" justify="center">
+          <div className={styles.detailBox}>
+            <div>
+              <Image src={UserIcon} alt="user icon" />
+            </div>
+            <div>Buyer</div>
+          </div>
+          <div className={styles.detailBox}>
+            <div>
+              <Image src={CalenderIcon} alt="calendar icon" />
+            </div>
+            <div>Created 17 Dec, 2023</div>
+          </div>
+          <div className={styles.detailBox}>
+            <div className={styles.crossBox}>
+              <Image className={styles.xIcon} src={XIcon} alt="X icon" />
+            </div>
+            <div>Buyer</div>
+          </div>
+        </Flex>
+      </Flex>
+      <Flex vertical align="center">
+        {/* <Stepper></Stepper> */}
+        <Flex vertical align="center" style={{ width: "600px" }}>
+          <StepAgreement />
+        </Flex>
+      </Flex>
+    </Flex>
+  );
+};
 
-export default AgreementForm
+export default AgreementForm;

@@ -23,7 +23,7 @@ const FromSection: FC<IFromSection> = ({
     <Flex
       vertical
       align="center"
-      //   gap={20}
+      // gap={20}
       style={{ width: "100%", boxSizing: "border-box" }}
     >
       <Flex justify="space-between" align="center" style={{ width: "100%" }}>

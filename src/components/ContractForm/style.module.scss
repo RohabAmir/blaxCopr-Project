@@ -202,13 +202,6 @@
   margin-bottom: 48px;
 }
 
-/* Stepper.module.css */
-.customSteps {
-  max-width: 700px !important;
-  margin: 36px auto 72px auto !important;
-  height: 36px;
-}
-
 .start {
   text-align: start;
 }
@@ -257,4 +250,180 @@
   // height: 52px;
   margin-right: 24px;
   aspect-ratio: 1;
+}
+
+//
+//
+
+/* Stepper.module.css */
+.customSteps {
+  max-width: 700px !important;
+  margin: 36px auto 72px auto !important;
+  height: 36px;
+  padding: 0 24px;
+}
+.flexStepper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  border-radius: 100px;
+  background: rgba(22, 51, 0, 0.08);
+  // background: linear-gradient(90deg, #9fe870 0%, #163300 100%);
+
+  height: 2px;
+  margin-bottom: 24px;
+}
+
+// .flexStepper .active {
+//   background: linear-gradient(90deg, #9fe870 0%, #163300 100%);
+//   cursor: pointer;
+// }
+.flexStepperColor2 {
+  @extend .flexStepper;
+  // background: linear-gradient(90deg, #9fe870 0%, #163300 100%);
+  width: 100%;
+}
+
+.flexStepperColor2::after {
+  @extend .flexStepper;
+  content: "";
+  height: 2px;
+  width: 30%;
+  top: 13px;
+  background: linear-gradient(90deg, #9fe870 0%, #163300 100%);
+}
+
+.flexStepperColor3 {
+  @extend .flexStepper;
+  width: 100%;
+}
+.flexStepperColor3::after {
+  @extend .flexStepper;
+  content: "";
+  height: 2px;
+  width: 62%;
+  top: 13px;
+  background: linear-gradient(90deg, #9fe870 0%, #163300 100%);
+}
+.flexStepperColor4 {
+  @extend .flexStepper;
+  width: 100%;
+}
+.flexStepperColor4::after {
+  @extend .flexStepper;
+  content: "";
+  height: 2px;
+  width: 98%;
+  top: 13px;
+  background: linear-gradient(90deg, #9fe870 0%, #163300 100%);
+}
+
+.flexStepperHeading {
+  @extend .flexStepper;
+  background: none;
+  text-align: left;
+}
+// .dot {
+//   font-size: 12px;
+// }
+// .dot::before {
+//   content: "";
+//   height: 10px;
+//   position: absolute;
+//   border-radius: 50%;
+//   width: 10px;
+
+//   display: inline-block;
+//   // background-color: #4b9a19;
+//   background: linear-gradient(90deg, #9fe870 0%, #163300 100%);
+//   top: -4px;
+//   left: 0;
+// }
+.dotHeading {
+  cursor: pointer;
+}
+.dotHeading1,
+.dotHeading2,
+.dotHeading3,
+.dotHeading4 {
+  cursor: pointer;
+}
+.dotHeading1,
+.dotHeading2,
+.dotHeading3,
+.dotHeading4 :hover {
+  cursor: pointer;
+  color: #0e0f0c;
+  text-align: center;
+
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px; /* 157.143% */
+  letter-spacing: 0.175px;
+}
+.dotHeading1::after {
+  content: "";
+  height: 10px;
+  position: absolute;
+  border-radius: 50%;
+  width: 10px;
+
+  display: inline-block;
+  // background-color: #4b9a19;
+  background: linear-gradient(90deg, #9fe870 0%, #163300 100%);
+  top: -30px;
+  left: 0;
+}
+.dotHeading2::after {
+  @extend .flexStepperColor2;
+  content: "";
+  height: 10px;
+  position: absolute;
+  border-radius: 50%;
+  width: 10px;
+
+  display: inline-block;
+  top: -30px;
+  left: 30%;
+  background: linear-gradient(90deg, #9fe870 0%, #163300 100%);
+  display: none;
+}
+
+.dotHeading3::after {
+  @extend .flexStepperColor3;
+
+  content: "";
+  height: 10px;
+  position: absolute;
+  border-radius: 50%;
+  width: 10px;
+
+  display: inline-block;
+  top: -30px;
+  left: 62%;
+  background: linear-gradient(90deg, #9fe870 0%, #163300 100%);
+  display: none;
+}
+
+.dotHeading4::after {
+  @extend .flexStepperColor4;
+
+  content: "";
+  height: 10px;
+  position: absolute;
+  border-radius: 50%;
+  width: 10px;
+
+  display: inline-block;
+  top: -30px;
+  left: 98%;
+  background: linear-gradient(90deg, #9fe870 0%, #163300 100%);
+  display: none;
+}
+
+.active::after {
+  display: block;
 }
