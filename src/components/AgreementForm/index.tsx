@@ -11,6 +11,14 @@ import CopyIcon from "../../../public/icons/Copy.svg";
 import UserIcon from "../../../public/icons/User.svg";
 import CalenderIcon from "../../../public/icons/Calendar.svg";
 import XIcon from "../../../public/icons/X.svg";
+import Stepper from "./Stepper";
+import Deposit from "./Deposit";
+import TransferAmount from "./TransferAmount";
+import BankLocation from "./BankLocation";
+import BankDetails from "./BankDetails";
+import PendingDeposit from "./PendingDeposit";
+import SuccessfulDeposit from "./SuccessfulDeposit";
+import Inspection from "./Inspection";
 
 // interface IAgreementForm {
 //     children: ReactNode
@@ -71,10 +79,27 @@ const AgreementForm: FC = () => {
           </div>
         </Flex>
       </Flex>
+      {/* stepper added */}
       <Flex vertical align="center">
-        {/* <Stepper></Stepper> */}
+        <Stepper />
+
         <Flex vertical align="center" style={{ width: "600px" }}>
-          <StepAgreement />
+          {/* agrrement buyer components */}
+
+          {/* ------------------------------------ */}
+
+          {/* <Deposit /> */}
+          {/* <TransferAmount /> */}
+          {/* <BankLocation /> */}
+          {/* <BankDetails /> */}
+          {/* <PendingDeposit /> */}
+          {/* <SuccessfulDeposit /> */}
+          <Inspection />
+
+          {/* --------------------------------------- */}
+
+          {/* ---Agreement form--- */}
+          {/* <StepAgreement /> */}
         </Flex>
       </Flex>
     </Flex>

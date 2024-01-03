@@ -37,8 +37,7 @@ const GeneralButton: FC<IButton> = ({
       style={{
         width: fullWidth ? "100%" : "fit-content",
         fontWeight: 600,
-        backgroundColor:
-          type === ButtonType.Primary ? "#9FE870" : "transparent",
+        backgroundColor: type === ButtonType.Primary ? "#9FE870" : "#16330014",
       }}
     >
       {leftIcon !== IconType.None ? (

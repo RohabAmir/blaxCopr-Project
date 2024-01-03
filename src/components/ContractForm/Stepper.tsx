@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 
 import styles from "./style.module.scss"; // Import your CSS module
 
-const YourStepper: FC<any> = ({ currentStep, setCurrentStep }) => {
+const Stepper: FC<any> = ({ currentStep, setCurrentStep }) => {
   const handleStepChange = (current: number) => {
     setCurrentStep(current);
   };
@@ -74,4 +74,4 @@ const YourStepper: FC<any> = ({ currentStep, setCurrentStep }) => {
   );
 };
 
-export default YourStepper;
+export default Stepper;
