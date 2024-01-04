@@ -1,0 +1,228 @@
+.depositMain {
+  width: 100%;
+  background: rgba(22, 51, 0, 0.08);
+  border-radius: 16px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.deposit {
+  display: flex;
+
+  padding: 24px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  //   margin-bottom: 4px;
+}
+.flexDeposit {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.icon {
+  width: 56px;
+  height: 60px;
+  flex-shrink: 0;
+}
+.flexTextDeposit {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.headingDeposit {
+  color: #0e0f0c;
+
+  /* Title Body */
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 133.333% */
+  letter-spacing: -0.18px;
+  margin: 0;
+}
+.subHeadingDeposit {
+  color: #0e0f0c;
+
+  /* Body/Large */
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  letter-spacing: -0.08px;
+  margin: 0;
+}
+
+.flexInlineText {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 8px;
+  padding: 0 24px 24px 0;
+}
+.iconCheck {
+  width: 24px;
+  height: 24px;
+}
+.inlineSubText {
+  @extend .headingDeposit;
+  font-size: 14px;
+}
+.subHeadingDepositLight {
+  color: #454745;
+
+  /* Body/Default */
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 157.143% */
+  letter-spacing: 0.14px;
+  margin: 0;
+}
+.withDrawlMain {
+  width: 100%;
+  // background-color: #d6dfd6;
+  padding: 12px;
+  margin-bottom: 24px;
+}
+.withDrawlHeading {
+  @extend .headingDeposit;
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 64px;
+}
+.withdrawlPrimaryHeading {
+  color: #0e0f0c;
+
+  /* Title Subsection */
+  font-family: Inter;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 28px; /* 127.273% */
+  letter-spacing: -0.33px;
+  margin: 0;
+  margin-bottom: 16px;
+}
+.subHeadingWithdrawlLight {
+  @extend .subHeadingDepositLight;
+  margin: 0;
+}
+
+.flexBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.btn {
+  border-radius: 100px;
+  background: #9fe870;
+  //   outline: none;
+  border: none;
+  padding: 4px 6px;
+  display: block;
+  cursor: pointer;
+}
+.btnText {
+  margin-top: 48px;
+  display: flex;
+  //   justify-content: start;
+  align-items: flex-start;
+  gap: 12px;
+}
+.iconPlus {
+  width: 16px;
+  height: 16px;
+}
+.btnEnd {
+  display: flex;
+  justify-content: end;
+  margin-top: 24px;
+}
+//
+.flexRadio {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
+  padding-left: 16px;
+}
+.radioBtn {
+  width: 22px;
+  height: 22px;
+}
+.flexHeadingBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 64px;
+}
+.withdrawlPrimaryHeadingLast {
+  @extend .withdrawlPrimaryHeading;
+  margin-bottom: 0;
+}
+.methodMain {
+  @extend .depositMain;
+  padding: 22px 16px 18px 16px;
+}
+.btnRight {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.btnSent {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  display: flex;
+  padding: 5px 12px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  background: #9fe870;
+  border: none;
+}
+.iconOk {
+  width: 16px;
+  height: 16px;
+  color: #0e0f0c;
+}
+.iconOkGreen {
+  display: flex;
+  width: 56px;
+  height: 56px;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  border-radius: 100px;
+  background: #9fe870;
+}
+.okIconGrn {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.methodMainLast {
+  width: 100%;
+  @extend .methodMain;
+  padding: 12px 24px 0 4px;
+}
+.flexInspected {
+  @extend .flexDeposit;
+  align-items: flex-start;
+}
+.flexInspectedText {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

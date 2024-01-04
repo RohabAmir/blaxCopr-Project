@@ -60,17 +60,50 @@
 // export default Stepper;
 // Stepper.jsx
 
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { Steps, Popover } from "antd";
 import type { StepsProps } from "antd";
-import styles from "./style.module.scss";
+import InactiveStepIcon from "../../../public/icons/CheckInActive.svg";
+import ActiveStepIcon from "../../../public/icons/CheckOK.svg";
+import CurrentStepIcon from "../../../public/icons/CheckCurrent.svg";
+import {
+  LoadingOutlined,
+  SmileOutlined,
+  SolutionOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
-const customDot: StepsProps["progressDot"] = (dot, { status, index }) => (
-  <Popover>{dot}</Popover>
-);
+import styles from "./style.module.scss";
+import Image from "next/image";
+
+interface CustomDotProps {
+  currentStep: any;
+  status: any;
+}
+
+const customDot: React.FC<CustomDotProps> = ({ currentStep, status }) => {
+  console.log(currentStep, status);
+  return (
+    <Popover>
+      {
+        <Image
+          src={
+            currentStep > status.index
+              ? ActiveStepIcon
+              : currentStep === status.index
+              ? CurrentStepIcon
+              : InactiveStepIcon
+          }
+          alt="stepper icon"
+        />
+      }
+    </Popover>
+  );
+};
 
 const Stepper: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
+  LoadingOutlined;
 
   const steps = [
     {
@@ -100,11 +133,12 @@ const Stepper: React.FC = () => {
   return (
     <Steps
       current={currentStep}
-      progressDot={customDot}
-      className={styles.customSteps}
+      progressDot={(_, status) => customDot({ currentStep, status })}
+      className={"customSteps"}
     >
       {steps.map((step, index) => (
         <Steps.Step
+          // icon={<LoadingOutlined />}
           key={index}
           title={step.title}
           className={styles.stepper}

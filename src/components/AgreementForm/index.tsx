@@ -21,6 +21,13 @@ import SuccessfulDeposit from "./SuccessfulDeposit";
 import Inspection from "./Inspection";
 import DisputOpened from "./DisputOpened";
 import Invoice from "./Invoice";
+import InvoiceMerchandise from "./InvoiceMerchandise";
+import SetupWithDrawl from "./seller/SetupWithdrawl";
+import AddWithDrawl from "./seller/AddWithDrawl";
+import AddWithDrawlDisbursement from "./seller/AddWithDrawlDisbursement";
+import WithDrawlMethod from "./seller/WithDrawlMethod";
+import WithDrawlBuyerWaiting from "./seller/WithDrawlBuyerWaiting";
+import InspectedPeriod from "./seller/InspectedPeriod";
 
 // interface IAgreementForm {
 //     children: ReactNode
@@ -90,6 +97,8 @@ const AgreementForm: FC = () => {
 
           {/* ------------------------------------ */}
 
+          {/*------------------------------------ BUYER FLOW--------------------------------  */}
+
           {/* <Deposit /> */}
           {/* <TransferAmount /> */}
           {/* <BankLocation /> */}
@@ -98,8 +107,17 @@ const AgreementForm: FC = () => {
           {/* <SuccessfulDeposit /> */}
           {/* <Inspection /> */}
           {/* <DisputOpened /> */}
-          <Invoice />
+          {/* <Invoice /> */}
+          {/* <InvoiceMerchandise /> */}
           {/* --------------------------------------- */}
+
+          {/* -----------------SELLER FLOW -------------------------- */}
+          {/* <SetupWithDrawl /> */}
+          {/* <AddWithDrawl /> */}
+          {/* <AddWithDrawlDisbursement /> */}
+          {/* <WithDrawlMethod /> */}
+          {/* <WithDrawlBuyerWaiting /> */}
+          <InspectedPeriod />
 
           {/* ---Agreement form--- */}
           {/* <StepAgreement /> */}
