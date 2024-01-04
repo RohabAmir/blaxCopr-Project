@@ -109,11 +109,11 @@ const AgreementForm: FC = () => {
           {/* --------------------------------------- */}
 
           {/* -----------------SELLER FLOW -------------------------- */}
-          {/* <SetupWithDrawl /> */}
-          {/* <AddWithDrawl /> */}
-          {/* <AddWithDrawlDisbursement /> */}
-          {/* <WithDrawlMethod /> */}
-          {/* <WithDrawlBuyerWaiting /> */}
+          <SetupWithDrawl />
+          <AddWithDrawl />
+          <AddWithDrawlDisbursement />
+          <WithDrawlMethod />
+          <WithDrawlBuyerWaiting />
           <InspectedPeriod />
 
           {/* ---Agreement form--- */}
