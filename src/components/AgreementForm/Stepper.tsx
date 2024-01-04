@@ -102,8 +102,7 @@ const customDot: React.FC<CustomDotProps> = ({ currentStep, status }) => {
 };
 
 const Stepper: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-  LoadingOutlined;
+  const [currentStep, setCurrentStep] = useState(1);
 
   const steps = [
     {

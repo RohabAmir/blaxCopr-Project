@@ -97,18 +97,15 @@ const AgreementForm: FC = () => {
 
           {/* ------------------------------------ */}
 
-          {/*------------------------------------ BUYER FLOW--------------------------------  */}
-
-          {/* <Deposit /> */}
-          {/* <TransferAmount /> */}
-          {/* <BankLocation /> */}
-          {/* <BankDetails /> */}
-          {/* <PendingDeposit /> */}
-          {/* <SuccessfulDeposit /> */}
-          {/* <Inspection /> */}
-          {/* <DisputOpened /> */}
-          {/* <Invoice /> */}
-          {/* <InvoiceMerchandise /> */}
+          <Deposit />
+          <TransferAmount />
+          <BankLocation />
+          <BankDetails />
+          <PendingDeposit />
+          <SuccessfulDeposit />
+          <Inspection />
+          <DisputOpened />
+          <Invoice />
           {/* --------------------------------------- */}
 
           {/* -----------------SELLER FLOW -------------------------- */}
@@ -120,7 +117,7 @@ const AgreementForm: FC = () => {
           <InspectedPeriod />
 
           {/* ---Agreement form--- */}
-          {/* <StepAgreement /> */}
+          <StepAgreement />
         </Flex>
       </Flex>
     </Flex>

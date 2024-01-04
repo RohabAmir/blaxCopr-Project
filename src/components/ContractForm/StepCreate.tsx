@@ -6,7 +6,7 @@ import { ButtonType, IconType } from "@/types";
 import Title from "antd/es/typography/Title";
 import Image from "next/image";
 import ShieldIcon from "../../../public/icons/shield.svg";
-const Create: FC = ({}) => {
+const Create: FC<any> = ({handleStepChange}) => {
   const roleOptions = [
     { value: "buyer", label: "Buyer" },
     { value: "seller", label: "Seller" },
@@ -54,7 +54,7 @@ const Create: FC = ({}) => {
           </Flex>
         </Col>
       </Row>
-      <Button name="Next" />
+      <Button name="Next" onClickHandler={()=>handleStepChange("1")}/>
     </Flex>
   );
 };
