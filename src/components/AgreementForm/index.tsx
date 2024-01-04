@@ -19,6 +19,8 @@ import BankDetails from "./BankDetails";
 import PendingDeposit from "./PendingDeposit";
 import SuccessfulDeposit from "./SuccessfulDeposit";
 import Inspection from "./Inspection";
+import DisputOpened from "./DisputOpened";
+import Invoice from "./Invoice";
 
 // interface IAgreementForm {
 //     children: ReactNode
@@ -94,8 +96,9 @@ const AgreementForm: FC = () => {
           {/* <BankDetails /> */}
           {/* <PendingDeposit /> */}
           {/* <SuccessfulDeposit /> */}
-          <Inspection />
-
+          {/* <Inspection /> */}
+          {/* <DisputOpened /> */}
+          <Invoice />
           {/* --------------------------------------- */}
 
           {/* ---Agreement form--- */}
