@@ -1,12 +1,12 @@
 import { Col, Flex, Row } from "antd";
-import React from "react";
+import React, { FC } from "react";
 import { Button, Dropdown, FormSection, TextInput } from "../Shared";
 import { ButtonType, IconType } from "@/types";
 import styles from "./style.module.scss";
 import ShieldIcon from "../../../public/icons/shield.svg";
 import ChevronIcon from "../../../public/icons/TagChevron.svg";
 import Image from "next/image";
-const StepDetail = () => {
+const StepDetail:FC<any> = ({handleStepChange}) => {
   return (
     <Flex vertical style={{ width: "560px" }}>
       <Button
@@ -219,7 +219,7 @@ const StepDetail = () => {
         </FormSection>
       </Flex>
       <div className={styles.btn}>
-        <Button name="Next" type={ButtonType.Primary} />
+        <Button name="Next" type={ButtonType.Primary} onClickHandler={()=>handleStepChange('2')}/>
       </div>
     </Flex>
   );

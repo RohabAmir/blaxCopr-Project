@@ -70,7 +70,7 @@ const customDot: StepsProps["progressDot"] = (dot, { status, index }) => (
 );
 
 const Stepper: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(1);
 
   const steps = [
     {

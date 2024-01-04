@@ -9,14 +9,18 @@ import StepCompliance from "./StepCompliance";
 
 const ContractForm: FC = () => {
   const methods = useForm();
-  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [activeStep, setActiveStep] = useState<string>("0");
+  const handleStepChange = (current: string) => {
+    setActiveStep(current);
+  };
+  
   return (
     <FormProvider {...methods}>
-      <Stepper currentStep={currentStep} setCurrentStep={setCurrentStep} />
+      <Stepper activeStep={activeStep} />
       <Flex vertical align="center">
-        {currentStep === 0 && <Create />}
-        {currentStep === 1 && <StepDetail />}
-        {currentStep === 2 && <StepCompliance />}
+        {activeStep === "0" && <Create handleStepChange={handleStepChange}/>}
+        {activeStep === "1" && <StepDetail handleStepChange={handleStepChange}/>}
+        {activeStep === "2" && <StepCompliance />}
       </Flex>
     </FormProvider>
   );

@@ -2,14 +2,9 @@ import React, { FC, useState } from "react";
 
 import styles from "./style.module.scss"; // Import your CSS module
 
-const Stepper: FC<any> = ({ currentStep, setCurrentStep }) => {
-  const handleStepChange = (current: number) => {
-    setCurrentStep(current);
-  };
-
-  const [activeId, setActiveId] = useState("0");
+const Stepper: FC<any> = ({ activeStep }) => {
+  
   const getWidth = (id: string) => {
-    // setActiveId(id);
     switch (id) {
       case "1":
         return styles.flexStepperColor2;
@@ -21,50 +16,51 @@ const Stepper: FC<any> = ({ currentStep, setCurrentStep }) => {
         return styles.flexStepper;
     }
   };
+
   return (
     <>
       <div className={styles.customSteps}>
-        <div className={getWidth(activeId)}></div>
+        <div className={getWidth(activeStep)}></div>
         <div className={styles.flexStepperHeading}>
           <p
             id="0"
             className={
-              activeId === "0" ? `${styles.dotHeading1}` : styles.dotHeading
+              activeStep === "0" ? `${styles.dotHeading1}` : styles.dotHeading
             }
-            onClick={() => setActiveId("0")}
+            // onClick={() => handleStepChange("0")}
           >
             Create
           </p>
           <p
             id="1"
             className={
-              activeId === "1"
+              activeStep === "1"
                 ? `${styles.dotHeading2} ${styles.active}`
                 : styles.dotHeading2
             }
-            onClick={() => setActiveId("1")}
+            // onClick={() => handleStepChange("1")}
           >
             Details
           </p>
           <p
             id="2"
             className={
-              activeId === "2"
+              activeStep === "2"
                 ? `${styles.dotHeading3} ${styles.active}`
                 : styles.dotHeading3
             }
-            onClick={() => setActiveId("2")}
+            // onClick={() => handleStepChange("2")}
           >
             Compliance
           </p>
           <p
             id="3"
             className={
-              activeId === "3"
+              activeStep === "3"
                 ? `${styles.dotHeading4} ${styles.active}`
                 : styles.dotHeading4
             }
-            onClick={() => setActiveId("3")}
+            // onClick={() => handleStepChange("3")}
           >
             Agreement
           </p>

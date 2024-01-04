@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import Dashboard_C from "../../../components/Dashboard";
+import Dashboard_C from "@/components/Dashboard";
 
 const Dashboard: FC = () => <Dashboard_C />;
 

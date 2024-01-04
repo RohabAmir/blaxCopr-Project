@@ -90,19 +90,19 @@ const AgreementForm: FC = () => {
 
           {/* ------------------------------------ */}
 
-          {/* <Deposit /> */}
-          {/* <TransferAmount /> */}
-          {/* <BankLocation /> */}
-          {/* <BankDetails /> */}
-          {/* <PendingDeposit /> */}
-          {/* <SuccessfulDeposit /> */}
-          {/* <Inspection /> */}
-          {/* <DisputOpened /> */}
+          <Deposit />
+          <TransferAmount />
+          <BankLocation />
+          <BankDetails />
+          <PendingDeposit />
+          <SuccessfulDeposit />
+          <Inspection />
+          <DisputOpened />
           <Invoice />
           {/* --------------------------------------- */}
 
           {/* ---Agreement form--- */}
-          {/* <StepAgreement /> */}
+          <StepAgreement />
         </Flex>
       </Flex>
     </Flex>

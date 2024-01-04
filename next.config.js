@@ -2,6 +2,15 @@
 
 const nextConfig = {
     output: 'export',
+    async redirects() {
+        return [
+          {
+            source: '/',
+            destination: '/dashboard',
+            permanent: true,
+          },
+        ]
+      },
 }
 
 

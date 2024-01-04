@@ -5,7 +5,8 @@ import Card from "./Card";
 import PlusIcon from "../../../../public/icons/Plus.svg";
 import Image from "next/image";
 import Link from "next/link";
-import AccountDetailForm from "@/app/(forms)/account-details-form/page";
+import AccountDetailForm from "@/app/(dashboard)/(forms)/account-details-form/page";
+import { ROUTES } from "@/constants";
 interface CardDetails {
   status: string;
   type: string;
@@ -60,7 +61,7 @@ const CardContainer: FC<CardContainerProps> = ({ activeNav }) => {
     <>
       <div className={styles.grid}>
         <div className={styles.cardContainerMain}>
-          <Link href="/account-details-form">
+          <Link href={ROUTES.CONTRACT_FORM}>
             <button className={styles.button}>
               <Image src={PlusIcon} alt="plus icon" />
             </button>
