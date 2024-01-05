@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Input } from "antd";
+import { Flex, Input } from "antd";
 import { Controller, useFormContext } from "react-hook-form";
 type inputType = "number" | "text";
 interface ITextInput {
@@ -17,7 +17,11 @@ const TextInput: FC<ITextInput> = ({
 }) => {
   const { control } = useFormContext();
   return (
-    <>
+    <Flex
+      vertical
+      align="flex-start"
+      className="w-full"
+    >
       {label && (
         <div style={{ margin: "5px 0", color: "#454745", fontSize: "14px" }}>
           {label}
@@ -32,15 +36,14 @@ const TextInput: FC<ITextInput> = ({
             style={{
               padding: "10px",
               height: "48px",
-              width: "100%",
-              marginBottom: "24px",
+              width: "100%"
             }}
           />
         )}
         control={control}
         name={name}
       />
-    </>
+    </Flex>
   );
 };
 

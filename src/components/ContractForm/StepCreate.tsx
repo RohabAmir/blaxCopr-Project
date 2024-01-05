@@ -6,10 +6,18 @@ import { ButtonType, IconType } from "@/types";
 import Title from "antd/es/typography/Title";
 import Image from "next/image";
 import ShieldIcon from "../../../public/icons/shield.svg";
-const Create: FC<any> = ({handleStepChange}) => {
+const Create: FC<any> = ({ handleStepChange }) => {
   const roleOptions = [
     { value: "buyer", label: "Buyer" },
     { value: "seller", label: "Seller" },
+  ];
+  const currencyOptions = [
+    { value: "10", label: "10" },
+    { value: "20", label: "20" },
+  ];
+  const inspectionOptions = [
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
   ];
   return (
     <Flex vertical gap={64} style={{ width: "760", margin: "auto" }}>
@@ -27,14 +35,16 @@ const Create: FC<any> = ({handleStepChange}) => {
       </Flex>
       <Row className={styles.mainContainer}>
         <Col span={9}>
+          <Flex vertical className="w-full" gap={20}>
           <TextInput name="contractName" label="Contract Name" />
           <Dropdown name="role" label="My role" options={roleOptions} />
-          <Dropdown name="Currency" label="Currency" options={roleOptions} />
+          <Dropdown name="Currency" label="Currency" options={currencyOptions} />
           <Dropdown
             name="Inspection Period(day)"
             label="Inspection Period(days)"
-            options={roleOptions}
+            options={inspectionOptions}
           />
+          </Flex>
         </Col>
         <Col span={9} offset={3}>
           <Flex vertical>
@@ -54,7 +64,7 @@ const Create: FC<any> = ({handleStepChange}) => {
           </Flex>
         </Col>
       </Row>
-      <Button name="Next" onClickHandler={()=>handleStepChange("1")}/>
+      <Button name="Next" onClickHandler={() => handleStepChange("1")} />
     </Flex>
   );
 };

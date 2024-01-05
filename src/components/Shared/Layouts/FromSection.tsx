@@ -14,21 +14,19 @@ interface IFromSection {
 
 const FromSection: FC<IFromSection> = ({
   title,
-  buttonTitle,
   buttonClickHandler,
   children,
 }) => {
-  const [removeButton, setRemoveButton] = useState(false);
   return (
     <Flex
       vertical
       align="center"
-      // gap={20}
-      style={{ width: "100%", boxSizing: "border-box" }}
+      gap={20}
+      className="w-full box-border"
     >
-      <Flex justify="space-between" align="center" style={{ width: "100%" }}>
+      <Flex justify="space-between" align="center" className="w-full">
         <Title level={3}>{title}</Title>
-        {removeButton && (
+        {buttonClickHandler && (
           <Button
             name="Remove"
             onClickHandler={buttonClickHandler}
@@ -39,7 +37,7 @@ const FromSection: FC<IFromSection> = ({
       <Flex
         vertical
         align="center"
-        style={{ width: "100%" }}
+        gap={20}
         className={styles.formSectionWrapper}
       >
         {children}

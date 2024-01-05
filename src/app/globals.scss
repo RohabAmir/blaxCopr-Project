@@ -27,6 +27,10 @@ Link {
   text-decoration: none;
 }
 
+.box-border{
+  box-sizing: border-box;
+}
+
 .customSteps.ant-steps {
   box-sizing: border-box !important;
   margin: 0 !important;

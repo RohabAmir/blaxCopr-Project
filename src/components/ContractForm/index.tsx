@@ -1,5 +1,5 @@
 "use client";
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import Stepper from "./Stepper";
 import { Flex } from "antd";
@@ -13,6 +13,10 @@ const ContractForm: FC = () => {
   const handleStepChange = (current: string) => {
     setActiveStep(current);
   };
+
+  React.useEffect(() => {
+    console.log('contract formstate', methods.formState, "form state defult", methods.formState.defaultValues, "dirty fields", methods.formState.dirtyFields)
+  }, [methods.formState])
   
   return (
     <FormProvider {...methods}>

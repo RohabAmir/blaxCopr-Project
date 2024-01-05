@@ -16,7 +16,7 @@ const TextInput: FC<ITextInput> = ({ name, label, options }) => {
     <Flex
       vertical
       align="flex-start"
-      style={{ width: "100%", marginBottom: "24px" }}
+      className="w-full"
     >
       {label && (
         <div style={{ margin: "5px 0", color: "#454745", fontSize: "14px" }}>
