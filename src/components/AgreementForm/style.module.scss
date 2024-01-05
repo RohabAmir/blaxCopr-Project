@@ -389,7 +389,7 @@
 }
 .flexInline {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
 }
 .lastText {
@@ -448,6 +448,53 @@
   background: rgba(22, 51, 0, 0.08);
   border-radius: 16px;
   margin-bottom: 48px;
+}
+.btnSent {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  display: flex;
+  padding: 8px 12px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  background: #9fe870;
+  border: none;
+}
+.iconOk {
+  width: 16px;
+  height: 16px;
+  color: #0e0f0c;
+}
+.btnSent:hover {
+  background: #8df54c;
+}
+.inlineSubText {
+  font-weight: 600;
+  font-size: 14px;
+}
+.btnReportBg {
+  display: flex;
+
+  justify-content: end;
+  align-items: center;
+  gap: 4px;
+  border-radius: 100px;
+}
+.btnReport {
+  background: #edc843;
+  border-radius: 100px;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+}
+.btnReport:hover {
+  background: #f8d65b;
+}
+.btnReportText {
+  font-size: 14;
+  font-weight: 600;
 }
 
 //

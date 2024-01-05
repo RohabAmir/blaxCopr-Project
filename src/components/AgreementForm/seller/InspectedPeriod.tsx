@@ -9,12 +9,13 @@ import OklIcon from "../../../../public/icons/Ok.svg";
 import Image from "next/image";
 import { Button } from "../../Shared";
 import { ButtonType, IconType } from "@/types";
+import { types } from "util";
 
 const InspectedPeriod: FC = () => {
   return (
     <>
       {/* ----------------------- */}
-      <div className={styles.methodMain}>
+      <div className={styles.methodMainAbs}>
         <div className={styles.btnRight}>
           <div className={styles.flexInspected}>
             <Image className={styles.icon} src={ClockIcon} alt="warning icon" />
@@ -36,8 +37,13 @@ const InspectedPeriod: FC = () => {
                 </p>
               </div>
             </div>
-            <p className={styles.subHeadingInspected}>2 days left</p>
+            <p className={styles.subHeadingInspectedAbsolute}>2 days left</p>
           </div>
+        </div>
+        <div className={styles.btnReportBg}>
+          <button className={styles.btnReport}>
+            <span className={styles.btnReportText}>Report an issue</span>
+          </button>
         </div>
       </div>
       {/* --------------------------------------- */}

@@ -231,6 +231,31 @@ const BankDetails: FC = () => {
             </span>
           </FormSection>
         </Flex>
+        {/* ----------------- */}
+        <Flex vertical className="w-full">
+          <FormSection>
+            <span className={styles.flexInline}>
+              <Image src={InfoIcon} alt="info icon" />
+              <span className={styles.lastText}>
+                ACH payment is required for all USD transactions. The
+                transaction limit is $1,000,000. For higher amounts, email
+                support@blaxcorp.com.
+              </span>
+            </span>
+          </FormSection>
+        </Flex>
+        {/* --------------- */}
+        <Flex vertical className="w-full">
+          <FormSection>
+            <span className={styles.flexInline}>
+              <Image src={InfoIcon} alt="info icon" />
+              <span className={styles.lastText}>
+                The transaction limit is €1,000,000. For higher amounts, email
+                support@blaxcorp.com.
+              </span>
+            </span>
+          </FormSection>
+        </Flex>
       </Flex>
     </>
   );

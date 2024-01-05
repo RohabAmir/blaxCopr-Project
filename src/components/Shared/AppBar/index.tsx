@@ -1,3 +1,4 @@
+// "use client";
 import { FC } from "react";
 import MaskIcon from "../../../../public/icons/Mask.svg";
 import BellIcon from "../../../../public/icons/Bell.svg";

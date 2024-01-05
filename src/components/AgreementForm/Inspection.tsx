@@ -1,6 +1,8 @@
 import { FC } from "react";
 import styles from "./style.module.scss";
 import ClockIcon from "../../../public/icons/Clock.svg";
+import OkIcon from "../../../public/icons/Ok.svg";
+
 import Image from "next/image";
 import { Button } from "../Shared";
 import { ButtonType, IconType } from "@/types";
@@ -28,8 +30,15 @@ const Inspection: FC = () => {
           </div>
         </div>
         <div className={styles.flexButtons}>
-          <Button name="Report an Issue" type={ButtonType.Primary} />
-          <Button name="Approve" type={ButtonType.Primary} />
+          <button className={styles.btnReport}>
+            <span className={styles.btnReportText}>Report an issue</span>
+          </button>
+          <button className={styles.btnSent}>
+            <Image className={styles.iconOk} src={OkIcon} alt="ok icon" />
+            <span className={styles.inlineSubText}>Approve</span>
+          </button>
+          {/* <Button name="Report an Issue" type={ButtonType.Primary} />
+          <Button name="Approve" type={ButtonType.Primary} /> */}
         </div>
       </div>
     </>
