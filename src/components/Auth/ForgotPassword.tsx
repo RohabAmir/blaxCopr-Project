@@ -12,7 +12,12 @@ const ForgotPassword: FC = () => {
   const { Title, Text } = Typography;
 
   return (
-    <Flex vertical justify="space-between" gap={50} style={{ width: "400px" }}>
+    <Flex
+      vertical
+      justify="space-between"
+      gap={50}
+      style={{ width: "400px", paddingLeft: "48px" }}
+    >
       <Button
         name="Back"
         leftIcon={IconType.BackArrow}

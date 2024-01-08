@@ -8,6 +8,7 @@ import TagIcon from "../../../../public/icons/Tag.svg";
 import LockIcon from "../../../../public/icons/Lock.svg";
 import CheckIcon from "../../../../public/icons/Check.svg";
 import SecondaryButton from "../../../../public/icons/Secondary Button.svg";
+import UserIcon from "../../../../public/icons/User.svg";
 
 interface CardDetails {
   status: string;
@@ -29,7 +30,8 @@ const Card: FC<ICard> = ({ data }) => {
   const closedstyles =
     status == "Closed"
       ? {
-          color: "#747a67",
+          // color: "#747a67",
+          opacity: "0.5",
         }
       : {};
 
@@ -63,9 +65,14 @@ const Card: FC<ICard> = ({ data }) => {
               onClick={handleActiveType}
               className={styles.btnIcon}
               style={closedstyles}
-              src={activeType ? SecondaryButton : TagIcon}
+              src={activeType ? SecondaryButton : UserIcon}
               alt="dash icon"
             />
+            {status === "Closed" ? (
+              <span className={styles.close}>{type}</span>
+            ) : (
+              <span>{type}</span>
+            )}
           </div>
         </div>
         <h1 className={styles.heading} style={closedstyles}>

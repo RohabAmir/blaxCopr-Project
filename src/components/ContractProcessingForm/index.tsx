@@ -29,11 +29,18 @@ import WithDrawlMethod from "./seller/WithDrawlMethod";
 import WithDrawlBuyerWaiting from "./seller/WithDrawlBuyerWaiting";
 import InspectedPeriod from "./seller/InspectedPeriod";
 import FundsReleased from "./seller/FundsReleased";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 // interface IContractProcessingForm {
 //     children: ReactNode
 // }
 const ContractProcessingForm: FC = () => {
+  const path = usePathname();
+  const dashboard = path.includes("dashboard");
+  function handleClick() {
+    return dashboard;
+  }
   return (
     <Flex vertical className="w-full">
       <VerifyProfileBar />
@@ -81,12 +88,14 @@ const ContractProcessingForm: FC = () => {
             </div>
             <div>Created 17 Dec, 2023</div>
           </div>
-          <div className={styles.detailBox}>
-            <div className={styles.crossBox}>
-              <Image className={styles.xIcon} src={XIcon} alt="X icon" />
+          <Link href="/dashboard" style={{ color: "#000" }}>
+            <div className={styles.detailBox}>
+              <div className={styles.crossBox}>
+                <Image className={styles.xIcon} src={XIcon} alt="X icon" />
+              </div>
+              <div>Cancel contract</div>
             </div>
-            <div>Buyer</div>
-          </div>
+          </Link>
         </Flex>
       </Flex>
       {/* stepper added */}

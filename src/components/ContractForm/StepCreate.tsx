@@ -20,7 +20,11 @@ const Create: FC<any> = ({ handleStepChange }) => {
     { value: "2", label: "2" },
   ];
   return (
-    <Flex vertical gap={64} style={{ width: "760", margin: "auto" }}>
+    <Flex
+      vertical
+      gap={64}
+      style={{ width: "760", margin: "auto", marginBottom: "24px" }}
+    >
       <Flex align="center" gap="164px">
         <Button
           name="Back"
@@ -36,14 +40,18 @@ const Create: FC<any> = ({ handleStepChange }) => {
       <Row className={styles.mainContainer}>
         <Col span={9}>
           <Flex vertical className="w-full" gap={20}>
-          <TextInput name="contractName" label="Contract Name" />
-          <Dropdown name="role" label="My role" options={roleOptions} />
-          <Dropdown name="Currency" label="Currency" options={currencyOptions} />
-          <Dropdown
-            name="Inspection Period(day)"
-            label="Inspection Period(days)"
-            options={inspectionOptions}
-          />
+            <TextInput name="contractName" label="Contract Name" />
+            <Dropdown name="role" label="My role" options={roleOptions} />
+            <Dropdown
+              name="Currency"
+              label="Currency"
+              options={currencyOptions}
+            />
+            <Dropdown
+              name="Inspection Period(day)"
+              label="Inspection Period(days)"
+              options={inspectionOptions}
+            />
           </Flex>
         </Col>
         <Col span={9} offset={3}>

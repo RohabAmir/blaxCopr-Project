@@ -1,14 +1,12 @@
 .root {
-    font-weight: 600;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 20px;
-    color: #163300;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2px;
+  color: #163300;
 
-   img{
+  img {
     transform: translateY(4px);
-   }
-
+  }
 }
-

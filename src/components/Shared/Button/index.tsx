@@ -24,7 +24,7 @@ const GeneralButton: FC<IButton> = ({
   onClickHandler,
   fullWidth = false,
   type = ButtonType.Primary,
-  size = "middle",
+  size = "large",
   leftIcon = IconType.None,
   rightIcon = IconType.None,
 }) => {

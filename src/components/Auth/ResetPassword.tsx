@@ -18,7 +18,7 @@ const SignIn: FC = () => {
       vertical
       align="flex-start"
       justify="space-between"
-      style={{ width: "400px" }}
+      style={{ width: "400px", paddingLeft: "48px" }}
     >
       <Flex vertical align="flex-start">
         <Title style={{ color: "#0E0F0C" }} level={2}>

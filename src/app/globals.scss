@@ -3,7 +3,8 @@
 body {
   height: max-content;
   margin: 0;
-  font-family: Inter;
+  font-family: "Inter", sans-serif;
+  // padding: 0;
   // overflow: hidden;
 }
 
@@ -27,7 +28,7 @@ Link {
   text-decoration: none;
 }
 
-.box-border{
+.box-border {
   box-sizing: border-box;
 }
 

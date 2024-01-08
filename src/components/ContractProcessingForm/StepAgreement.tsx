@@ -41,7 +41,7 @@ const StepAgreement: FC = ({}) => {
             <div className={styles.flexText}>
               <p className={styles.textHeading}>Document uploaded</p>
 
-              <Button name="edit" type={ButtonType.Primary} />
+              <Button name="Edit" type={ButtonType.Primary} />
             </div>
           </div>
           <div className={styles.main}>
@@ -65,7 +65,7 @@ const StepAgreement: FC = ({}) => {
             <div className={styles.flexText}>
               <p className={styles.textHeading}>Agreement details</p>
 
-              <Button name="edit" type={ButtonType.Primary} />
+              <Button name="Edit" type={ButtonType.Primary} />
             </div>
           </div>
           <div className={styles.main}>
@@ -103,7 +103,7 @@ const StepAgreement: FC = ({}) => {
             <div className={styles.flexText}>
               <p className={styles.textHeading}>Transaction details</p>
 
-              <Button name="edit" type={ButtonType.Primary} />
+              <Button name="Edit" type={ButtonType.Primary} />
             </div>
           </div>
           <div className={styles.main}>
@@ -165,7 +165,7 @@ const StepAgreement: FC = ({}) => {
             <div className={styles.flexText}>
               <p className={styles.textHeading}>Shipping</p>
 
-              <Button name="edit" type={ButtonType.Primary} />
+              <Button name="Edit" type={ButtonType.Primary} />
             </div>
           </div>
           <div className={styles.main}>
@@ -203,7 +203,7 @@ const StepAgreement: FC = ({}) => {
             <div className={styles.flexText}>
               <p className={styles.textHeading}>Transaction Summary</p>
 
-              <Button name="edit" type={ButtonType.Primary} />
+              <Button name="Edit" type={ButtonType.Primary} />
             </div>
           </div>
           <div className={styles.main}>

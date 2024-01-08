@@ -156,7 +156,7 @@
   margin-bottom: 12px;
 }
 
-.total{
+.total {
   display: flex;
 }
 .amountBig {
@@ -231,24 +231,28 @@
 }
 
 .listItem {
+  width: 100%;
   display: flex;
   padding: 10px;
   justify-content: space-between;
+  border-radius: 10px;
+  background: rgba(22, 51, 0, 0.08);
 }
 
 .listItemLeft,
 .listItemRight {
   display: flex;
-  gap: 4px;
-  align-items: flex-start;
-  justify-content: center;
+  // gap: 8px;
+  align-items: center;
+  // justify-content: center;
   flex-wrap: nowrap;
   word-break: break-all;
+  gap: 4px;
 }
 
-.listItemLeft {
-  width: 60%;
-}
+// .listItemLeft {
+//   width: 60%;
+// }
 .shield {
   width: 25%;
   // height: 52px;

@@ -5,7 +5,7 @@ import Title from "antd/es/typography/Title";
 import Text from "antd/es/typography/Text";
 import { ButtonType, IconType } from "@/types";
 import ShieldIcon from "../../../public/icons/shield.svg";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 import {
   CheckCircleOutlined,
@@ -16,9 +16,8 @@ import { useDropzone } from "react-dropzone";
 import styles from "./style.module.scss";
 import Image from "next/image";
 import { ROUTES } from "@/constants";
-interface IStepCompliance { }
-const StepCompliance: FC<IStepCompliance> = ({ }) => {
-
+interface IStepCompliance {}
+const StepCompliance: FC<IStepCompliance> = ({}) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles: any) => {
@@ -27,16 +26,16 @@ const StepCompliance: FC<IStepCompliance> = ({ }) => {
     },
   });
 
-  const router = useRouter()
+  const router = useRouter();
   const handleButtonClick = () => {
-    router.push(`/${ROUTES.CONTRACT_PROCESSING_FORM}`, { scroll: false })
-  }
+    router.push(`/${ROUTES.CONTRACT_PROCESSING_FORM}`, { scroll: false });
+  };
   return (
     <Flex
       vertical
       align="center"
       gap={20}
-      style={{ width: "760px", margin: "auto" }}
+      style={{ width: "760px", margin: "auto", marginBottom: "24px" }}
     >
       <Flex
         align="center"
@@ -94,9 +93,12 @@ const StepCompliance: FC<IStepCompliance> = ({ }) => {
         </Flex>
       </Flex>
       <Flex vertical align="flex-end" style={{ width: "100%", margin: "auto" }}>
-        <Button name="Next" type={ButtonType.Primary} onClickHandler={handleButtonClick} />
+        <Button
+          name="Next"
+          type={ButtonType.Primary}
+          onClickHandler={handleButtonClick}
+        />
       </Flex>
-
     </Flex>
   );
 };

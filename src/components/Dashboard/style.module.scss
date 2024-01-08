@@ -50,6 +50,7 @@
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  align-items: center;
 }
 .flexRow {
   display: flex;
@@ -127,7 +128,7 @@
   color: #33000b;
 }
 .btnIcon:hover {
-  transform: translate(3px);
+  // transform: translate(3px);
 }
 //   color: #163300;
 // card background: rgba(22, 51, 0, 0.08);
@@ -139,4 +140,7 @@
   border-radius: 40px;
   padding: 17px 26px;
   max-width: 100%;
+}
+.close {
+  opacity: 0.5;
 }

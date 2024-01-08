@@ -29,9 +29,15 @@ const CreateAccountDetails: FC = () => {
   };
 
   React.useEffect(() => {
-    console.log('account detail formstate', methods.formState, "form state defult", methods.formState.defaultValues, "dirty fields", methods.formState.dirtyFields)
-  }, [methods.formState])
-
+    console.log(
+      "account detail formstate",
+      methods.formState,
+      "form state defult",
+      methods.formState.defaultValues,
+      "dirty fields",
+      methods.formState.dirtyFields
+    );
+  }, [methods.formState]);
 
   const getActiveSectionUI = (activeNav: string) => {
     if (activeNav === "security") {
