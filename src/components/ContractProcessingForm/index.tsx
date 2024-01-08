@@ -30,10 +30,10 @@ import WithDrawlBuyerWaiting from "./seller/WithDrawlBuyerWaiting";
 import InspectedPeriod from "./seller/InspectedPeriod";
 import FundsReleased from "./seller/FundsReleased";
 
-// interface IAgreementForm {
+// interface IContractProcessingForm {
 //     children: ReactNode
 // }
-const AgreementForm: FC = () => {
+const ContractProcessingForm: FC = () => {
   return (
     <Flex vertical className="w-full">
       <VerifyProfileBar />
@@ -92,12 +92,9 @@ const AgreementForm: FC = () => {
       {/* stepper added */}
       <Flex vertical align="center">
         <Stepper />
-
         <Flex vertical align="center" style={{ width: "600px" }}>
           {/* agrrement buyer components */}
-
           {/* ------------------------------------ */}
-
           {/* <Deposit /> */}
           {/* <TransferAmount /> */}
           {/* <BankLocation /> */}
@@ -108,7 +105,6 @@ const AgreementForm: FC = () => {
           {/* <DisputOpened /> */}
           {/* <Invoice /> */}
           {/* --------------------------------------- */}
-
           {/* -----------------SELLER FLOW -------------------------- */}
           {/* <SetupWithDrawl />
           <AddWithDrawl />
@@ -119,7 +115,6 @@ const AgreementForm: FC = () => {
           {/* <DisputOpened /> */}
           {/* <FundsReleased />
           <Invoice /> */}
-
           {/* ---Agreement form--- */}
           <StepAgreement />
         </Flex>
@@ -128,4 +123,4 @@ const AgreementForm: FC = () => {
   );
 };
 
-export default AgreementForm;
+export default ContractProcessingForm;

@@ -29,8 +29,7 @@ const StepCompliance: FC<IStepCompliance> = ({ }) => {
 
   const router = useRouter()
   const handleButtonClick = () => {
-    // router.push(ROUTES.AGREEMENT_FORM)
-    router.push('/agreement-form', { scroll: false })
+    router.push(`/${ROUTES.CONTRACT_PROCESSING_FORM}`, { scroll: false })
   }
   return (
     <Flex

@@ -6,5 +6,5 @@ export const ROUTES = {
   DASHBOARD: "dashboard",
   ACCOUNT_DETAILS_FORM: "account-details-form",
   CONTRACT_FORM: "contract-form",
-  AGREEMENT_FORM: "agreement-form",
+  CONTRACT_PROCESSING_FORM: "contract-processing-form",
 };
