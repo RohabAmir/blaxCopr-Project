@@ -31,6 +31,9 @@ import InspectedPeriod from "./seller/InspectedPeriod";
 import FundsReleased from "./seller/FundsReleased";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import ConfirmContractCancellation from "./ConfirmContractCancellation";
+import { useState } from "react";
 
 // interface IContractProcessingForm {
 //     children: ReactNode
@@ -41,6 +44,26 @@ const ContractProcessingForm: FC = () => {
   function handleClick() {
     return dashboard;
   }
+  //
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+    document.body.style.overflow = "hidden";
+    document.body.style.zIndex = "-1";
+    document.body.style.background = "rgba(0, 0, 0, 0.30";
+    document.body.style.pointerEvents = "none";
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    document.body.style.background = "#fff";
+    document.body.style.pointerEvents = "auto";
+    document.body.style.overflow = "auto";
+  };
+
+  console.log(isModalOpen);
+
   return (
     <Flex vertical className="w-full">
       <VerifyProfileBar />
@@ -88,14 +111,17 @@ const ContractProcessingForm: FC = () => {
             </div>
             <div>Created 17 Dec, 2023</div>
           </div>
-          <Link href="/dashboard" style={{ color: "#000" }}>
-            <div className={styles.detailBox}>
-              <div className={styles.crossBox}>
-                <Image className={styles.xIcon} src={XIcon} alt="X icon" />
-              </div>
-              <div>Cancel contract</div>
+          {/* <Link href="/dashboard" style={{ color: "#000" }}> */}
+          <div className={styles.detailBox} onClick={openModal}>
+            <div className={styles.crossBox}>
+              <Image className={styles.xIcon} src={XIcon} alt="X icon" />
             </div>
-          </Link>
+            <div>Cancel contract </div>
+          </div>
+          {isModalOpen && (
+            <ConfirmContractCancellation closeModal={closeModal} />
+          )}
+          {/* </Link> */}
         </Flex>
       </Flex>
       {/* stepper added */}
@@ -125,6 +151,7 @@ const ContractProcessingForm: FC = () => {
           {/* <FundsReleased />
           <Invoice /> */}
           {/* ---Agreement form--- */}
+          {/* <ConfirmContractCancellation closeModal={closeModal} /> */}
           <StepAgreement />
         </Flex>
       </Flex>

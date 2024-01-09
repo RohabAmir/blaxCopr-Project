@@ -9,22 +9,38 @@ import StepCompliance from "./StepCompliance";
 
 const ContractForm: FC = () => {
   const methods = useForm();
-  const [activeStep, setActiveStep] = useState<string>("0");
-  const handleStepChange = (current: string) => {
+  const [activeStep, setActiveStep] = useState<number>(0);
+  const handleStepChange = (current: number) => {
     setActiveStep(current);
   };
 
   React.useEffect(() => {
-    console.log('contract formstate', methods.formState, "form state defult", methods.formState.defaultValues, "dirty fields", methods.formState.dirtyFields)
-  }, [methods.formState])
-  
+    console.log(
+      "contract formstate",
+      methods.formState,
+      "form state defult",
+      methods.formState.defaultValues,
+      "dirty fields",
+      methods.formState.dirtyFields
+    );
+  }, [methods.formState]);
+
   return (
     <FormProvider {...methods}>
       <Stepper activeStep={activeStep} />
       <Flex vertical align="center">
-        {activeStep === "0" && <Create handleStepChange={handleStepChange}/>}
-        {activeStep === "1" && <StepDetail handleStepChange={handleStepChange}/>}
-        {activeStep === "2" && <StepCompliance />}
+        {activeStep === 0 && (
+          <Create handleStepChange={handleStepChange} step={activeStep} />
+        )}
+        {activeStep === 1 && (
+          <StepDetail handleStepChange={handleStepChange} step={activeStep} />
+        )}
+        {activeStep === 2 && (
+          <StepCompliance
+            handleStepChange={handleStepChange}
+            step={activeStep}
+          />
+        )}
       </Flex>
     </FormProvider>
   );

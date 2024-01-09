@@ -1,3 +1,4 @@
+"use client";
 import React, { FC } from "react";
 import styles from "./style.module.scss";
 import { Col, Flex, Row } from "antd";
@@ -6,19 +7,26 @@ import { ButtonType, IconType } from "@/types";
 import Title from "antd/es/typography/Title";
 import Image from "next/image";
 import ShieldIcon from "../../../public/icons/shield.svg";
-const Create: FC<any> = ({ handleStepChange }) => {
+import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+const Create: FC<any> = ({ handleStepChange, step }) => {
   const roleOptions = [
     { value: "buyer", label: "Buyer" },
     { value: "seller", label: "Seller" },
   ];
   const currencyOptions = [
-    { value: "10", label: "10" },
-    { value: "20", label: "20" },
+    { value: "USD", label: "USD" },
+    { value: "GBP", label: "GBP" },
+    { value: "EUR", label: "EUR" },
+    { value: "GEL", label: "GEL" },
   ];
-  const inspectionOptions = [
-    { value: "1", label: "1" },
-    { value: "2", label: "2" },
-  ];
+
+  const inspectionOptions = Array.from({ length: 180 }, (_, index) => ({
+    value: (index + 1).toString(),
+    label: (index + 1).toString(),
+  }));
+
   return (
     <Flex
       vertical
@@ -26,11 +34,13 @@ const Create: FC<any> = ({ handleStepChange }) => {
       style={{ width: "760", margin: "auto", marginBottom: "24px" }}
     >
       <Flex align="center" gap="164px">
-        <Button
-          name="Back"
-          leftIcon={IconType.BackArrow}
-          type={ButtonType.Secondary}
-        />
+        <Link href="/dashboard">
+          <Button
+            name="Back"
+            leftIcon={IconType.BackArrow}
+            type={ButtonType.Secondary}
+          />
+        </Link>
         <Title level={2} className={styles.headingMain}>
           {" "}
           Create new contract
@@ -72,7 +82,7 @@ const Create: FC<any> = ({ handleStepChange }) => {
           </Flex>
         </Col>
       </Row>
-      <Button name="Next" onClickHandler={() => handleStepChange("1")} />
+      <Button name="Next" onClickHandler={() => handleStepChange(1)} />
     </Flex>
   );
 };

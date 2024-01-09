@@ -5,6 +5,7 @@ import BellIcon from "../../../../public/icons/Bell.svg";
 import BlaxCorpIcon from "../../../../public/icons/Blaxcorp.svg";
 import DownIcon from "../../../../public/icons/Down.svg";
 import UpIcon from "../../../../public/icons/Up.svg";
+import Blaxcorp from "../../../../public/logos/Blaxcorp_logo.svg";
 import Image from "next/image";
 import { ROUTES } from "@/constants";
 import styles from "./style.module.scss";
@@ -40,16 +41,21 @@ const AppBar: FC = () => {
       <div className={styles.mainContainer}>
         <div className={styles.iconsContainer}>
           <Link href="/">
-            <Image className={styles.iconMask} src={MaskIcon} alt="mask icon" />
             <Image
+              className={styles.iconHeading}
+              src={Blaxcorp}
+              alt="mask icon"
+            />
+            {/* <h1 className={styles.iconHeading}> Blaxcorp</h1> */}
+            {/* <Image
               className={styles.iconBlaxCorp}
               src={BlaxCorpIcon}
               alt="BlaxCorp icon"
-            />
+            /> */}
           </Link>
         </div>
         <div className={styles.routesContainer}>
-          <button className={styles.button}>About</button>
+          <button className={`${styles.button}`}>About</button>
           <button className={styles.button}>Help</button>
           <button className={styles.button}>Refer a friend</button>
           <button className={styles.icons} onClick={handleNotifModal}>

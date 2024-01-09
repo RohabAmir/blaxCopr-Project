@@ -41,7 +41,31 @@
   letter-spacing: 0.08px;
   background-color: transparent;
   border: none;
+  cursor: pointer;
 }
+
+// .button:link,
+// .button:visited {
+//   display: flex;
+//   align-items: flex-start;
+//   gap: 4px;
+//   border-radius: 100px;
+//   background: #9fe870;
+//   cursor: pointer;
+//   text-decoration: none; /* Remove underline for links */
+//   color: inherit; /* Inherit text color */
+// }
+
+.button:active,
+.button:focus {
+  padding: 5px 12px;
+  border-radius: 100px;
+
+  /* The styles for the active and focused state, making the button green */
+  background: #9fe870;
+  outline: none; /* Remove default focus outline */
+}
+
 .icons {
   padding: 12px 11px;
   background-color: rgba(22, 51, 0, 0.08);
@@ -89,4 +113,13 @@
   border: none;
   padding: 8px;
   background-color: #16330014;
+}
+.iconHeading {
+  display: flex;
+  width: 166.974px;
+  height: 32px;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 14.669px;
+  flex-shrink: 0;
 }

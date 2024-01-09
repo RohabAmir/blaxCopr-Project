@@ -3,14 +3,13 @@ import React, { FC, useState } from "react";
 import styles from "./style.module.scss"; // Import your CSS module
 
 const Stepper: FC<any> = ({ activeStep }) => {
-  
-  const getWidth = (id: string) => {
+  const getWidth = (id: Number) => {
     switch (id) {
-      case "1":
+      case 1:
         return styles.flexStepperColor2;
-      case "2":
+      case 2:
         return styles.flexStepperColor3;
-      case "3":
+      case 3:
         return styles.flexStepperColor4;
       default:
         return styles.flexStepper;
@@ -25,7 +24,7 @@ const Stepper: FC<any> = ({ activeStep }) => {
           <p
             id="0"
             className={
-              activeStep === "0" ? `${styles.dotHeading1}` : styles.dotHeading
+              activeStep === 0 ? `${styles.dotHeading1}` : styles.dotHeading
             }
             // onClick={() => handleStepChange("0")}
           >
@@ -34,7 +33,7 @@ const Stepper: FC<any> = ({ activeStep }) => {
           <p
             id="1"
             className={
-              activeStep === "1"
+              activeStep === 1
                 ? `${styles.dotHeading2} ${styles.active}`
                 : styles.dotHeading2
             }
@@ -45,7 +44,7 @@ const Stepper: FC<any> = ({ activeStep }) => {
           <p
             id="2"
             className={
-              activeStep === "2"
+              activeStep === 2
                 ? `${styles.dotHeading3} ${styles.active}`
                 : styles.dotHeading3
             }
@@ -56,7 +55,7 @@ const Stepper: FC<any> = ({ activeStep }) => {
           <p
             id="3"
             className={
-              activeStep === "3"
+              activeStep === 3
                 ? `${styles.dotHeading4} ${styles.active}`
                 : styles.dotHeading4
             }

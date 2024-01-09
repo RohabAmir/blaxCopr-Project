@@ -1,31 +1,42 @@
 "use client";
 import { Col, Flex, Row } from "antd";
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { Button, Dropdown, FormSection, TextInput } from "../Shared";
 import { ButtonType, IconType } from "@/types";
 import styles from "./style.module.scss";
 import ShieldIcon from "../../../public/icons/shield.svg";
 import ChevronIcon from "../../../public/icons/TagChevron.svg";
 import Image from "next/image";
-// import { usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
-const StepDetail: FC<any> = ({ handleStepChange }) => {
+const StepDetail: FC<any> = ({ handleStepChange, step }) => {
   const [itemsCount, setItemsCount] = useState<number>(1);
   const [isShipping, setShipping] = useState(true);
   // const router = useRouter();
-  React.useEffect(() => {
-    console.log("items count", itemsCount);
+  useEffect(() => {
+    console.log("Component mounted, router is ready");
+    // Now you can safely use the router
   }, []);
-  // const goBack = () => {};
 
+  // React.useEffect(() => {
+  //   console.log("items count", itemsCount);
+  // }, []);
+
+  const handleBackClick = () => {
+    console.log("hello");
+    console.log(step - 1);
+    if (step >= 0) handleStepChange(step - 1);
+  };
   return (
-    <Flex vertical gap={40} style={{ width: "560px" }}>
+    <Flex vertical gap={10} style={{ width: "560px" }}>
       <Flex className="w-full" align="flex-start" vertical>
         <Button
           name="Back"
           leftIcon={IconType.BackArrow}
           type={ButtonType.Secondary}
-          // onClickHandler={goBack}
+          onClickHandler={handleBackClick}
+          // onClickHandler={() => router.back()}
         />
       </Flex>
       {new Array(itemsCount).fill("").map((_, i) => (
@@ -240,7 +251,7 @@ const StepDetail: FC<any> = ({ handleStepChange }) => {
         <Button
           name="Next"
           type={ButtonType.Primary}
-          onClickHandler={() => handleStepChange("2")}
+          onClickHandler={() => handleStepChange(2)}
         />
       </Flex>
     </Flex>

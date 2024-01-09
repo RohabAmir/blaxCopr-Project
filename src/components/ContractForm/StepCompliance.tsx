@@ -17,7 +17,8 @@ import styles from "./style.module.scss";
 import Image from "next/image";
 import { ROUTES } from "@/constants";
 interface IStepCompliance {}
-const StepCompliance: FC<IStepCompliance> = ({}) => {
+
+const StepCompliance: FC<any> = ({ handleStepChange, step }) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles: any) => {
@@ -30,6 +31,13 @@ const StepCompliance: FC<IStepCompliance> = ({}) => {
   const handleButtonClick = () => {
     router.push(`/${ROUTES.CONTRACT_PROCESSING_FORM}`, { scroll: false });
   };
+
+  const handleBackClick = () => {
+    console.log("hello");
+    console.log(step - 1);
+    if (step >= 0) handleStepChange(step - 1);
+  };
+
   return (
     <Flex
       vertical
@@ -46,6 +54,7 @@ const StepCompliance: FC<IStepCompliance> = ({}) => {
           name="Back"
           leftIcon={IconType.BackArrow}
           type={ButtonType.Secondary}
+          onClickHandler={handleBackClick}
         />
         <Title level={2}>Compliance</Title>
         <span style={{ width: "110px" }}></span>
@@ -55,15 +64,15 @@ const StepCompliance: FC<IStepCompliance> = ({}) => {
           vertical
           align="center"
           justify="center"
-          gap={30}
+          gap={20}
           {...getRootProps()}
           className={styles.dragDropContainer}
         >
           <DownloadOutlined />
-          <Text strong>Upload Documents.</Text>
-          <Text style={{ width: "50%", textAlign: "center" }}>
-            Drag and drop a file less than 5 MB. Attach any supporting documents
-            related to the agreement
+          <Text className={styles.upload}>Upload Documents.</Text>
+          <Text className={styles.details}>
+            Drag and drop a file less than 5 MB. <br /> Attach any supporting
+            documents <br /> related to the agreement
           </Text>
           <Button name="Or select file" />
           <input {...getInputProps()} />
