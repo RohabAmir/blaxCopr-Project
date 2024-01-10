@@ -1,23 +1,32 @@
 "use client";
 import React, { FC } from "react";
-import { Flex, Typography } from "antd";
+import { Flex, Typography, Grid } from "antd";
 import { FormProvider, useForm } from "react-hook-form";
+import Image from "next/image";
 import TextInput from "@/components/Shared/Inputs/Text";
 import Button from "@/components/Shared/Button";
 import styles from "./style.module.scss";
+import BLAXCORP_LOGO from "../../../public/logos/Blaxcorp_logo.svg";
 import { ButtonType, IconType } from "@/types";
 
 const ForgotPassword: FC = () => {
   const methods = useForm();
   const { Title, Text } = Typography;
+  const { useBreakpoint } = Grid;
+  const screens: any = useBreakpoint();
 
   return (
     <Flex
       vertical
       justify="space-between"
       gap={50}
-      style={{ width: "400px", paddingLeft: "48px" }}
+      style={{ paddingLeft: "48px" }}
     >
+      {!screens['md'] && <Image
+        className={styles.blaxcorpLogin}
+        src={BLAXCORP_LOGO}
+        alt="blaxcorp logo"
+      />}
       <Button
         name="Back"
         leftIcon={IconType.BackArrow}

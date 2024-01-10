@@ -1,3 +1,5 @@
+@import "../../styles/base.scss";
+
 .main {
   // 1
   // background: radial-gradient(
@@ -27,6 +29,7 @@
     #f4f4f4 100%
   );
 }
+
 .logoOutline {
   border: 1px solid rgba(14, 15, 12, 0.3);
   height: 50px;
@@ -78,6 +81,7 @@
 }
 
 .formContainer {
+  margin: 70px;
   height: 85%;
   width: 80%;
   // padding: 48px 0 0 24px;
@@ -92,6 +96,7 @@
   background: #fff;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   padding-right: 24px;
+  padding-left: 24px;
 }
 
 .formWrapper {
@@ -101,10 +106,26 @@
   gap: 20px;
   font-family: Inter;
 }
+.formWrapperSignIn {
+  @extend .formWrapper;
+  margin-top: 24px;
+}
+.btnLogin {
+  margin-bottom: 12px;
+  margin-top: 24px;
+}
+.mailLogin {
+  margin-bottom: 16px;
+}
 .icon {
   width: 22px;
   height: 22px;
 }
+//
+.passReset {
+  margin-bottom: 64px;
+}
+
 .flex {
   display: flex;
   align-items: center;
@@ -259,4 +280,56 @@
   width: 100%;
   margin: 0;
   margin-bottom: 48px;
+}
+
+@include break-level("md") {
+  .main {
+    display: block !important;
+  }
+  .formContainer {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    // padding: 48px 0 0 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__top {
+      width: 100%;
+    }
+    border-radius: 64px 64px 0 0;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .rightSubRoot {
+    padding: 0;
+  }
+
+  .loginMain {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+    flex-direction: column;
+  }
+  .regBtns {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .logoOutline {
+    width: 100%;
+    // width: 480px;
+
+  }
+  .loginHeading {
+    font-size: 58px;
+  }
+}
+
+@include break-level('sm'){
+  .loginHeading {
+    font-size: 48px;
+  }
 }

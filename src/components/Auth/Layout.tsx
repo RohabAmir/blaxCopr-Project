@@ -1,6 +1,6 @@
 "use client";
 import React, { FC, ReactNode, useMemo, useState } from "react";
-import { Col, Row, Flex, Typography } from "antd";
+import { Col, Row, Flex, Typography,Grid } from "antd";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -27,6 +27,8 @@ const Layout: FC<ILayout> = ({ children }) => {
   const resetPassword = path.includes("reset-password");
   const signup = path.includes("sign-up");
   const signin = path.includes("sign-in");
+  const { useBreakpoint } = Grid;
+  const screens: any = useBreakpoint();
 
   const isResetPassword = useMemo(() => {
     return forgotPassword || resetPassword;
@@ -68,7 +70,7 @@ const Layout: FC<ILayout> = ({ children }) => {
 
         {/* -------------------------------------------------- */}
         {signup && (
-          <Col span={12} className={styles.loginMain}>
+          <Col xxl={12} className={styles.loginMain}>
             <Image
               className={styles.blaxcorpLogin}
               src={BLAXCORP_LOGO}
@@ -85,7 +87,7 @@ const Layout: FC<ILayout> = ({ children }) => {
         )}
 
         {signin && (
-          <Col span={12} className={styles.loginMain}>
+          <Col xxl={12} className={styles.loginMain}>
             <Image
               className={styles.blaxcorpLogin}
               src={BLAXCORP_LOGO}
@@ -101,7 +103,7 @@ const Layout: FC<ILayout> = ({ children }) => {
           </Col>
         )}
         {forgotPassword && (
-          <Col span={12} className={styles.loginMain}>
+          <Col xxl={12} className={styles.loginMain}>
             <Image
               className={styles.blaxcorpLogin}
               src={BLAXCORP_LOGO}
@@ -117,7 +119,7 @@ const Layout: FC<ILayout> = ({ children }) => {
           </Col>
         )}
         {resetPassword && (
-          <Col span={12} className={styles.loginMain}>
+          <Col xxl={12} className={styles.loginMain}>
             <Image
               className={styles.blaxcorpLogin}
               src={BLAXCORP_LOGO}
@@ -134,7 +136,7 @@ const Layout: FC<ILayout> = ({ children }) => {
           </Col>
         )}
         {/* --------------------------------- */}
-        <Col span={11} className={styles.rightSubRoot}>
+        <Col xxl={12} className={styles.rightSubRoot}>
           {/* <Flex justify="space-between" align="center">
           <Image src={CROSS_ICON} alt="cross" />
         </Flex> */}
@@ -161,8 +163,8 @@ const Layout: FC<ILayout> = ({ children }) => {
                 gap={30}
                 style={{ marginTop: "40px", marginBottom: "64px" }}
               >
-                <Text style={{ color: "#454745" }}>Or log in with</Text>
-                <Flex align="center" justify="center" gap="large">
+                {screens['md'] && <Text style={{ color: "#454745" }}>Or log in with</Text>}
+                <Flex className={styles.regBtns} align="center" justify="center" gap="large">
                   <span className={styles.logoOutline}>
                     <Image src={GoogleLogo} alt="google logo" />
                   </span>

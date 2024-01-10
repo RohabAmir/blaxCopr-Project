@@ -1,6 +1,6 @@
 "use client";
 import React, { FC } from "react";
-import { Flex, message, Typography } from "antd";
+import { Flex, message, Typography, Grid } from "antd";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
 import Image from "next/image";
@@ -9,9 +9,13 @@ import TextInput from "@/components/Shared/Inputs/Text";
 import PasswordInput from "@/components/Shared/Inputs/Password";
 import Button from "@/components/Shared/Button";
 import styles from "./style.module.scss";
+import BLAXCORP_LOGO from "../../../public/logos/Blaxcorp_logo.svg";
+import { ButtonType } from "@/types";
 
 const SignUp: FC = () => {
   const { Title, Text } = Typography;
+  const { useBreakpoint } = Grid;
+  const screens: any = useBreakpoint();
   const methods = useForm();
   return (
     <Flex
@@ -19,7 +23,7 @@ const SignUp: FC = () => {
       align="center"
       justify="space-between"
       gap={50}
-      style={{ width: "400px", margin: "auto", marginTop: "48px" }}
+      style={{ marginTop: "48px" }}
     >
       <Flex
         vertical
@@ -27,15 +31,20 @@ const SignUp: FC = () => {
         justify="flex-start"
         style={{ marginTop: "64px" }}
       >
-        <Title level={3}>Create Your Blaxcorp account</Title>
-        <Text style={{ color: "#454745" }}>
+        {!screens['md'] && <Image
+          className={styles.blaxcorpLogin}
+          src={BLAXCORP_LOGO}
+          alt="blaxcorp logo"
+        />}
+        <Title level={screens['md'] ? 3 : 1}>Create Your Blaxcorp account</Title>
+        {screens['md'] ? <Text style={{ color: "#454745" }}>
           Already have an account?{" "}
           <Link href="/sign-in">
             <Text underline style={{ textUnderlineOffset: "4px" }} strong>
               Log in
             </Text>
           </Link>
-        </Text>
+        </Text> : ''}
       </Flex>
 
       <form className={styles.formWrapper}>
@@ -71,6 +80,7 @@ const SignUp: FC = () => {
             </div>
           </Flex>
           <Button name="Create account" fullWidth size="large" />
+          {!screens['md'] && <Button name="Login" fullWidth size="large" type={ButtonType.Secondary} />}
         </FormProvider>
       </form>
     </Flex>
