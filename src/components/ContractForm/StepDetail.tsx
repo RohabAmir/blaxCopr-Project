@@ -1,5 +1,5 @@
 "use client";
-import { Col, Flex, Row } from "antd";
+import { Col, Flex, Row, Grid } from "antd";
 import React, { FC, useState, useEffect } from "react";
 import { Button, Dropdown, FormSection, TextInput } from "../Shared";
 import { ButtonType, IconType } from "@/types";
@@ -11,17 +11,14 @@ import { usePathname } from "next/navigation";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 const StepDetail: FC<any> = ({ handleStepChange, step }) => {
+  const { useBreakpoint } = Grid;
+  const screens: any = useBreakpoint();
   const [itemsCount, setItemsCount] = useState<number>(1);
   const [isShipping, setShipping] = useState(true);
   // const router = useRouter();
   useEffect(() => {
     console.log("Component mounted, router is ready");
-    // Now you can safely use the router
   }, []);
-
-  // React.useEffect(() => {
-  //   console.log("items count", itemsCount);
-  // }, []);
 
   const handleBackClick = () => {
     console.log("hello");
@@ -29,26 +26,28 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
     if (step >= 0) handleStepChange(step - 1);
   };
   return (
-    <Flex vertical gap={10} style={{ width: "560px" }}>
+    <Flex className={styles.detailsMain}>
       <Flex className="w-full" align="flex-start" vertical>
         <Button
           name="Back"
           leftIcon={IconType.BackArrow}
           type={ButtonType.Secondary}
           onClickHandler={handleBackClick}
+          size={!screens["sm"] ? "middle" : "large"}
+
           // onClickHandler={() => router.back()}
         />
       </Flex>
       {new Array(itemsCount).fill("").map((_, i) => (
         <FormSection key={i} title="Transaction Details">
-          <Row style={{ width: "100%" }} justify={"space-between"}>
-            <Col span={11}>
+          <Flex style={{ width: "100%" }} className={styles.detialsCol}>
+            <div className={styles.detailsItem}>
               <TextInput name="itemName" label="Item name" />
-            </Col>
-            <Col span={11}>
+            </div>
+            <div className={styles.detailsItem}>
               <TextInput name="price" label="Price(USD)" />
-            </Col>
-          </Row>
+            </div>
+          </Flex>
           <Dropdown
             name="itemCategory"
             label="Item category"
@@ -67,6 +66,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
           <Button
             name="Add new item "
             onClickHandler={() => setItemsCount(itemsCount + 1)}
+            size={!screens["sm"] ? "middle" : "large"}
           />
         </Row>
       </FormSection>
@@ -75,16 +75,17 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
           title="Shipping "
           buttonTitle="Remove"
           buttonClickHandler={() => setShipping(false)}
+          // size={!screens["sm"] ? "middle" : "large"}
         >
-          <Row style={{ width: "100%" }} justify={"space-between"}>
-            <Col span={11}>
+          <Flex style={{ width: "100%" }} className={styles.detialsCol}>
+            <div className={styles.detailsItem}>
               <TextInput
                 name="itemName"
                 label="Shipping cost (USD)"
                 placeholder="$500.00"
               />
-            </Col>
-            <Col span={11}>
+            </div>
+            <div className={styles.detailsItem}>
               <Dropdown
                 name="Standard shipping"
                 label="Shipping method"
@@ -92,10 +93,10 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                   { value: "standard-shipping", label: " Standard Shipping " },
                 ]}
               />
-            </Col>
-          </Row>
-          <Row style={{ width: "100%" }} justify={"space-between"}>
-            <Col span={11}>
+            </div>
+          </Flex>
+          <Flex style={{ width: "100%" }} className={styles.detialsCol}>
+            <Col className={styles.detailsItem}>
               <Dropdown
                 name="itemCategory"
                 label="Shipping fee paid by"
@@ -105,29 +106,29 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                 ]}
               />
             </Col>
-            <Col span={11}>
+            <Col className={styles.detailsItem}>
               <Dropdown
                 name="inspection period"
                 label="Inspection period (days)"
                 options={[{ value: "1", label: "1(min)" }]}
               />
             </Col>
-          </Row>
+          </Flex>
         </FormSection>
       )}
       {/* next section */}
       <FormSection>
-        <Row style={{ width: "100%" }} justify="space-between">
-          <Row style={{ gap: "16px" }}>
+        <Flex style={{ width: "100%" }} className={styles.detailsBox}>
+          <Flex className={styles.detailsFlex}>
             <input className={styles.checkBox} type="checkbox" />
             <p className={styles.headingDetails}>
               Upgrade to title collection service
             </p>
-          </Row>
+          </Flex>
           <Row>
             <p className={styles.textDetails}>$60.00</p>
           </Row>
-        </Row>
+        </Flex>
         <Row className={styles.subText}>
           Blaxcorp.com holds title while the transaction completes, making the
           transaction secure (recommended)
@@ -135,17 +136,17 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
       </FormSection>
       {/* next section2 */}
       <FormSection>
-        <Row className="w-full" justify="space-between">
-          <Row style={{ gap: "16px" }}>
+        <Flex style={{ width: "100%" }} className={styles.detailsBox}>
+          <Flex className={styles.detailsFlex}>
             <input className={styles.checkBox} type="checkbox" />
             <p className={styles.headingDetails}>
               Upgrade to lien holder service{" "}
             </p>
-          </Row>
+          </Flex>
           <Row>
             <p className={styles.textDetails}>$60.00</p>
           </Row>
-        </Row>
+        </Flex>
         <Row className={styles.subText}>
           Blaxcorp.com guarantees to pay off current lien holder upon
           transaction closure
@@ -191,17 +192,17 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
       </FormSection>
       {/* payment processing fees */}
       <FormSection>
-        <Row style={{ width: "100%" }} justify="space-between">
-          <Row>
+        <Flex className={styles.detailsPayment}>
+          <Flex justify="center">
             <Image
               className={styles.chevron}
               src={ChevronIcon}
               alt="cheron icon"
             />
             <p className={styles.headingDetails}>Payment processing fees</p>
-          </Row>
-          <p className={styles.amount}>+ $25.00</p>
-        </Row>
+          </Flex>
+          <p className={styles.amount}>+$25.00</p>
+        </Flex>
         <Row className={styles.subTextFees}>
           Depending on the payment method you will use, there may be additional
           processing fees as outlined below.
@@ -209,7 +210,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
       </FormSection>
       {/* last section */}
       <FormSection>
-        <Row style={{ width: "100%" }} justify="space-between">
+        <Row style={{ width: "100%" }} className={styles.cancelFee}>
           <Row>
             <Image
               className={styles.chevron}
@@ -218,27 +219,23 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
             />
             <p className={styles.headingDetails}>Cancellation fees </p>
           </Row>
-          <p className={styles.amountBig}>
+          <div className={styles.amountBig}>
             Cancellation fees paid by:{" "}
             <select className={styles.select} name="Seller">
               <option value="seller">Seller</option>
               <option value="buyer">Buyer</option>
             </select>
-          </p>
+          </div>
         </Row>
         <Row>
           <div className={styles.subTextFeesDetail}>
-            <p>
-              1. Cancellation fee: 1% of the escrowed amount <br />
-            </p>
+            1. Cancellation fee: 1% of the escrowed amount <br />
           </div>
           <div className={styles.subTextFeesDetail}>
-            <p>
-              2. Wire Transfer Fee: $25 <br />
-            </p>
+            2. Wire Transfer Fee: $25 <br />
           </div>
           <div className={styles.subTextFeesDetail}>
-            <p>3. administrative Fee: $20</p>
+            3. administrative Fee: $20
           </div>
         </Row>
       </FormSection>
@@ -252,6 +249,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
           name="Next"
           type={ButtonType.Primary}
           onClickHandler={() => handleStepChange(2)}
+          fullWidth={!screens["sm"]}
         />
       </Flex>
     </Flex>

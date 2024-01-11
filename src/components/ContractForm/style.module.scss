@@ -1,8 +1,12 @@
 .mainContainer {
-  width: 850px;
+  // width: 850px;
+  // width: 58%;
   padding-right: 12px;
   margin: 0 auto;
   gap: 96px;
+}
+.mainContainerCreate {
+  @extend .mainContainer;
 }
 
 .content {
@@ -46,17 +50,6 @@
   margin-bottom: 24px;
 }
 .headingMain {
-  // color: #454745;
-  // text-align: center;
-
-  // /* Title Body */
-  // font-family: Inter;
-  // font-size: 18px;
-  // font-style: normal;
-  // font-weight: 600;
-  // line-height: 24px; /* 133.333% */
-  // letter-spacing: -0.18px;
-  // margin: 16px 0 0 0;
   color: #0e0f0c;
   text-align: center;
 
@@ -137,6 +130,7 @@
 }
 .checkBox {
   width: 22px;
+  height: 22px;
 }
 .shieldIcon {
   width: 90px;
@@ -277,10 +271,11 @@
 //   width: 60%;
 // }
 .shield {
-  width: 25%;
+  width: 15%;
   // height: 52px;
   margin-right: 24px;
   aspect-ratio: 1;
+  border-radius: 100px;
 }
 
 //
@@ -457,4 +452,310 @@
 
 .active::after {
   display: block;
+}
+.createFlex {
+  gap: 164px;
+  display: flex;
+  // justify-content: center;
+  align-items: center;
+}
+
+.createInput {
+  width: 50%;
+}
+.createMain {
+  margin: 0 auto;
+  margin-bottom: 24px;
+  gap: 64px;
+  padding: 12px;
+  max-width: 720px;
+}
+// =========================================
+.detailsMain {
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.detialsCol {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  // width: 100%;
+}
+.detailsItem {
+  width: 100%;
+}
+.detailsBox {
+  display: flex;
+  justify-content: space-between;
+}
+.cancelFee {
+  display: flex;
+  justify-content: space-between;
+}
+.detailsFlex {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+.detailsPayment {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+// =============================================
+// ======compilance==============
+.compilanceMain {
+  // display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-bottom: 48px;
+  padding: 24px;
+
+  //
+  // vertical
+  // align="center"
+  // gap={20}
+  // style={{
+  //   width: "760px",
+  //   margin: "auto",
+  //   marginBottom: "24px",
+  //   padding: "12px",
+  // }}
+}
+.compilanceBox {
+  display: flex;
+  // justify-content: ;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 48px;
+  width: 100%;
+}
+.textHeadingComplilance {
+  text-align: center;
+  width: 100%;
+}
+// =------------------------------------------
+// --------STEP CREATE------------------
+@media screen and (max-width: 750px) {
+  .mainContainerCreate {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    flex-direction: column;
+    padding-right: 12px;
+    // margin: 0 auto;
+    gap: 48px;
+  }
+  .nextBtn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .createInput {
+    width: 100%;
+    padding: 0 24px;
+  }
+  .createFlex {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .headingMain {
+    margin-bottom: 0;
+  }
+  .description {
+    font-size: 16px;
+  }
+  .createMain {
+    // margin: auto;
+    // margin-bottom: 16px;
+    // gap: 24px;
+  }
+  .img {
+    width: 150px;
+    height: 150px;
+  }
+}
+@media screen and (max-width: 550px) {
+  .mainContainerCreate {
+    gap: 38px;
+  }
+
+  .createInput {
+    padding: 0 24px;
+    width: 100%;
+  }
+  .createFlex {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 8px;
+  }
+  .headingMain {
+    margin-bottom: 0;
+  }
+  .description {
+    font-size: 14px;
+    margin-top: 4;
+  }
+  .createMain {
+    margin: auto;
+    margin-bottom: 8px;
+    gap: 0;
+  }
+  .img {
+    width: 120px;
+    height: 120px;
+  }
+  .headingMain {
+    font-size: 26px;
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .mainContainerCreate {
+    gap: 34px;
+  }
+
+  .createInput {
+    padding: 0 18px;
+    width: 100%;
+  }
+  .createFlex {
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+    padding: 6px;
+  }
+  .headingMain {
+    margin: 0;
+  }
+  .description {
+    font-size: 13px;
+  }
+  .createMain {
+    margin: auto;
+    margin-bottom: 12px;
+    gap: 0;
+  }
+}
+
+// =========================================
+// =======sSTEP DETAILS==============
+@media screen and (max-width: 640px) {
+  .detialsCol {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .cancelFee {
+    display: flex;
+    gap: 2px;
+  }
+  .flex {
+    display: flex;
+    gap: 40px;
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 520px) {
+  .detailsBox {
+    gap: 12px;
+  }
+  .checkBox {
+    width: 20px;
+    height: 20px;
+  }
+  .flex {
+    gap: 20px;
+  }
+  .shieldIcon {
+    width: 80px;
+    height: 80px;
+  }
+  .subTextFeesDetail {
+    color: #676962;
+
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 416px) {
+  .subTextFeesDetail {
+    padding-right: 20px;
+    margin-right: 0;
+  }
+  .select {
+    border-radius: 50px;
+
+    padding: 2px 4px 1px 4px;
+    font-size: 13px;
+  }
+  .amountBig {
+    font-size: 14px;
+  }
+  .detailsPayment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+  }
+  .chevron {
+    width: 20px;
+    height: 48px;
+    margin-right: 6px;
+  }
+  .amount {
+    font-size: 13px;
+    margin: 0;
+  }
+}
+//
+// ===========================================================
+// compilance===========
+@media screen and (max-width: 780px) {
+  .compilanceBox {
+    flex-direction: column;
+    align-items: flex-start !important;
+    // justify-content: flex-start;
+    margin-bottom: 12px;
+  }
+  .dragDropContainer {
+    width: 320px;
+    height: 280px;
+  }
+  .shield {
+    width: 13%;
+    margin-right: 26px;
+  }
+}
+@media screen and (max-width: 490px) {
+  .dragDropContainer {
+    width: 320px;
+    height: 260px;
+  }
+  // .shield {
+  //   width: 14%;
+  //   margin-right: 30px;
+  // }
+}
+@media screen and (max-width: 390px) {
+  .dragDropContainer {
+    width: 320px;
+    height: 240px;
+  }
+  // .shield {
+  //   width: 12%;
+  // }
 }

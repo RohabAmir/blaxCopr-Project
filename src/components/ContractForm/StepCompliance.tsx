@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Flex } from "antd";
+import { Flex, Grid } from "antd";
 import { Button } from "../Shared";
 import Title from "antd/es/typography/Title";
 import Text from "antd/es/typography/Text";
@@ -19,6 +19,8 @@ import { ROUTES } from "@/constants";
 interface IStepCompliance {}
 
 const StepCompliance: FC<any> = ({ handleStepChange, step }) => {
+  const { useBreakpoint } = Grid;
+  const screens: any = useBreakpoint();
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles: any) => {
@@ -40,26 +42,43 @@ const StepCompliance: FC<any> = ({ handleStepChange, step }) => {
 
   return (
     <Flex
-      vertical
-      align="center"
-      gap={20}
-      style={{ width: "760px", margin: "auto", marginBottom: "24px" }}
+      // vertical
+      // align="center"
+      // gap={20}
+      // style={{
+      //   width: "760px",
+      //   margin: "auto",
+      //   marginBottom: "24px",
+      //   padding: "12px",
+      // }}
+      className={styles.compilanceMain}
     >
       <Flex
-        align="center"
-        justify="space-between"
-        style={{ width: "100%", margin: "auto" }}
+        // align="center"
+        // justify="space-between"
+        // style={{ width: "100%", margin: "auto" }}
+        className={styles.compilanceBox}
       >
         <Button
           name="Back"
           leftIcon={IconType.BackArrow}
           type={ButtonType.Secondary}
           onClickHandler={handleBackClick}
+          size={!screens["sm"] ? "middle" : "large"}
         />
-        <Title level={2}>Compliance</Title>
-        <span style={{ width: "110px" }}></span>
+        <Title
+          level={!screens["md"] ? 2 : 3}
+          className={screens["md"] ? styles.textHeadingComplilance : ""}
+        >
+          Compliance
+        </Title>
+        {/* <span style={{ width: "110px" }}></span> */}
       </Flex>
-      <Flex vertical align="center" style={{ width: "400px", margin: "auto" }}>
+      <Flex
+        vertical
+        align="center"
+        style={{ maxWidth: "550px", margin: "auto" }}
+      >
         <Flex
           vertical
           align="center"
@@ -94,7 +113,7 @@ const StepCompliance: FC<any> = ({ handleStepChange, step }) => {
         </Flex>
         <Flex align="center">
           <Image className={styles.shield} src={ShieldIcon} alt="shield" />
-          <Text>
+          <Text style={{ color: "#454745" }}>
             All your data is secured with encryption both during transmission
             and while stored, utilizing 256-bit AES and SSL/TLS encryption
             technologies.
@@ -106,6 +125,7 @@ const StepCompliance: FC<any> = ({ handleStepChange, step }) => {
           name="Next"
           type={ButtonType.Primary}
           onClickHandler={handleButtonClick}
+          fullWidth={!screens["md"]}
         />
       </Flex>
     </Flex>

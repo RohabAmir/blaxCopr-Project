@@ -123,3 +123,109 @@
   gap: 14.669px;
   flex-shrink: 0;
 }
+.menuIcon {
+  cursor: pointer;
+  position: relative;
+}
+.mobileMenu {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.mobileMenu li {
+  margin-bottom: 10px;
+}
+
+// -----------------------------------------------------
+@media screen and (max-width: 790px) {
+  .mainContainer {
+    gap: 22px;
+  }
+  .button {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 760px) {
+  .routesContainer {
+    gap: 18px;
+  }
+  .icons {
+    padding: 9px 10px;
+  }
+
+  .text {
+    padding: 12px 11px;
+    font-size: 16px;
+  }
+  .mainContainer {
+    margin-bottom: 18px;
+  }
+}
+@media screen and (max-width: 735px) {
+  .routesContainer {
+    gap: 15px;
+  }
+  .button {
+    font-size: 14px;
+  }
+  .mainContainer {
+    gap: 18px;
+  }
+}
+@media screen and (max-width: 710px) {
+  // .button {
+  //   font-size: 13px;
+  // }
+  .routesContainer {
+    gap: 13px;
+  }
+  .icons {
+    padding: 7px 9px;
+  }
+
+  .text {
+    padding: 10px 10px;
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 700px) {
+  .button {
+    font-size: 13px;
+  }
+  .iconHeading {
+    width: 150px;
+    height: 30px;
+  }
+  .mainContainer {
+    margin-bottom: 16px;
+  }
+}
+@media screen and (max-width: 680px) {
+  .button {
+    font-size: 12px;
+  }
+  .iconHeading {
+    width: 140px;
+    height: 28px;
+  }
+  .routesContainer {
+    gap: 10px;
+  }
+  .mainContainer {
+    align-items: center;
+  }
+  .mainContainer {
+    margin-bottom: 14px;
+  }
+}
+@media screen and (max-width: 620px) {
+  .mainContainer {
+    margin-bottom: 12px;
+  }
+}

@@ -60,7 +60,7 @@ const CardContainer: FC<CardContainerProps> = ({ activeNav }) => {
   return (
     <>
       <div className={styles.grid}>
-        <div className={styles.cardContainerMain}>
+        <div className={styles.cardContainerMainPlus}>
           <Link href={ROUTES.CONTRACT_FORM}>
             <button className={styles.button}>
               <Image src={PlusIcon} alt="plus icon" />

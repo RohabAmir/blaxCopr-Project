@@ -49,3 +49,105 @@
 .btn:hover {
   background-color: rgb(162, 243, 124);
 }
+// ===============================================
+
+@media screen and (max-width: 700px) {
+  .header {
+    margin-bottom: 20px;
+    width: 100%;
+
+    margin-top: 10px;
+  }
+  .secondHeading {
+    font-size: 16px;
+  }
+  .btn {
+    width: 100px;
+    height: 46px;
+    padding: 10px 22px 10px 22px; /* top right bottom left */
+    gap: 6px;
+
+    font-size: 14px;
+  }
+  .img {
+    width: 76px;
+    height: 76px;
+  }
+}
+@media screen and (max-width: 660px) {
+  .header {
+    margin-bottom: 18px;
+    width: 100%;
+
+    margin-top: 8px;
+  }
+  .secondHeading {
+    font-size: 14px;
+  }
+  .btn {
+    width: 90px;
+    height: 42px;
+    padding: 8px 20px 8px 20px; /* top right bottom left */
+    gap: 6px;
+
+    font-size: 13px;
+  }
+  .img {
+    width: 70px;
+    height: 70px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .header {
+    margin-bottom: 16px;
+    width: 100%;
+
+    margin-top: 6px;
+  }
+  .secondHeading {
+    font-size: 12px;
+  }
+  .btn {
+    width: 70px;
+    height: 36px;
+    padding: 6px 18px 6px 18px; /* top right bottom left */
+    gap: 5px;
+
+    font-size: 12px;
+  }
+  .img {
+    width: 64px;
+    height: 64px;
+  }
+  .iconVector {
+    width: 14px;
+    height: 14px;
+  }
+}
+@media screen and (max-width: 420px) {
+  .header {
+    margin-bottom: 14px;
+    width: 100%;
+
+    margin-top: 5px;
+  }
+  .secondHeading {
+    font-size: 12px;
+  }
+  .btn {
+    width: 60px;
+    height: 32px;
+    padding: 4px 16px 4px 16px; /* top right bottom left */
+    gap: 5px;
+
+    font-size: 11px;
+  }
+  .img {
+    width: 54px;
+    height: 54px;
+  }
+  .iconVector {
+    width: 10px;
+    height: 10px;
+  }
+}

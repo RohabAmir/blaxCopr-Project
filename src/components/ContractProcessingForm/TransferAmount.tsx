@@ -6,19 +6,25 @@ import CreditCardIcon from "../../../public/icons/CreditCard.svg";
 import Image from "next/image";
 import { Button } from "../Shared";
 import { ButtonType, IconType } from "@/types";
+import { Grid } from "antd";
 
 const TransferAmount: FC = () => {
+  const { useBreakpoint } = Grid;
+  const screens: any = useBreakpoint();
   return (
     <>
       <div className={styles.transferMain}>
         <div className={styles.transfer}>
-          <Button
-            name="Back"
-            leftIcon={IconType.BackArrow}
-            type={ButtonType.Secondary}
-          />
+          {screens["md"] && (
+            <Button
+              name="Back"
+              leftIcon={IconType.BackArrow}
+              type={ButtonType.Secondary}
+            />
+          )}
           <p className={styles.transferHeading}>Choose how you want to pay</p>
         </div>
+
         <div className={styles.transferBox}>
           <div className={styles.flexDeposit}>
             <div className={styles.transferColor}>
@@ -53,9 +59,18 @@ const TransferAmount: FC = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className={styles.transferBtn}>
-        <Button name="Continue" type={ButtonType.Primary} />
+        <div className={styles.transferFlexBtn}>
+          {!screens["md"] && (
+            <Button
+              name="Back"
+              leftIcon={IconType.BackArrow}
+              type={ButtonType.Secondary}
+            />
+          )}
+          <div className={styles.transferBtn}>
+            <Button name="Continue" type={ButtonType.Primary} />
+          </div>
+        </div>
       </div>
     </>
   );

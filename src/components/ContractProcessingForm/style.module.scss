@@ -285,7 +285,7 @@
 }
 .detailBox {
   display: flex;
-  width: 190px;
+  width: 170px;
   padding: 16px;
   justify-content: center;
   align-items: center;
@@ -309,7 +309,7 @@
 // deposit
 .depositMain {
   display: flex;
-  width: 100%;
+  // width: 100%;
   padding: 24px;
   align-items: center;
   justify-content: space-between;
@@ -317,6 +317,11 @@
   border-radius: 16px;
   background: rgba(22, 51, 0, 0.08);
   margin-bottom: 48px;
+}
+.depositContianer {
+  max-width: 650px;
+  margin: 0 auto;
+  width: 100%;
 }
 .flexDeposit {
   display: flex;
@@ -365,6 +370,8 @@
   // background-color: #d6dfd6;
   padding: 12px;
   margin-bottom: 24px;
+  max-width: 650px;
+  margin: 0 auto;
 }
 .transfer {
   display: flex;
@@ -463,6 +470,8 @@
   // background-color: #d6dfd6;
   padding: 12px;
   margin-bottom: 24px;
+  max-width: 650px;
+  margin: 0 auto;
 }
 .bank {
   @extend .transfer;
@@ -831,3 +840,178 @@
 // .ant-steps-item-tail::after {
 //   background: linear-gradient(90deg, #9fe870 0%, #163300 100%) !important;
 // }
+
+// ====================================================
+
+.agreementMain {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 24px;
+  width: 100%;
+}
+.agreementContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+.flexBtnResp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+.boxesAgreement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+}
+.transferFlexBtn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.bankDetailsMainRes {
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+}
+.subHeadingDt {
+  font-size: 14px;
+}
+// ========================================agreement
+
+@media screen and (max-width: 1200px) {
+  .detailBox {
+    width: 40%;
+    align-items: center;
+    height: 77px;
+  }
+  .center {
+    text-align: center;
+  }
+  .transactionDetails {
+    margin-bottom: 42px;
+  }
+}
+@media screen and (max-width: 766px) {
+  .agreementContainer {
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+  }
+  .detailBox {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+  .boxesAgreement {
+    width: 100%;
+  }
+  .transactionDetails {
+    margin-bottom: 20px;
+  }
+  .textHeadingDetails {
+    font-size: 14px;
+  }
+  .subHeading {
+    font-size: 14px;
+  }
+  .transferFlexBtn {
+    align-items: baseline;
+  }
+  .subHeadingBank {
+    text-align: left;
+    font-size: 16px;
+  }
+  .bank {
+    margin-bottom: 4px;
+  }
+}
+@media screen and (max-width: 420px) {
+  .textHeading {
+    font-size: 16px;
+  }
+  .center {
+    font-size: 14px;
+  }
+  .textHeadingDetails {
+    font-size: 14px;
+  }
+  .subHeading {
+    font-size: 14px;
+  }
+  .flexTextColor {
+    gap: 12px;
+  }
+}
+@media screen and (max-width: 382px) {
+  .textHeading {
+    font-size: 14px;
+  }
+  .center {
+    font-size: 12px;
+  }
+  .textHeadingDetails {
+    font-size: 13px;
+  }
+  .subHeading {
+    font-size: 13px;
+  }
+}
+@media screen and (max-width: 366px) {
+  .textHeading {
+    font-size: 13px;
+  }
+  .center {
+    font-size: 12px;
+  }
+  .textHeadingDetails {
+    font-size: 11px;
+  }
+  .subHeading {
+    font-size: 11px;
+  }
+}
+// ==================================================deposit main
+@media screen and (max-width: "574px") {
+  .depositMain {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+}
+// =====================================================bank details
+@media screen and (max-width: 600px) {
+  .bankDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+    margin-top: 16px;
+    margin-bottom: 30px;
+  }
+  .bankDetailsMain {
+    margin-bottom: 0;
+  }
+  .flexTextColorBank {
+    padding: 4px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .transferHeading {
+    text-align: left;
+  }
+  .flexTextColor {
+    display: flex;
+    justify-content: space-between;
+  }
+}

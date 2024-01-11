@@ -71,7 +71,7 @@ const Card: FC<ICard> = ({ data }) => {
             {status === "Closed" ? (
               <span className={styles.close}>{type}</span>
             ) : (
-              <span>{type}</span>
+              <span className={styles.span}>{type}</span>
             )}
           </div>
         </div>

@@ -27,7 +27,7 @@ const ContractForm: FC = () => {
 
   return (
     <FormProvider {...methods}>
-      <Stepper activeStep={activeStep} />
+      {/* <Stepper activeStep={activeStep} /> */}
       <Flex vertical align="center">
         {activeStep === 0 && (
           <Create handleStepChange={handleStepChange} step={activeStep} />

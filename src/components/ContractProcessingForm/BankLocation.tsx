@@ -2,7 +2,7 @@ import { FC } from "react";
 import styles from "./style.module.scss";
 import BankIcon from "../../../public/icons/Bank.svg";
 import CreditCardIcon from "../../../public/icons/CreditCard.svg";
-import { Flex, Row, Col } from "antd";
+import { Flex, Row, Col, Grid } from "antd";
 import { Dropdown, FormSection } from "../Shared";
 
 import Image from "next/image";
@@ -11,16 +11,20 @@ import { ButtonType, IconType } from "@/types";
 import { FormProvider, useForm } from "react-hook-form";
 
 const BankLocation: FC = () => {
+  const { useBreakpoint } = Grid;
+  const screens: any = useBreakpoint();
   const methods = useForm();
   return (
     <>
       <div className={styles.bankMain}>
         <div className={styles.bank}>
-          <Button
-            name="Back"
-            leftIcon={IconType.BackArrow}
-            type={ButtonType.Secondary}
-          />
+          {screens["md"] && (
+            <Button
+              name="Back"
+              leftIcon={IconType.BackArrow}
+              type={ButtonType.Secondary}
+            />
+          )}
           <p className={styles.transferHeading}>Bank location</p>
         </div>
         <p className={styles.subHeadingBank}>
@@ -44,8 +48,17 @@ const BankLocation: FC = () => {
             </span>
           </FormSection>
         </FormProvider>
-        <div className={styles.bankBtn}>
-          <Button name="Continue" type={ButtonType.Primary} />
+        <div className={styles.transferFlexBtn}>
+          {!screens["md"] && (
+            <Button
+              name="Back"
+              leftIcon={IconType.BackArrow}
+              type={ButtonType.Secondary}
+            />
+          )}
+          <div className={styles.bankBtn}>
+            <Button name="Continue" type={ButtonType.Primary} />
+          </div>
         </div>
       </div>
     </>
