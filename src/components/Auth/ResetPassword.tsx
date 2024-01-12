@@ -1,16 +1,14 @@
 "use client";
 import React, { FC } from "react";
 import { Flex, Typography,Grid } from "antd";
-import OkIcon from "./../../../public/icons/Ok.svg";
 import Image from "next/image";
 import { FormProvider, useForm } from "react-hook-form";
 import Button from "@/components/Shared/Button";
 import PasswordInput from "@/components/Shared/Inputs/Password";
 import styles from "./style.module.scss";
-import Link from "next/link";
 import BLAXCORP_LOGO from "../../../public/logos/Blaxcorp_logo.svg";
 
-const SignIn: FC = () => {
+const ResetPassword: FC<any> = ({handleActivePage}) => {
   const methods = useForm();
   const { Title, Text } = Typography;
   const { useBreakpoint } = Grid;
@@ -71,13 +69,11 @@ const SignIn: FC = () => {
               </span>
             </div>
           </Flex> */}
-          <Link href="/forgot-password">
             <Button name="Save new password" fullWidth size="large" />
-          </Link>
         </FormProvider>
       </form>
     </Flex>
   );
 };
 
-export default SignIn;
+export default ResetPassword;

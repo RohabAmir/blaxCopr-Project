@@ -1,7 +1,6 @@
 "use client";
 import React, { FC } from "react";
-import { Flex, Typography, Grid } from "antd";
-import Link from "next/link";
+import { Flex, Typography } from "antd";
 import styles from "./style.module.scss";
 import { FormProvider, useForm } from "react-hook-form";
 import TextInput from "@/components/Shared/Inputs/Text";
@@ -10,12 +9,12 @@ import Button from "@/components/Shared/Button";
 import { ButtonType } from "@/types";
 import Image from "next/image";
 import BLAXCORP_LOGO from "../../../public/logos/Blaxcorp_logo.svg";
+import { PAGES } from ".";
 
-const SignIn: FC = () => {
+const SignIn: FC<any> = ({isMobile,handleActivePage}) => {
   const methods = useForm();
   const { Title, Text } = Typography;
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+
 
   return (
     <Flex
@@ -23,9 +22,9 @@ const SignIn: FC = () => {
       align="center"
       justify="space-between"
       gap={50}
-      style={{ marginTop: "140px" }}
+      style={{ marginTop: isMobile?"0px":"140px",padding:isMobile?'20px':'4px',height:isMobile?'100vh':"auto" }}
     >
-      {!screens["md"] && (
+      {isMobile && (
         <Image
           className={styles.blaxcorpLogin}
           src={BLAXCORP_LOGO}
@@ -33,15 +32,15 @@ const SignIn: FC = () => {
         />
       )}
       <Flex vertical align="center" justify="flex-start">
-        <Title level={screens["md"] ? 3 : 1}>Log in to Blaxcorp</Title>
-        {screens["md"] ? (
+        <Title level={isMobile ? 3 : 1}>Log in to Blaxcorp</Title>
+        {isMobile ? (
           <Text style={{ color: "#454745" }}>
             Don't have an account?
-            <Link href="/sign-up">
-              <Text underline style={{ textUnderlineOffset: "4px" }} strong>
+           
+              <Text underline style={{ textUnderlineOffset: "4px" }} strong onClick={()=>handleActivePage(PAGES.SIGN_UP)}>
                 Sign up
               </Text>
-            </Link>
+            
           </Text>
         ) : (
           ""
@@ -58,16 +57,14 @@ const SignIn: FC = () => {
             label="Enter Your password"
             forgotPassword
           />
-          {/* <div className={styles.btnLogin}>
-            
-          </div> */}
           <Button name="Log in" fullWidth size="large" />
-          {!screens["md"] && (
+          {isMobile && (
             <Button
               name="Create Account"
               fullWidth
               size="large"
               type={ButtonType.Secondary}
+              onClickHandler={()=>handleActivePage(PAGES.SIGN_UP)}
             />
           )}
         </FormProvider>

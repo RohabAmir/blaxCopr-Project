@@ -1,6 +1,6 @@
 "use client";
 import React, { FC } from "react";
-import { Flex, Typography, Grid } from "antd";
+import { Flex, Typography } from "antd";
 import { FormProvider, useForm } from "react-hook-form";
 import Image from "next/image";
 import TextInput from "@/components/Shared/Inputs/Text";
@@ -8,12 +8,12 @@ import Button from "@/components/Shared/Button";
 import styles from "./style.module.scss";
 import BLAXCORP_LOGO from "../../../public/logos/Blaxcorp_logo.svg";
 import { ButtonType, IconType } from "@/types";
+import { PAGES } from ".";
 
-const ForgotPassword: FC = () => {
+const ForgotPassword: FC<any> = ({handleActivePage,isMobile}) => {
   const methods = useForm();
   const { Title, Text } = Typography;
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+
 
   return (
     <Flex
@@ -22,7 +22,7 @@ const ForgotPassword: FC = () => {
       gap={50}
       style={{ paddingLeft: "48px" }}
     >
-      {!screens['md'] && <Image
+      {isMobile && <Image
         className={styles.blaxcorpLogin}
         src={BLAXCORP_LOGO}
         alt="blaxcorp logo"
@@ -44,7 +44,7 @@ const ForgotPassword: FC = () => {
         <FormProvider {...methods}>
           <TextInput name="email" label="Enter your email" />
           <div style={{ marginTop: "40px" }}>
-            <Button name="Reset password" fullWidth size="large" />
+            <Button name="Reset password" fullWidth size="large" onClickHandler={()=>handleActivePage(PAGES.RESET_PASSWORD)}/>
           </div>
         </FormProvider>
       </form>

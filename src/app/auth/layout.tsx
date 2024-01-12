@@ -3,8 +3,6 @@ import { ConfigProvider } from 'antd';
 import StyledComponentsRegistry from '@/lib/Antd/AntdRegistery';
 import { theme } from "@/lib/Antd/Config"
 import '../globals.scss'
-import Layout_C from '@/components/Auth/Layout'
-
 
 export const metadata: Metadata = {
     title: 'Blaxcorp',
@@ -21,9 +19,7 @@ export default function RootLayout({
             <body>
                 <StyledComponentsRegistry>
                     <ConfigProvider theme={theme}>
-                        <Layout_C>
-                            {children}
-                        </Layout_C>
+                        {children}
                     </ConfigProvider>
                 </StyledComponentsRegistry>
             </body>

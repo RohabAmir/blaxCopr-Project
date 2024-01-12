@@ -1,11 +1,10 @@
 import React, { FC } from "react";
 import { Flex, Input, Typography } from "antd";
 import { Controller, useFormContext } from "react-hook-form";
-import Link from "next/link";
 import Eye from "../../../../public/icons/eye.svg";
 import EyeOff from "../../../../public/icons/eye-off.svg";
 import Image from "next/image";
-import { ROUTES } from "@/constants";
+import { PAGES } from "@/components/Auth";
 
 interface IPasswordInput {
   name: string;
@@ -32,11 +31,11 @@ const PasswordInput: FC<IPasswordInput> = ({
         )}
         {forgotPassword && (
           <div style={{ margin: "5px 0", color: "#454745", fontSize: "14px" }}>
-            <Link href={ROUTES.FORGOT_PASSWORD}>
-              <Text underline strong>
+            
+              <Text underline strong > 
                 Forgot your password
               </Text>
-            </Link>
+            
           </div>
         )}
       </Flex>

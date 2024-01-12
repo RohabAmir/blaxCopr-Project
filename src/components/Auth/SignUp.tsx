@@ -1,6 +1,6 @@
 "use client";
 import React, { FC } from "react";
-import { Flex, message, Typography, Grid } from "antd";
+import { Flex,Typography, Grid } from "antd";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
 import Image from "next/image";
@@ -11,8 +11,9 @@ import Button from "@/components/Shared/Button";
 import styles from "./style.module.scss";
 import BLAXCORP_LOGO from "../../../public/logos/Blaxcorp_logo.svg";
 import { ButtonType } from "@/types";
+import { PAGES } from ".";
 
-const SignUp: FC = () => {
+const SignUp: FC<any> = ({ handleActivePage,isMobile }) => {
   const { Title, Text } = Typography;
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
@@ -39,11 +40,9 @@ const SignUp: FC = () => {
         <Title level={screens['md'] ? 3 : 1}>Create Your Blaxcorp account</Title>
         {screens['md'] ? <Text style={{ color: "#454745" }}>
           Already have an account?{" "}
-          <Link href="/sign-in">
-            <Text underline style={{ textUnderlineOffset: "4px" }} strong>
-              Log in
-            </Text>
-          </Link>
+          <Text underline style={{ textUnderlineOffset: "4px" }} strong onClick={() => handleActivePage(PAGES.SIGN_IN)}>
+            Log in
+          </Text>
         </Text> : ''}
       </Flex>
 
@@ -80,7 +79,7 @@ const SignUp: FC = () => {
             </div>
           </Flex>
           <Button name="Create account" fullWidth size="large" />
-          {!screens['md'] && <Button name="Login" fullWidth size="large" type={ButtonType.Secondary} />}
+          {isMobile && <Button name="Login" fullWidth size="large" type={ButtonType.Secondary} onClickHandler={() => handleActivePage(PAGES.SIGN_IN)} />}
         </FormProvider>
       </form>
     </Flex>
