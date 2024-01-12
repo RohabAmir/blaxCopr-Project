@@ -68,23 +68,22 @@ const ContractProcessingForm: FC = () => {
 
   return (
     <Flex vertical className="w-full">
-      <VerifyProfileBar />
+      {/* <VerifyProfileBar /> */}
       <Button
         name="Back"
         leftIcon={IconType.BackArrow}
         type={ButtonType.Secondary}
-        size={!screens["sm"] ? "small" : "large"}
+        size={!screens["sm"] ? "middle" : "large"}
       />
 
-      <Flex className="w-full">
+      {/* <Flex className="w-full">
         <div className={styles.agreementContainer}>
           <>
             <Flex vertical style={{ width: "100%" }}>
               <Title level={screens["sm"] ? 2 : 3}>Contract Name</Title>
-              {/* <Text>Transaction</Text> */}
               <div className={styles.flexTransaction}>
                 <span className={styles.transactionText}>
-                  Transaction #10942007{" "}
+                  Transaction #10942007
                 </span>
                 <span>
                   <Image
@@ -94,9 +93,9 @@ const ContractProcessingForm: FC = () => {
                   />
                 </span>
               </div>
-            </Flex>
+            </Flex> */}
 
-            <Flex style={{ width: "100%" }}>
+      {/* <Flex style={{ width: "100%" }}>
               <div className={styles.boxesAgreement}>
                 <div className={styles.detailBox}>
                   <div>
@@ -110,7 +109,7 @@ const ContractProcessingForm: FC = () => {
                   </div>
                   <div className={styles.center}>Created 17 Dec, 2023</div>
                 </div>
-                {/* <Link href="/dashboard" style={{ color: "#000" }}> */}
+               
                 <div className={styles.detailBox} onClick={openModal}>
                   <div className={styles.crossBox}>
                     <Image className={styles.xIcon} src={XIcon} alt="X icon" />
@@ -120,14 +119,13 @@ const ContractProcessingForm: FC = () => {
                 {isModalOpen && (
                   <ConfirmContractCancellation closeModal={closeModal} />
                 )}
-                {/* </Link> */}
               </div>
-            </Flex>
-          </>
+            </Flex> */}
+      {/* </>
         </div>
-      </Flex>
+      </Flex> */}
 
-      <div>
+      {/* <div>
         <div className={styles.transactionDetails}>
           <span style={{ color: "#006ACC" }}>example@gmail.com</span> is buying
           a <span style={{ fontWeight: "600" }}>domain name</span> from
@@ -137,7 +135,7 @@ const ContractProcessingForm: FC = () => {
           transaction is{" "}
           <span style={{ fontWeight: "600" }}>3 calendar days.</span>
         </div>
-      </div>
+      </div> */}
 
       {/* stepper added */}
       <Flex vertical align="center">
@@ -149,7 +147,7 @@ const ContractProcessingForm: FC = () => {
         >
           {!screens["sm"] && (
             <>
-              <div className={styles.flexBtnResp}>
+              {/* <div className={styles.flexBtnResp}>
                 <Button
                   name="Action"
                   type={ButtonType.Tertioary}
@@ -160,34 +158,34 @@ const ContractProcessingForm: FC = () => {
                   type={ButtonType.Tertioary}
                   fullWidth={!screens["md"]}
                 />
-              </div>
+              </div> */}
             </>
           )}
           {/* agrrement buyer components */}
           {/* ------------------------------------ */}
-          {/* <Deposit /> */}
-          {/* <TransferAmount /> */}
-          {/* <BankLocation /> */}
+          <Deposit />
+          <TransferAmount />
+          <BankLocation />
           <BankDetails />
-          {/*  <PendingDeposit />
-          <SuccessfulDeposit />*/}
-          {/* <Inspection /> */}
-          {/* <DisputOpened /> */}
-          {/* <Invoice /> */}
+          <PendingDeposit />
+          <SuccessfulDeposit />
+          <Inspection />
+          <DisputOpened />
+          <Invoice />
           {/* --------------------------------------- */}
           {/* -----------------SELLER FLOW -------------------------- */}
-          {/* <SetupWithDrawl />
-          <AddWithDrawl />
-          <AddWithDrawlDisbursement />*/}
+          {/* <SetupWithDrawl /> */}
+          {/* <AddWithDrawl /> */}
+          {/* <AddWithDrawlDisbursement /> */}
           {/* <WithDrawlMethod /> */}
           {/* <WithDrawlBuyerWaiting /> */}
           {/* <InspectedPeriod /> */}
-          {/* <DisputOpened /> */}
-          {/* <FundsReleased />
-          <Invoice /> */}
+
+          {/* <FundsReleased />*/}
+          {/* <Invoice /> */}
           {/* ---Agreement form--- */}
           {/* <ConfirmContractCancellation closeModal={closeModal} /> */}
-          {/* <StepAgreement /> */}
+          <StepAgreement />
         </Flex>
       </Flex>
     </Flex>

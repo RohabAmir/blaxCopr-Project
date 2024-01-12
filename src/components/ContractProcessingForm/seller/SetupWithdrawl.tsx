@@ -7,10 +7,13 @@ import WithDrawlIcon from "../../../../public/icons/WithDrawl.svg";
 import Image from "next/image";
 import { Button } from "../../Shared";
 import { ButtonType, IconType } from "@/types";
+import { Grid } from "antd";
 
 const SetupWithDrawl: FC = () => {
+  const { useBreakpoint } = Grid;
+  const screens: any = useBreakpoint();
   return (
-    <>
+    <div className={styles.agreementMain} style={{ marginTop: "12px" }}>
       <div className={styles.depositMain}>
         <div className={styles.deposit}>
           <div className={styles.flexDeposit}>
@@ -30,24 +33,34 @@ const SetupWithDrawl: FC = () => {
           </span>
         </span>
       </div>
+
       {/* ----------------------- */}
       <div className={styles.depositMain}>
-        <div className={styles.flexDeposit}>
-          <Image
-            className={styles.warningIcon}
-            src={WithDrawlIcon}
-            alt="warning icon"
-          />
-          <div className={styles.flexTextDeposit}>
-            <p className={styles.headingDeposit}>Setup withdrawal method</p>
-            <p className={styles.subHeadingDepositLight}>
-              Setup account for withdrawal upon contract completion
-            </p>
+        <div className={styles.withDrawlFlex}>
+          <div className={styles.flexDeposit}>
+            <Image
+              className={styles.warningIcon}
+              src={WithDrawlIcon}
+              alt="warning icon"
+            />
+
+            <div className={styles.flexTextDeposit}>
+              <p className={styles.headingDeposit}>Setup withdrawal method</p>
+              <p className={styles.subHeadingDepositLight}>
+                Setup account for withdrawal upon contract completion
+              </p>
+            </div>
           </div>
-          <Button name="Setup" type={ButtonType.Primary} />
+          <div className={styles.btnSetup}>
+            <Button
+              name="Setup"
+              type={ButtonType.Primary}
+              fullWidth={!screens["md"]}
+            />
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default SetupWithDrawl;

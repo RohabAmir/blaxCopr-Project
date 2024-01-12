@@ -9,16 +9,18 @@ import Image from "next/image";
 const ConfirmApproval: FC = () => {
   return (
     <>
-      <div className={styles.modal}>
-        <p className={styles.heading}>Confirm approval</p>
-        <Image className={styles.iconWarning} src={CheckIcon} alt="warning" />
-        <p className={styles.description}>
-          By confirming, you’re closing the contract, and funds will be released
-          to the Seller. Are you sure you want to proceed?
-        </p>
+      <div className={styles.modalMain}>
+        <div className={styles.modal}>
+          <p className={styles.heading}>Confirm approval</p>
+          <Image className={styles.iconWarning} src={CheckIcon} alt="warning" />
+          <p className={styles.description}>
+            By confirming, you’re closing the contract, and funds will be
+            released to the Seller. Are you sure you want to proceed?
+          </p>
 
-        <button className={styles.btnOpen}>Confirm</button>
-        <button className={styles.cross}>&times;</button>
+          <button className={styles.btnOpen}>Confirm</button>
+          <button className={styles.cross}>&times;</button>
+        </div>
       </div>
     </>
   );

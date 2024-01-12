@@ -305,6 +305,16 @@
   border-radius: 50%;
   background: rgba(22, 51, 0, 0.12);
 }
+.depositMainPend {
+  @extend .depositMain;
+  // width: 100%;
+  // max-width: 650px;
+  // margin: 0 auto;
+  // padding: 0 24px;
+}
+.depositMainSucess {
+  @extend .depositMain;
+}
 //
 // deposit
 .depositMain {
@@ -368,7 +378,7 @@
 .transferMain {
   width: 100%;
   // background-color: #d6dfd6;
-  padding: 12px;
+  // padding: 12px;
   margin-bottom: 24px;
   max-width: 650px;
   margin: 0 auto;
@@ -468,7 +478,7 @@
 .bankMain {
   width: 100%;
   // background-color: #d6dfd6;
-  padding: 12px;
+  // padding: 12px;
   margin-bottom: 24px;
   max-width: 650px;
   margin: 0 auto;
@@ -652,7 +662,7 @@
   margin-bottom: 48px;
 }
 .inspectionMain {
-  width: 100%;
+  // width: 100%;
   padding: 24px;
   background: rgba(22, 51, 0, 0.08);
   border-radius: 16px;
@@ -846,7 +856,7 @@
 .agreementMain {
   max-width: 650px;
   margin: 0 auto;
-  padding: 24px;
+  // padding: 12px 14px;
   width: 100%;
 }
 .agreementContainer {
@@ -883,6 +893,13 @@
 .subHeadingDt {
   font-size: 14px;
 }
+.flexDepositIns {
+  @extend .flexDeposit;
+}
+.depositMainOpened {
+  @extend .depositMain;
+}
+
 // ========================================agreement
 
 @media screen and (max-width: 1200px) {
@@ -930,7 +947,11 @@
   .bank {
     margin-bottom: 4px;
   }
+  .depositMainPend {
+    padding-right: 12px;
+  }
 }
+
 @media screen and (max-width: 420px) {
   .textHeading {
     font-size: 16px;
@@ -946,6 +967,10 @@
   }
   .flexTextColor {
     gap: 12px;
+  }
+  .flexDeposit {
+    align-items: flex-start;
+    display: flex;
   }
 }
 @media screen and (max-width: 382px) {
@@ -1013,5 +1038,18 @@
   .flexTextColor {
     display: flex;
     justify-content: space-between;
+  }
+  .depositMainSucess {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .flexButtons {
+    flex-direction: column;
+  }
+  .btnReport,
+  .btnSent {
+    width: 100%;
+    padding: 14px 16px;
   }
 }

@@ -1,22 +1,47 @@
 .saveButton {
-    border-radius: 30px;
-    width: fit-content;
-    background: #9FE870;
-    color: black;
-    padding: 10px 20px;
-    height: 48px;
-    font-weight: 600;
-    font-size: 16px;
+  border-radius: 30px;
+  width: fit-content;
+  background: #9fe870;
+  color: black;
+  padding: 10px 20px;
+  height: 48px;
+  font-weight: 600;
+  font-size: 16px;
 }
 
-.security_step_root{
-width: 100%;
+.security_step_root {
+  width: 100%;
 }
 
-.security_left{
-    img{
-        aspect-ratio: 1;
-        height: 100%;
-        width: 100%;
-    }
+.security_left {
+  img {
+    aspect-ratio: 1;
+    height: 100%;
+    width: 100%;
+  }
+}
+.personalDetails {
+  max-width: 650px;
+  display: flex;
+  //   align-items: end;
+  gap: 30px;
+  width: 100%;
+  flex-direction: column;
+  // vertical align="end" gap={30} style={{ width: "100%" }}
+}
+.personalDetailsMin {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 30px;
+  // gap={30} style={{ width: "100%" }} justify="space-between"
+}
+
+@media screen and (max-width: 600px) {
+  .personalDetailsMin {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
 }

@@ -9,7 +9,12 @@ import Image from "next/image";
 import ShieldIcon from "../../../public/icons/shield.svg";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
-
+import OKIcon from "../../../public/icons/CheckOK.svg";
+import CurrentIcon from "../../../public/icons/CheckCurrent.svg";
+import InActiveIcon from "../../../public/icons/CheckInActive.svg";
+import { Steps, Popover } from "antd";
+import type { StepsProps } from "antd";
+import StepperResponsive from "./StepperResponsive";
 import Link from "next/link";
 const Create: FC<any> = ({ handleStepChange, step }) => {
   const { useBreakpoint } = Grid;
@@ -45,9 +50,30 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
             name="Back"
             leftIcon={IconType.BackArrow}
             type={ButtonType.Secondary}
-            size={!screens["sm"] ? "small" : "large"}
+            size={!screens["sm"] ? "middle" : "large"}
           />
         </Link>
+
+        {!screens["sm"] && (
+          <div className={styles.stepperFlexMain}>
+            <div className={styles.stepperFlexNew}>
+              <Image src={OKIcon} alt="ok icon" />
+              <span className={styles.spanStepper}>create</span>
+            </div>
+            <div className={styles.stepperFlexNew}>
+              <Image src={CurrentIcon} alt="ok icon" />
+              <span className={styles.spanStepper}>details</span>
+            </div>
+            <div className={styles.stepperFlexNew}>
+              <Image src={CurrentIcon} alt="ok icon" />
+              <span className={styles.spanStepper}>compilance</span>
+            </div>{" "}
+            <div className={styles.stepperFlexNew}>
+              <Image src={CurrentIcon} alt="ok icon" />
+              <span className={styles.spanStepper}>agreement</span>
+            </div>
+          </div>
+        )}
         <Title level={screens["sm"] ? 2 : 3} className={styles.headingMain}>
           {" "}
           Create new contract

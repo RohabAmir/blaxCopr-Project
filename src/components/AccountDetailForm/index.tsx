@@ -18,7 +18,7 @@ const CreateAccountDetails: FC = () => {
   const { Title } = Typography;
   const NavList: Array<Nav> = [
     { title: "Personal Details", link: "personal-details" },
-    { title: "Payment", link: "payment" },
+    // { title: "Payment", link: "payment" },
     { title: "Password", link: "password" },
     { title: "Security", link: "security" },
   ];

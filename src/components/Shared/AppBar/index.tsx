@@ -132,10 +132,14 @@ import ModalDetails from "./Modals/ModalDetails";
 import Link from "next/link";
 import MenuIcon from "../../../../public/icons/Menu.svg";
 import { Grid } from "antd";
+import settingIcon from "../../../../public/icons/Setting.svg";
+import questionIcon from "../.././../../public/icons/Question.svg";
+import signout from "../../../../public/icons/SignOut.svg";
 
 import ModalNotifications from "./Modals/ModalNotifications";
 
 const AppBar: FC = () => {
+  const [openToggle, setOpenToggle] = useState(false);
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -172,7 +176,11 @@ const AppBar: FC = () => {
 
   return (
     <>
-      <div className={styles.mainContainer}>
+      <div
+        className={
+          !openToggle ? styles.mainContainer : styles.mainContainerResponsive
+        }
+      >
         <div className={styles.iconsContainer}>
           <Link href="/">
             <Image
@@ -184,7 +192,10 @@ const AppBar: FC = () => {
         </div>
         <div onClick={handleMenuToggle}>
           {!screens["md"] ? (
-            <div className={styles.mobileMenuIcon}>
+            <div
+              className={styles.mobileMenuIcon}
+              onClick={() => setOpenToggle(true)}
+            >
               <Image src={MenuIcon} alt="menu icon" />
             </div>
           ) : (
@@ -222,6 +233,11 @@ const AppBar: FC = () => {
             </div>
           )}
         </div>
+        {/* {openToggle && (
+          <div className={styles.responsiveMain}>
+            <div>heelo world</div>
+          </div>
+        )} */}
 
         {/* {(menuOpen || window.innerWidth <= 650) && (
           // <div className={styles.mobileMenu}>

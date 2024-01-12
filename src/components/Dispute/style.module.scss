@@ -1,6 +1,6 @@
 .gridContainer {
   display: grid;
-  grid-template-columns: 16% 60% auto;
+  grid-template-columns: 8% 75% auto;
   gap: 50px;
 }
 .disputeMain {
@@ -81,12 +81,25 @@
   letter-spacing: 0.14px;
   margin: 0;
 }
+.nameDesNew {
+  @extend .nameDes;
+  text-align: center;
+}
 
 .rightBar {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 24px;
+  padding: 16px;
+}
+.rightBarNew {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 16px;
 }
 .rightBarHeading {
   @extend .nameHeading;
@@ -195,4 +208,144 @@
 }
 .icon {
   cursor: pointer;
+}
+.rightBarHeadingNew {
+  @extend .rightBarHeading;
+  font-size: 22px;
+}
+
+@media screen and (max-width: 680px) {
+  .rightBarHeadingNew {
+    font-size: 22px;
+  }
+  .disputeMain {
+    border: none;
+  }
+  .disputeHeading {
+    font-size: 28px;
+  }
+  .textCenter {
+    align-items: center;
+    margin-top: 64px;
+    margin-bottom: 32px;
+  }
+  .titleNames {
+    padding: 19px 0 13px 14px;
+  }
+  .circle {
+    padding: 4px 6px;
+    font-size: 16px;
+  }
+  .nameHeading {
+    font-size: 14px;
+  }
+  .nameDes {
+    font-size: 12px;
+  }
+  .flexColText {
+    gap: 0;
+  }
+  .titleNames {
+    display: flex;
+    justify-content: flex-start;
+    gap: 36px;
+  }
+  .gridContainer {
+    width: 100%;
+    grid-template-columns: 5% 80% auto;
+    gap: 16px;
+  }
+  .chat {
+    /* border: 1px solid #868685; */
+
+    margin: 2px;
+    border: none;
+    // margin-top: 16px;
+    border-top: 1px solid #eee;
+  }
+  .plusBtn {
+    padding: 12px;
+  }
+  .contentFlexStart {
+    padding-left: 0;
+    margin-top: 24px;
+  }
+  .contentFlexEnd {
+    padding-right: 0;
+  }
+  .input::placeholder {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .disputeHeading {
+    font-size: 26px;
+  }
+  .titleNames {
+    padding: 15px 0 12px 8px;
+  }
+  .circle {
+    padding: 3px 5px;
+    font-size: 14px;
+  }
+  .nameHeading {
+    font-size: 13px;
+  }
+  .nameDes {
+    font-size: 12px;
+  }
+  .flexColText {
+    gap: 0;
+  }
+  .titleNames {
+    display: flex;
+    justify-content: space-between;
+    // gap: 48px;
+  }
+  .gridContainer {
+    grid-template-columns: 3% 80% 5%;
+    gap: 6px;
+  }
+  .chat {
+    /* border: 1px solid #868685; */
+
+    margin: 0;
+    padding-right: 2px;
+  }
+  .plusBtn {
+    padding: 8px;
+  }
+  .contentFlexStart {
+    padding-left: 0;
+    width: 100%;
+  }
+  .contentFlexEnd {
+    padding-right: 0;
+    width: 100%;
+  }
+  .input::placeholder {
+    font-size: 12px;
+  }
+}
+@media screen and (max-width: 402px) {
+  .titleNames {
+    display: flex;
+    justify-content: center;
+
+    gap: 12px;
+  }
+  .contentFlex {
+    gap: 4px;
+  }
+  .input::placeholder {
+    font-size: 12px;
+  }
+  .plusBtn {
+    padding: 6px;
+  }
+  .icon {
+    height: 24px;
+    width: 24px;
+  }
 }
