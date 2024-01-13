@@ -16,12 +16,16 @@ const Password: FC = () => {
           <span style={{ width: "100%" }}>
             <PasswordInput name="oldPassword" label="Old Password" />
           </span>
+        </div>
+        <div style={screens["sm"] ? { width: "50%" } : { width: "100%" }}>
           <span style={{ width: "100%" }}>
             <PasswordInput name="lastPassword" label="New Password" />
           </span>
         </div>
       </div>
-      <Button name="Save" fullWidth={!screens["sm"]} />
+      <div className={styles.btnEnd}>
+        <Button name="Save" fullWidth={!screens["sm"]} />
+      </div>
       {/* </div> */}
     </>
   );

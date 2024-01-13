@@ -19,8 +19,9 @@ const PersonalDetails = () => {
             <TextInput name="Phone" label="Phone" />
           </div>
         </div>
-
-        <Button name="Save" fullWidth={!screens["sm"]} />
+        <div className={styles.btnEnd}>
+          <Button name="Save" fullWidth={!screens["sm"]} />
+        </div>
       </div>
     </>
   );

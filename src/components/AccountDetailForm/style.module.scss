@@ -72,6 +72,11 @@
   align-items: center;
   gap: 12px;
 }
+.btnEnd {
+  display: flex;
+  justify-content: end;
+  margin-top: 24px;
+}
 @media screen and (max-width: 576px) {
   .personalDetailsMin {
     display: flex;

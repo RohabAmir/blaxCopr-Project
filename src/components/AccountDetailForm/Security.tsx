@@ -47,7 +47,12 @@ const Security: FC = () => {
           )}
           <div className={styles.securityMain}>
             <Col>
-              <Flex vertical gap={20} justify="center">
+              <Flex
+                vertical
+                gap={20}
+                justify="center"
+                style={{ marginTop: "48px" }}
+              >
                 <Text>Step {step}</Text>
                 <Title level={4} style={{ margin: "0", padding: "0" }}>
                   Scan this with your Authentication App
@@ -55,19 +60,20 @@ const Security: FC = () => {
                 <span className={styles.text}>
                   App will guide you to add a new token for Blaxcorp
                 </span>
+                {screens["sm"] && (
+                  <Button
+                    name="I scanned the code"
+                    onClickHandler={scanButtonHandler}
+                    fullWidth={!screens["sm"]}
+                  />
+                )}
               </Flex>
             </Col>
             <div className={styles.security_left}>
               <Image src={QRCode} alt="QR" />
             </div>
           </div>
-          {screens["sm"] && (
-            <Button
-              name="I scanned the code"
-              onClickHandler={scanButtonHandler}
-              fullWidth={!screens["sm"]}
-            />
-          )}
+
           {!screens["sm"] && (
             <Flex vertical gap={20} justify="center">
               <span className={styles.text}>
