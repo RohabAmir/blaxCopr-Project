@@ -11,13 +11,11 @@ const AUTH_TABS = {
 }
 
 const defaultValues = {
-    isMobile: false,
     activePage: AUTH_TABS.SIGN_IN,
     handleActivePage: () => { }
 }
 
 interface IAUTH {
-    isMobile: boolean
     activePage: any,
     handleActivePage: (page: any) => void
 }
@@ -43,7 +41,7 @@ const AuthContainer: FC<any> = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ isMobile, activePage, handleActivePage }}>
+        <AuthContext.Provider value={{ activePage, handleActivePage }}>
             {children}
         </AuthContext.Provider>
     )

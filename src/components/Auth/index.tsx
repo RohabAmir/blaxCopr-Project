@@ -8,9 +8,11 @@ import ForgotPassword from "./ForgotPassword";
 import { ButtonType } from "@/types";
 import Button from "@/components/Shared/Button";
 import { AUTH_TABS, useAuthContext } from "@/contexts/Auth";
+import { useAppContext } from "@/contexts/App";
 
 const Auth: FC = () => {
-  const { isMobile, activePage, handleActivePage } = useAuthContext()
+  const {isMobile}=useAppContext()
+  const {  activePage, handleActivePage } = useAuthContext()
 
   const getActiveUI = (currentPage: any) => {
     if (currentPage === AUTH_TABS.SIGN_IN) {

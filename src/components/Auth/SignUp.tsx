@@ -11,10 +11,12 @@ import styles from "./style.module.scss";
 import BLAXCORP_LOGO from "../../../public/logos/Blaxcorp_logo.svg";
 import { ButtonType } from "@/types";
 import { AUTH_TABS, useAuthContext } from "@/contexts/Auth";
+import { useAppContext } from "@/contexts/App";
 
 const SignUp: FC = () => {
   const { Title, Text } = Typography;
-  const { isMobile,handleActivePage }=useAuthContext() 
+  const { isMobile } = useAppContext()
+  const { handleActivePage } = useAuthContext()
 
   const methods = useForm();
   return (
@@ -34,7 +36,7 @@ const SignUp: FC = () => {
           src={BLAXCORP_LOGO}
           alt="blaxcorp logo"
         />}
-        <Flex vertical align={isMobile?"flex-start":'center'} className="w-full"><Title level={isMobile? 3 : 1}>Create Your Blaxcorp account</Title></Flex>
+        <Flex vertical align={isMobile ? "flex-start" : 'center'} className="w-full"><Title level={isMobile ? 3 : 1}>Create Your Blaxcorp account</Title></Flex>
         {!isMobile ? <Text style={{ color: "#454745" }}>
           Already have an account?{" "}
           <Text underline style={{ textUnderlineOffset: "4px" }} strong onClick={() => handleActivePage(AUTH_TABS.SIGN_IN)}>

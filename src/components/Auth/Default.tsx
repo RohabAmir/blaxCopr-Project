@@ -1,4 +1,4 @@
-import { Col, Row, Flex, Typography, Grid } from "antd";
+import { Flex, Typography } from "antd";
 import React, { FC } from 'react'
 import Link from "next/link";
 import Image from "next/image";
@@ -13,10 +13,12 @@ import Pic2 from "../../../public/images/Pic2.svg";
 import Pic3 from "../../../public/images/Pic3.svg";
 import CardReview from "./CardReview";
 import { useAuthContext } from "@/contexts/Auth";
+import { useAppContext } from "@/contexts/App";
 
 const Default: FC<any> = ({ children }) => {
   const { Text } = Typography;
-  const { isMobile, activePage, handleActivePage } = useAuthContext()
+  const {isMobile}=useAppContext()
+  const { activePage } = useAuthContext()
 
   const DESKTOP_TAGLINE: any = {
     DEFAULT: { title1: 'Step into the', title2: 'Digital Escrow Era', desc1: ' Engage in buying and selling with absolute safety,', desc2: 'free from the worries of chargebacks.' },

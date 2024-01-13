@@ -10,9 +10,7 @@ import { ButtonType } from "@/types";
 import Image from "next/image";
 import BLAXCORP_LOGO from "../../../public/logos/Blaxcorp_logo.svg";
 import { AUTH_TABS, useAuthContext } from "@/contexts/Auth";
-
-
-
+import { useAppContext } from "@/contexts/App";
 const ForgotPasswordLink = ({ handleActivePage, children }: any) => {
   const { Text } = Typography;
   return (
@@ -28,7 +26,8 @@ const ForgotPasswordLink = ({ handleActivePage, children }: any) => {
 const SignIn: FC = () => {
   const methods = useForm();
   const { Title, Text } = Typography;
-  const { isMobile, handleActivePage } = useAuthContext()
+  const { isMobile } = useAppContext()
+  const { handleActivePage } = useAuthContext()
 
 
   return (
@@ -50,7 +49,7 @@ const SignIn: FC = () => {
             alt="blaxcorp logo"
           />
         )}
-        <Flex vertical align={isMobile?"flex-start":'center'} style={{ width: '100%' ,minWidth:'350px'}} >
+        <Flex vertical align={isMobile ? "flex-start" : 'center'} style={{ width: '100%', minWidth: '350px' }} >
           <Title level={isMobile ? 3 : 1} >Log in to Blaxcorp</Title>
           {!isMobile &&
             <Text style={{ color: "#454745" }}>

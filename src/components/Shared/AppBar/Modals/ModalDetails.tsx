@@ -16,11 +16,10 @@ const ModalDetails: FC<ModalDetailsProps> = ({ onClose }) => {
   const ref = useDetectClickOutside({ onTriggered: onClose });
 
   return (
-    <>
       <div className={styles.flexDetails} ref={ref}>
         <div className={styles.flexContent}>
           <Image className={styles.icon} src={SettingIcon} alt="setting icon" />
-          <Link className={styles.link} href={ROUTES.ACCOUNT_DETAILS_FORM}>
+          <Link className={styles.link} href={ROUTES.ACCOUNT_DETAILS_FORM} onClick={onClose}>
             <p>Account Details</p>
           </Link>
         </div>
@@ -41,7 +40,6 @@ const ModalDetails: FC<ModalDetailsProps> = ({ onClose }) => {
           <p>Log Out </p>
         </div>
       </div>
-    </>
   );
 };
 export default ModalDetails;

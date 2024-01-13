@@ -2,8 +2,9 @@ import type { Metadata } from 'next'
 import { ConfigProvider } from 'antd';
 import StyledComponentsRegistry from '@/lib/Antd/AntdRegistery';
 import { theme } from "@/lib/Antd/Config"
+import AuthContextContainer from '@/contexts/Auth';
+import AppContextContainer from '@/contexts/App';
 import '../globals.scss'
-import AuthContainer from '@/contexts/Auth';
 
 export const metadata: Metadata = {
     title: 'Blaxcorp',
@@ -20,9 +21,11 @@ export default function RootLayout({
             <body>
                 <StyledComponentsRegistry>
                     <ConfigProvider theme={theme}>
-                        <AuthContainer>
-                            {children}
-                        </AuthContainer>
+                        <AuthContextContainer>
+                            <AppContextContainer>
+                                {children}
+                            </AppContextContainer>
+                        </AuthContextContainer>
                     </ConfigProvider>
                 </StyledComponentsRegistry>
             </body>

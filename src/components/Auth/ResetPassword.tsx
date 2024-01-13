@@ -1,18 +1,19 @@
 "use client";
 import React, { FC } from "react";
-import { Flex, Typography, Grid } from "antd";
+import { Flex, Typography } from "antd";
 import Image from "next/image";
 import { FormProvider, useForm } from "react-hook-form";
 import Button from "@/components/Shared/Button";
 import PasswordInput from "@/components/Shared/Inputs/Password";
 import styles from "./style.module.scss";
 import BLAXCORP_LOGO from "../../../public/logos/Blaxcorp_logo.svg";
-import { useAuthContext } from "@/contexts/Auth";
+import { useAppContext } from "@/contexts/App";
 
 const ResetPassword: FC<any> = () => {
   const methods = useForm();
   const { Title, Text } = Typography;
-  const { isMobile }=useAuthContext() 
+  const {isMobile}=useAppContext()
+
   
 
   return (

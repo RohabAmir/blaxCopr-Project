@@ -9,11 +9,13 @@ import styles from "./style.module.scss";
 import BLAXCORP_LOGO from "../../../public/logos/Blaxcorp_logo.svg";
 import { ButtonType, IconType } from "@/types";
 import { AUTH_TABS, useAuthContext } from "@/contexts/Auth";
+import { useAppContext } from "@/contexts/App";
 
 const ForgotPassword: FC<any> = () => {
   const methods = useForm();
   const { Title, Text } = Typography;
-  const { isMobile,handleActivePage }=useAuthContext() 
+  const {isMobile}=useAppContext()
+  const {handleActivePage }=useAuthContext() 
 
 
   return (
