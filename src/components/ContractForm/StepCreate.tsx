@@ -20,8 +20,6 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
 
-  // console.log("screens",screens)
-
   const roleOptions = [
     { value: "buyer", label: "Buyer" },
     { value: "seller", label: "Seller" },

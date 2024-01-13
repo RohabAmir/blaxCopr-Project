@@ -8,7 +8,6 @@ import Image from "next/image";
 import styles from "./style.module.scss";
 import { ButtonType, IconType } from "@/types";
 import CopyIcon from "../../../public/icons/Copy.svg";
-import Icon from "@ant-design/icons/lib/components/Icon";
 const Security: FC = () => {
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
@@ -20,9 +19,6 @@ const Security: FC = () => {
   };
   const backButtonHandler = () => {
     setStep(1);
-  };
-  const verifyCodeButtonHandler = () => {
-    console.log("verified");
   };
 
   return (
@@ -124,7 +120,6 @@ const Security: FC = () => {
                   )}
                   <Button
                     name="Verify code"
-                    onClickHandler={verifyCodeButtonHandler}
                     fullWidth={!screens["sm"]}
                   />
                 </Flex>

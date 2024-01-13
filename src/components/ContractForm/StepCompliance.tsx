@@ -35,8 +35,6 @@ const StepCompliance: FC<any> = ({ handleStepChange, step }) => {
   };
 
   const handleBackClick = () => {
-    console.log("hello");
-    console.log(step - 1);
     if (step >= 0) handleStepChange(step - 1);
   };
 

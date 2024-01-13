@@ -8,19 +8,19 @@ import Button from "@/components/Shared/Button";
 import styles from "./style.module.scss";
 import BLAXCORP_LOGO from "../../../public/logos/Blaxcorp_logo.svg";
 import { ButtonType, IconType } from "@/types";
-import { PAGES } from ".";
+import { AUTH_TABS, useAuthContext } from "@/contexts/Auth";
 
-const ForgotPassword: FC<any> = ({handleActivePage,isMobile}) => {
+const ForgotPassword: FC<any> = () => {
   const methods = useForm();
   const { Title, Text } = Typography;
+  const { isMobile,handleActivePage }=useAuthContext() 
 
 
   return (
     <Flex
       vertical
-      justify="space-between"
-      gap={50}
-      style={{ paddingLeft: "48px" }}
+      align="flex-start"
+      className={styles.rootFormWrapper}
     >
       {isMobile && <Image
         className={styles.blaxcorpLogin}
@@ -42,9 +42,11 @@ const ForgotPassword: FC<any> = ({handleActivePage,isMobile}) => {
 
       <form className={styles.formWrapper}>
         <FormProvider {...methods}>
-          <TextInput name="email" label="Enter your email" />
-          <div style={{ marginTop: "40px" }}>
-            <Button name="Reset password" fullWidth size="large" onClickHandler={()=>handleActivePage(PAGES.RESET_PASSWORD)}/>
+          <div className={styles.formUpperSection}>
+            <TextInput name="email" label="Enter your email" />
+          </div>
+          <div className={styles.formLowerSection}>
+            <Button name="Reset password" fullWidth size="large" onClickHandler={() => handleActivePage(AUTH_TABS.RESET_PASSWORD)} />
           </div>
         </FormProvider>
       </form>

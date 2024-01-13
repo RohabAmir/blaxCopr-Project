@@ -17,17 +17,6 @@ const ContractForm: FC = () => {
     setActiveStep(current);
   };
 
-  React.useEffect(() => {
-    console.log(
-      "contract formstate",
-      methods.formState,
-      "form state defult",
-      methods.formState.defaultValues,
-      "dirty fields",
-      methods.formState.dirtyFields
-    );
-  }, [methods.formState]);
-
   return (
     <FormProvider {...methods}>
       {screens["sm"] && <Stepper activeStep={activeStep} />}
