@@ -23,6 +23,7 @@ interface ICard {
 }
 const Card: FC<ICard> = ({ data }) => {
   const [activeType, setActiveType] = useState(false);
+  const [isMouseOver, setMouseOver] = useState(false)
   function handleActiveType() {
     setActiveType((active) => !active);
   }
@@ -30,10 +31,14 @@ const Card: FC<ICard> = ({ data }) => {
   const closedstyles =
     status == "Closed"
       ? {
-          // color: "#747a67",
-          opacity: "0.5",
-        }
+        // color: "#747a67",
+        opacity: "0.5",
+      }
       : {};
+
+  const mouseOverHandler = (val: boolean, status: string) => {
+    if (status !== "Closed") { setMouseOver(val) }
+  }
 
   return (
     <>
@@ -60,19 +65,15 @@ const Card: FC<ICard> = ({ data }) => {
               {status}
             </p>
           </div>
-          <div className={styles.flexRow}>
-            <Image
+          <div className={styles.flexRow} onMouseOver={() => mouseOverHandler(true,status)} onMouseLeave={() => mouseOverHandler(false,status)}>
+            {isMouseOver ? <button className={styles.cancel} >Cancel</button> : <><Image
               onClick={handleActiveType}
               className={styles.btnIcon}
               style={closedstyles}
               src={activeType ? SecondaryButton : UserIcon}
               alt="dash icon"
             />
-            {status === "Closed" ? (
-              <span className={styles.close}>{type}</span>
-            ) : (
-              <span className={styles.span}>{type}</span>
-            )}
+              {status === "Closed" ? <span className={styles.close}>{type}</span> : <span className={styles.span}>{type}</span>}</>}
           </div>
         </div>
         <h1 className={styles.heading} style={closedstyles}>

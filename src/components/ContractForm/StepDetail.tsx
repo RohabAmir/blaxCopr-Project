@@ -15,14 +15,8 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
   const screens: any = useBreakpoint();
   const [itemsCount, setItemsCount] = useState<number>(1);
   const [isShipping, setShipping] = useState(true);
-  // const router = useRouter();
-  useEffect(() => {
-    console.log("Component mounted, router is ready");
-  }, []);
 
   const handleBackClick = () => {
-    console.log("hello");
-    console.log(step - 1);
     if (step >= 0) handleStepChange(step - 1);
   };
   return (

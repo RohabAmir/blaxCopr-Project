@@ -17,6 +17,7 @@ interface IButton {
   size?: SizeType;
   leftIcon?: IconType;
   rightIcon?: IconType;
+  style?:any
 }
 
 const GeneralButton: FC<IButton> = ({
@@ -27,6 +28,7 @@ const GeneralButton: FC<IButton> = ({
   size = "large",
   leftIcon = IconType.None,
   rightIcon = IconType.None,
+  style
 }) => {
   return (
     <Button
@@ -35,6 +37,7 @@ const GeneralButton: FC<IButton> = ({
       className={styles.root}
       size={size}
       style={{
+        
         width: fullWidth ? "100%" : "fit-content",
         fontWeight: 600,
         backgroundColor:
@@ -43,6 +46,7 @@ const GeneralButton: FC<IButton> = ({
             : type === ButtonType.Secondary
             ? "#16330014"
             : "transparent",
+            ...style
       }}
     >
       {leftIcon !== IconType.None ? (

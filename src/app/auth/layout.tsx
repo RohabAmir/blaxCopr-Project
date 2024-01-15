@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { ConfigProvider } from 'antd';
 import StyledComponentsRegistry from '@/lib/Antd/AntdRegistery';
 import { theme } from "@/lib/Antd/Config"
+import AuthContextContainer from '@/contexts/Auth';
+import AppContextContainer from '@/contexts/App';
 import '../globals.scss'
 
 export const metadata: Metadata = {
@@ -19,7 +21,11 @@ export default function RootLayout({
             <body>
                 <StyledComponentsRegistry>
                     <ConfigProvider theme={theme}>
-                        {children}
+                        <AuthContextContainer>
+                            <AppContextContainer>
+                                {children}
+                            </AppContextContainer>
+                        </AuthContextContainer>
                     </ConfigProvider>
                 </StyledComponentsRegistry>
             </body>

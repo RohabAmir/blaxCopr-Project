@@ -4,20 +4,17 @@ import { Controller, useFormContext } from "react-hook-form";
 import Eye from "../../../../public/icons/eye.svg";
 import EyeOff from "../../../../public/icons/eye-off.svg";
 import Image from "next/image";
-import { PAGES } from "@/components/Auth";
 
 interface IPasswordInput {
   name: string;
   placeholder?: string;
   label?: string;
-  forgotPassword?: boolean;
 }
 
 const PasswordInput: FC<IPasswordInput> = ({
   name,
   placeholder,
-  label,
-  forgotPassword = false,
+  label
 }) => {
   const { Text } = Typography;
   const { control } = useFormContext();
@@ -29,15 +26,7 @@ const PasswordInput: FC<IPasswordInput> = ({
             {label}
           </div>
         )}
-        {forgotPassword && (
-          <div style={{ margin: "5px 0", color: "#454745", fontSize: "14px" }}>
-            
-              <Text underline strong > 
-                Forgot your password
-              </Text>
-            
-          </div>
-        )}
+        
       </Flex>
       <Controller
         render={({ field }) => (

@@ -1,4 +1,4 @@
-import { Col, Row, Flex, Typography, Grid } from "antd";
+import { Flex, Typography } from "antd";
 import React, { FC } from 'react'
 import Link from "next/link";
 import Image from "next/image";
@@ -12,9 +12,14 @@ import Pic1 from "../../../public/images/Pic1.svg";
 import Pic2 from "../../../public/images/Pic2.svg";
 import Pic3 from "../../../public/images/Pic3.svg";
 import CardReview from "./CardReview";
+import { useAuthContext } from "@/contexts/Auth";
+import { useAppContext } from "@/contexts/App";
 
-const Default: FC<any> = ({ activePage, isMobile, children }) => {
+const Default: FC<any> = ({ children }) => {
   const { Text } = Typography;
+  const {isMobile}=useAppContext()
+  const { activePage } = useAuthContext()
+
   const DESKTOP_TAGLINE: any = {
     DEFAULT: { title1: 'Step into the', title2: 'Digital Escrow Era', desc1: ' Engage in buying and selling with absolute safety,', desc2: 'free from the worries of chargebacks.' },
     SIGN_UP: { title1: 'Step into the', title2: 'Digital Escrow Era', desc1: ' Engage in buying and selling with absolute safety,', desc2: 'free from the worries of chargebacks.' },
@@ -22,15 +27,12 @@ const Default: FC<any> = ({ activePage, isMobile, children }) => {
     FORGOT_PASSWORD: { title1: 'Regain Account', title2: 'Access Smoothly', desc1: ' Reset your password in just a few clicks and', desc2: 'continue your secure journey with us.' },
     RESET_PASSWORD: { title1: 'Reset and ', title2: 'Resume Securely', desc1: 'Quickly set up a new password and continue your', desc2: 'safe,hassle- free experience with Blaxcorp.' }
   }
-
   const sideData = DESKTOP_TAGLINE[activePage]
-
   return (
-    <Row
-      justify="center"
-      align="top"
-      style={{ height: "100vh" }}
-      className={styles.main}
+    <Flex
+      justify="space-around"
+      align="center"
+      className={styles.root}
     >
       {/*------------------------ For future ------------------ */}
       {/* {signup && (
@@ -58,7 +60,7 @@ const Default: FC<any> = ({ activePage, isMobile, children }) => {
       </Col>
     )} */}
 
-      <Col xxl={12} className={styles.loginMain}>
+      <Flex vertical align="center" justify="center" className={styles.leftSubRoot}>
         <Image
           className={styles.blaxcorpLogin}
           src={BLAXCORP_LOGO}
@@ -69,31 +71,27 @@ const Default: FC<any> = ({ activePage, isMobile, children }) => {
         </h1>
         <h1 className={styles.subHeading}>
           {sideData?.desc1}
-          <br />  {sideData?.desc2}
+          <br />
+          {sideData?.desc2}
         </h1>
-      </Col>
-      <Col xxl={12} className={styles.rightSubRoot}>
+      </Flex>
+      <Flex className={styles.rightSubRoot}>
         <Flex
           vertical
           align="center"
           justify="center"
+          gap={20}
           className={styles.formContainer}
         >
-          <Flex
-            vertical
-            // align={isResetPassword ? "flex-start" : "center"}
-            style={{ width: "100%" }}
-          >
-            {children}
-          </Flex>
+          {children}
           <Flex
             vertical
             align="center"
             justify="center"
-            gap={30}
-            style={{ marginTop: "40px", marginBottom: "64px" }}
+            gap={20}
+            className="w-full"
           >
-            {isMobile && <Text style={{ color: "#454745" }}>Or log in with</Text>}
+            {!isMobile && <Text style={{ color: "#454745" }}>Or log in with</Text>}
             <Flex className={styles.regBtns} align="center" justify="center" gap="large">
               <span className={styles.logoOutline}>
                 <Image src={GoogleLogo} alt="google logo" />
@@ -108,9 +106,8 @@ const Default: FC<any> = ({ activePage, isMobile, children }) => {
             <Text
               style={{
                 textAlign: "center",
-                // visibility: path.includes("sign-up") ? "visible" : "hidden",
                 color: "#454745",
-                marginBottom: "64px",
+                // marginBottom: isMobile?"0":'64px'
               }}
             >
               By registering, you accept our{" "}
@@ -137,8 +134,8 @@ const Default: FC<any> = ({ activePage, isMobile, children }) => {
             </Text>
           </Flex>
         </Flex>
-      </Col>
-    </Row>
+      </Flex>
+    </Flex>
   )
 }
 

@@ -7,18 +7,9 @@ interface ILayout {
 }
 
 const Layout: FC<ILayout> = ({ children }) => {
-  const [responsive, setResponsive] = useState(false);
-  useEffect(() => {
-    function checkSize() {
-      if (window.innerWidth <= 780) {
-        setResponsive(true);
-      }
-    }
-    checkSize();
-  }, []);
   return (
     <div className={styles.main}>
-      {!responsive && <AppBar />}
+      <AppBar />
       {children}
     </div>
   );

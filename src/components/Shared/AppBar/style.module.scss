@@ -1,4 +1,11 @@
+@import "../../../styles/base.scss";
+
 .mainContainer {
+  width: 100%;
+  position: relative;
+}
+
+.subContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -6,13 +13,35 @@
   margin-bottom: 48px;
   margin-top: 24px;
   position: relative;
+  width: 100%;
 }
+
+
+.mainContainerResponsive {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background-color: #fff;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content:flex-start;
+  gap: 40px;
+  overflow: none;
+  padding: 2%;
+  box-sizing: border-box;
+}
+
 .routesContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 24px;
 }
+
 .iconsContainer {
   display: flex;
   width: 166.974px;
@@ -22,48 +51,38 @@
   gap: 14.669px;
   flex-shrink: 0;
 }
+
 .iconMask {
   width: 28.089px;
   height: 31.229px;
   flex-shrink: 0;
 }
+
 .iconBlaxCorp {
   width: 124.216px;
   height: 27.777px;
   flex-shrink: 0;
 }
+
 .button {
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
-  line-height: 24px; /* 150% */
+  line-height: 24px;
+  /* 150% */
   letter-spacing: 0.08px;
   background-color: transparent;
   border: none;
   cursor: pointer;
 }
 
-// .button:link,
-// .button:visited {
-//   display: flex;
-//   align-items: flex-start;
-//   gap: 4px;
-//   border-radius: 100px;
-//   background: #9fe870;
-//   cursor: pointer;
-//   text-decoration: none; /* Remove underline for links */
-//   color: inherit; /* Inherit text color */
-// }
-
 .button:active,
 .button:focus {
   padding: 5px 12px;
   border-radius: 100px;
-
-  /* The styles for the active and focused state, making the button green */
   background: #9fe870;
-  outline: none; /* Remove default focus outline */
+  outline: none;
 }
 
 .icons {
@@ -74,9 +93,11 @@
   position: relative;
   cursor: pointer;
 }
+
 .icons:hover {
   background-color: rgba(56, 94, 31, 0.08);
 }
+
 .icon {
   width: 28px;
   height: 22px;
@@ -90,6 +111,7 @@
   color: #0e0f0c;
   font-weight: 600;
 }
+
 .flexContent {
   display: flex;
   justify-content: center;
@@ -101,9 +123,11 @@
   background-color: transparent;
   cursor: pointer;
 }
+
 .flexContent:hover {
   background-color: #16330014;
 }
+
 .flexContentActive {
   display: flex;
   justify-content: center;
@@ -114,6 +138,7 @@
   padding: 8px;
   background-color: #16330014;
 }
+
 .iconHeading {
   display: flex;
   width: 166.974px;
@@ -123,10 +148,12 @@
   gap: 14.669px;
   flex-shrink: 0;
 }
+
 .menuIcon {
   cursor: pointer;
   position: relative;
 }
+
 .mobileMenu {
   display: flex;
   flex-direction: column;
@@ -141,102 +168,23 @@
 .mobileMenu li {
   margin-bottom: 10px;
 }
-.mainContainerResponsive {
-  position: fixed;
-  height: 100vh;
-  width: 100vw;
-  background-color: #fff;
-  z-index: 9999;
-  top: 0;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-}
 
+.mobileMenuIcon{
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
 // -----------------------------------------------------
-@media screen and (max-width: 790px) {
+@include break-level('md') {
   .mainContainer {
     gap: 22px;
   }
+
+
+  .mainContainerResponsive {}
+
   .button {
     font-size: 14px;
-  }
-}
-@media screen and (max-width: 760px) {
-  .routesContainer {
-    gap: 18px;
-  }
-  .icons {
-    padding: 9px 10px;
   }
 
-  .text {
-    padding: 12px 11px;
-    font-size: 16px;
-  }
-  .mainContainer {
-    margin-bottom: 18px;
-  }
-}
-@media screen and (max-width: 735px) {
-  .routesContainer {
-    gap: 15px;
-  }
-  .button {
-    font-size: 14px;
-  }
-  .mainContainer {
-    gap: 18px;
-  }
-}
-@media screen and (max-width: 710px) {
-  // .button {
-  //   font-size: 13px;
-  // }
-  .routesContainer {
-    gap: 13px;
-  }
-  .icons {
-    padding: 7px 9px;
-  }
-
-  .text {
-    padding: 10px 10px;
-    font-size: 14px;
-  }
-}
-@media screen and (max-width: 700px) {
-  .button {
-    font-size: 13px;
-  }
-  .iconHeading {
-    width: 150px;
-    height: 30px;
-  }
-  .mainContainer {
-    margin-bottom: 16px;
-  }
-}
-@media screen and (max-width: 680px) {
-  .button {
-    font-size: 12px;
-  }
-  .iconHeading {
-    width: 140px;
-    height: 28px;
-  }
-  .routesContainer {
-    gap: 10px;
-  }
-  .mainContainer {
-    align-items: center;
-  }
-  .mainContainer {
-    margin-bottom: 14px;
-  }
-}
-@media screen and (max-width: 620px) {
-  .mainContainer {
-    margin-bottom: 12px;
-  }
 }

@@ -1,47 +1,38 @@
 "use client";
-import React, { FC, useMemo, useState } from "react";
-import {  Grid } from "antd";
+import React, { FC } from "react";
 import Default from "./Default";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import ResetPassword from "./ResetPassword";
 import ForgotPassword from "./ForgotPassword";
-
-export enum PAGES {
-  DEFAULT = 'DEFAULT',
-  SIGN_UP = 'SIGN_UP',
-  SIGN_IN = "SIGN_IN",
-  FORGOT_PASSWORD = "FORGOT_PASSWORD",
-  RESET_PASSWORD = "RESET_PASSORD"
-}
+import { ButtonType } from "@/types";
+import Button from "@/components/Shared/Button";
+import { AUTH_TABS, useAuthContext } from "@/contexts/Auth";
+import { useAppContext } from "@/contexts/App";
 
 const Auth: FC = () => {
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
-  const isMobile = useMemo(() => screens["sm"] && !screens['md'] || screens['xs'] && !screens['md'], [screens])
-  const [activePage, setActivePage] = useState(isMobile?PAGES.DEFAULT:PAGES.SIGN_IN)
+  const {isMobile}=useAppContext()
+  const {  activePage, handleActivePage } = useAuthContext()
 
-  const getActiveUI = (currentPage: any, handleActivePage: (page: any) => void) => {
-    if (currentPage === PAGES.SIGN_IN) {
-      return <SignIn handleActivePage={handleActivePage} isMobile={isMobile}/>
-    } else if (currentPage === PAGES.SIGN_UP) {
-      return <SignUp handleActivePage={handleActivePage} isMobile={isMobile}/>
-    } else if (currentPage === PAGES.RESET_PASSWORD) {
-      return <ResetPassword handleActivePage={handleActivePage} isMobile={isMobile}/>
-    } else if (currentPage === PAGES.FORGOT_PASSWORD) {
-      return <ForgotPassword handleActivePage={handleActivePage} isMobile={isMobile}/>
+  const getActiveUI = (currentPage: any) => {
+    if (currentPage === AUTH_TABS.SIGN_IN) {
+      return <SignIn />
+    } else if (currentPage === AUTH_TABS.SIGN_UP) {
+      return <SignUp />
+    } else if (currentPage === AUTH_TABS.RESET_PASSWORD) {
+      return <ResetPassword />
+    } else if (currentPage === AUTH_TABS.FORGOT_PASSWORD) {
+      return <ForgotPassword />
     } else {
-      return <Default activePage={activePage} isMobile={isMobile}><div>danish</div></Default>
+      return <Default >
+        <Button name="Create account" fullWidth size="large" onClickHandler={() => handleActivePage(AUTH_TABS.SIGN_UP)} style={{ height: "50px" }} />
+        <Button name="Login" fullWidth size="large" type={ButtonType.Secondary} onClickHandler={() => handleActivePage(AUTH_TABS.SIGN_IN)} style={{ height: "50px" }} />
+      </Default>
     }
   }
-
-  const handleActivePage = (page: any) => {
-    setActivePage(page)
-  }
-
-  return (isMobile ? getActiveUI(activePage, handleActivePage) :
-    <Default activePage={activePage} isMobile={isMobile}>
-      {getActiveUI(activePage, handleActivePage)}
+  return (isMobile ? getActiveUI(activePage) :
+    <Default >
+      {getActiveUI(activePage)}
     </Default>
   );
 };

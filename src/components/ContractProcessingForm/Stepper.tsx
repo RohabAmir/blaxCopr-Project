@@ -82,7 +82,6 @@ interface CustomDotProps {
 }
 
 const customDot: React.FC<CustomDotProps> = ({ currentStep, status }) => {
-  console.log(currentStep, status);
   return (
     <Popover>
       {

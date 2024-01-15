@@ -9,16 +9,7 @@
   font-size: 16px;
 }
 .securityMain {
-  // display: flex;
-  // width: 100%;
-  // // justify-content: center;
-  // gap: 16px;
-  // display: flex;
-  // /* width: 100%; */
-  // gap: 16px;
-  // flex-flow: row-reverse;
   display: flex;
-  /* width: 100%; */
   gap: 16px;
   flex-flow: row-reverse;
   justify-content: flex-end;
@@ -39,11 +30,9 @@
 .personalDetails {
   max-width: 650px;
   display: flex;
-  //   align-items: end;
   gap: 30px;
   width: 100%;
   flex-direction: column;
-  // vertical align="end" gap={30} style={{ width: "100%" }}
 }
 .personalDetailsMin {
   display: flex;
@@ -51,6 +40,7 @@
   justify-content: space-between;
   gap: 30px;
 }
+
 .flexText {
   display: flex;
   justify-content: center;
@@ -88,21 +78,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    // width: 100%;
-    // margin-bottom: 12px;
   }
   .security_left {
-    // width: 70%;
-    // height: 50%;
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
-    // width: 40px;
-    // height: 40px;
-    // // display: flex;
-    // // justify-content: center;
-    // // align-items: center;
-    // margin-top: 24px;
     aspect-ratio: 1;
     height: 100%;
     width: 50%;

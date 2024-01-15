@@ -64,8 +64,6 @@ const ContractProcessingForm: FC = () => {
     document.body.style.overflow = "auto";
   };
 
-  console.log(isModalOpen);
-
   return (
     <Flex vertical className="w-full">
       {/* <VerifyProfileBar /> */}
