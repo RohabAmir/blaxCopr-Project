@@ -14,25 +14,23 @@ import { useAppContext } from "@/contexts/App";
 const ForgotPassword: FC<any> = () => {
   const methods = useForm();
   const { Title, Text } = Typography;
-  const {isMobile}=useAppContext()
-  const {handleActivePage }=useAuthContext() 
-
+  const { isMobile } = useAppContext();
+  const { handleActivePage, goBack } = useAuthContext();
 
   return (
-    <Flex
-      vertical
-      align="flex-start"
-      className={styles.rootFormWrapper}
-    >
-      {isMobile && <Image
-        className={styles.blaxcorpLogin}
-        src={BLAXCORP_LOGO}
-        alt="blaxcorp logo"
-      />}
+    <Flex vertical align="flex-start" className={styles.rootFormWrapper}>
+      {isMobile && (
+        <Image
+          className={styles.blaxcorpLogin}
+          src={BLAXCORP_LOGO}
+          alt="blaxcorp logo"
+        />
+      )}
       <Button
         name="Back"
         leftIcon={IconType.BackArrow}
         type={ButtonType.Secondary}
+        onClickHandler={goBack}
       />
       <Flex vertical align="start" justify="start">
         <Title level={2}>Forgot Password?</Title>
@@ -48,7 +46,12 @@ const ForgotPassword: FC<any> = () => {
             <TextInput name="email" label="Enter your email" />
           </div>
           <div className={styles.formLowerSection}>
-            <Button name="Reset password" fullWidth size="large" onClickHandler={() => handleActivePage(AUTH_TABS.RESET_PASSWORD)} />
+            <Button
+              name="Reset password"
+              fullWidth
+              size="large"
+              onClickHandler={() => handleActivePage(AUTH_TABS.RESET_PASSWORD)}
+            />
           </div>
         </FormProvider>
       </form>

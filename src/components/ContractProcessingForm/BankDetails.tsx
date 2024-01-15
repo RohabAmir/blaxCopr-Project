@@ -1,7 +1,7 @@
 import { FC } from "react";
 import styles from "./style.module.scss";
 import WarningIcon from "../../../public/icons/Dash.svg";
-import { Flex } from "antd";
+import { Flex, Grid } from "antd";
 import { FormSection } from "../Shared";
 
 import Image from "next/image";
@@ -10,18 +10,21 @@ import { ButtonType, IconType } from "@/types";
 // import { FormProvider, useForm } from "react-hook-form";
 import CopyIcon from "../../../public/icons/Copy.svg";
 import InfoIcon from "../../../public/icons/Info.svg";
-
+const { useBreakpoint } = Grid;
+const screens: any = useBreakpoint;
 const BankDetails: FC = () => {
   return (
     <>
       <Flex vertical className="w-full">
         <div className={styles.bankDetailsMainRes}>
           <div className={styles.bankDetails}>
-            <Button
-              name="Back"
-              leftIcon={IconType.BackArrow}
-              type={ButtonType.Secondary}
-            />
+            {screens["md"] && (
+              <Button
+                name="Back"
+                leftIcon={IconType.BackArrow}
+                type={ButtonType.Secondary}
+              />
+            )}
             <p className={styles.transferHeading}>Send money from your bank</p>
           </div>
           <div className={styles.bankDetailsMain}>

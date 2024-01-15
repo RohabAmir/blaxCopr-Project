@@ -172,15 +172,16 @@ const ContractProcessingForm: FC = () => {
           <Invoice />
           {/* --------------------------------------- */}
           {/* -----------------SELLER FLOW -------------------------- */}
-          {/* <SetupWithDrawl /> */}
-          {/* <AddWithDrawl /> */}
-          {/* <AddWithDrawlDisbursement /> */}
-          {/* <WithDrawlMethod /> */}
-          {/* <WithDrawlBuyerWaiting /> */}
-          {/* <InspectedPeriod /> */}
+          <SetupWithDrawl />
+          <AddWithDrawl />
+          <AddWithDrawlDisbursement />
+          <WithDrawlMethod />
+          <WithDrawlBuyerWaiting />
+          <InspectedPeriod />
+          <DisputOpened />
 
-          {/* <FundsReleased />*/}
-          {/* <Invoice /> */}
+          <Invoice />
+          <FundsReleased />
           {/* ---Agreement form--- */}
           {/* <ConfirmContractCancellation closeModal={closeModal} /> */}
           <StepAgreement />

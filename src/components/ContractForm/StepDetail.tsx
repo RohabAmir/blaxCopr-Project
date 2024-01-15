@@ -10,11 +10,13 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
-const StepDetail: FC<any> = ({ handleStepChange, step }) => {
+const StepDetail: FC<any> = ({ handleStepChange, step, selectedCurrency }) => {
+  console.log(selectedCurrency);
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
   const [itemsCount, setItemsCount] = useState<number>(1);
   const [isShipping, setShipping] = useState(true);
+  const [isTransactionDetails, setTransactionDetails] = useState(true);
 
   const handleBackClick = () => {
     if (step >= 0) handleStepChange(step - 1);
@@ -32,29 +34,43 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
           // onClickHandler={() => router.back()}
         />
       </Flex>
-      {new Array(itemsCount).fill("").map((_, i) => (
-        <FormSection key={i} title="Transaction Details">
-          <Flex style={{ width: "100%" }} className={styles.detialsCol}>
-            <div className={styles.detailsItem}>
-              <TextInput name="itemName" label="Item name" />
-            </div>
-            <div className={styles.detailsItem}>
-              <TextInput name="price" label="Price(USD)" />
-            </div>
-          </Flex>
-          <Dropdown
-            name="itemCategory"
-            label="Item category"
-            options={[{ value: "123", label: "Item2" }]}
-          />
-          <Row className="w-full">
-            <TextInput
-              name="Description "
-              label="Description of Item or Service"
-            />
-          </Row>
-        </FormSection>
-      ))}
+      {isTransactionDetails && (
+        <>
+          {new Array(itemsCount).fill("").map((_, i) => (
+            <FormSection
+              key={i}
+              title="Transaction Details"
+              buttonTitle="Remove"
+              buttonClickHandler={() => setTransactionDetails(false)}
+            >
+              <Flex style={{ width: "100%" }} className={styles.detialsCol}>
+                <div className={styles.detailsItem}>
+                  <TextInput name="itemName" label="Item name" />
+                </div>
+                <div className={styles.detailsItem}>
+                  <TextInput
+                    name="price"
+                    label={`price (${selectedCurrency})`}
+                  />
+                </div>
+              </Flex>
+              <Dropdown
+                name="itemCategory"
+                label="Item category"
+                options={[{ value: "123", label: "Item2" }]}
+                onChange={() => console.log("")}
+              />
+              <Row className="w-full">
+                <TextInput
+                  name="Description "
+                  label="Description of Item or Service"
+                />
+              </Row>
+            </FormSection>
+          ))}
+        </>
+      )}
+
       <FormSection>
         <Row className="w-full">
           <Button
@@ -86,6 +102,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                 options={[
                   { value: "standard-shipping", label: " Standard Shipping " },
                 ]}
+                onChange={() => console.log("")}
               />
             </div>
           </Flex>
@@ -98,6 +115,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                   { value: "seller", name: "seller" },
                   { value: "buyer", name: "buyer" },
                 ]}
+                onChange={() => console.log("")}
               />
             </Col>
             <Col className={styles.detailsItem}>
@@ -105,6 +123,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                 name="inspection period"
                 label="Inspection period (days)"
                 options={[{ value: "1", label: "1(min)" }]}
+                onChange={() => console.log("")}
               />
             </Col>
           </Flex>
@@ -159,24 +178,55 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
               <p className={styles.total}>Shipping fee:</p>
               <p className={styles.amount}>$123.00</p>
             </div>
-            <div className={styles.flexDetailsLine}>
-              <Flex align="center" className="w-full">
-                <span>Escrow fee paid by:</span>
-                <span
-                  className="w-full"
-                  style={{ maxWidth: "100px", padding: "0px" }}
-                >
-                  <Dropdown
+            {screens["sm"] && (
+              <div className={styles.flexDetailsLine}>
+                <Flex align="center" className="w-full">
+                  <span>Escrow fee paid by:</span>
+                  <span
+                    className="w-full"
+                    style={{
+                      maxWidth: "100px",
+                      padding: "0px",
+                      marginRight: "24px",
+                    }}
+                  >
+                    {/* <Dropdown
                     name="escrow-payee"
                     options={[
                       { value: "seller", label: "Seller" },
                       { value: "buyer", label: "Buyer" },
                     ]}
-                  />
-                </span>
-              </Flex>
-              <p className={styles.amount}>$30.00</p>
-            </div>
+                  /> */}
+                    <select className={styles.select} name="Seller">
+                      <option value="seller">Seller</option>
+                      <option value="buyer">Buyer</option>
+                    </select>
+                  </span>
+                </Flex>
+                <p className={styles.amount}>$30.00</p>
+              </div>
+            )}
+            {!screens["sm"] && (
+              <>
+                <div
+                  className={styles.flexDetails}
+                  style={{ marginBottom: "8px" }}
+                >
+                  <p className={styles.total}>Escrow fee:</p>
+                  <p className={styles.amount}>$30.00</p>
+                </div>
+                <div className={styles.flexDetailsLine}>
+                  <Flex align="center" className="w-full">
+                    <span>Escrow fee paid by:</span>
+                  </Flex>
+                  <select className={styles.selectAfter} name="Seller">
+                    <option value="seller">Seller</option>
+                    <option value="buyer">Buyer</option>
+                  </select>
+                </div>
+              </>
+            )}
+
             <div className={styles.flexDetails}>
               <p className={styles.total}>Buyer price:</p>
               <p className={styles.amount}>$10.153.00</p>
@@ -213,7 +263,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
             />
             <p className={styles.headingDetails}>Cancellation fees </p>
           </Row>
-          <div className={styles.amountBig}>
+          <div className={styles.amountBigUpdated}>
             Cancellation fees paid by:{" "}
             <select className={styles.select} name="Seller">
               <option value="seller">Seller</option>

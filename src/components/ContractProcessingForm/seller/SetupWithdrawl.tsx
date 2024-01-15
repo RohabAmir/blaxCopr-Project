@@ -13,7 +13,7 @@ const SetupWithDrawl: FC = () => {
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
   return (
-    <div className={styles.agreementMain} style={{ marginTop: "12px" }}>
+    <div className={styles.sellerMain} style={{ marginTop: "12px" }}>
       <div className={styles.depositMain}>
         <div className={styles.deposit}>
           <div className={styles.flexDeposit}>

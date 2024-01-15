@@ -19,6 +19,12 @@ import Link from "next/link";
 const Create: FC<any> = ({ handleStepChange, step }) => {
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
+  // -------------------------------------------
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
+  const handlechange = (value: string) => {
+    setSelectedCurrency(value);
+    console.log(selectedCurrency);
+  };
 
   const roleOptions = [
     { value: "buyer", label: "Buyer" },
@@ -82,16 +88,23 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
         <Flex className={styles.createInput}>
           <Flex vertical className="w-full" gap={20}>
             <TextInput name="contractName" label="Contract Name" />
-            <Dropdown name="role" label="My role" options={roleOptions} />
+            <Dropdown
+              name="role"
+              label="My role"
+              options={roleOptions}
+              onChange={() => console.log("")}
+            />
             <Dropdown
               name="Currency"
               label="Currency"
               options={currencyOptions}
+              onChange={handlechange}
             />
             <Dropdown
               name="Inspection Period(day)"
               label="Inspection Period(days)"
               options={inspectionOptions}
+              onChange={() => console.log("")}
             />
           </Flex>
         </Flex>
@@ -117,7 +130,7 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
       <div className={styles.nextBtn}>
         <Button
           name="Next"
-          onClickHandler={() => handleStepChange(1)}
+          onClickHandler={() => handleStepChange(1, { selectedCurrency })}
           fullWidth={!screens["md"]}
         />
       </div>

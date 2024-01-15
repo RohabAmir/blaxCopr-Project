@@ -26,7 +26,7 @@ const SuccessfulDeposit: FC = () => {
               <p className={styles.headingDeposit}>
                 Funds succesfully deposited in escrow
               </p>
-              <p className={styles.subHeadingDeposit}>Amount: $10.030.00</p>
+              <p className={styles.subHeadingDeposit}>Amount: $10,030.00</p>
             </div>
           </div>
         </div>

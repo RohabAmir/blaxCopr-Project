@@ -65,10 +65,15 @@ const TransferAmount: FC = () => {
               name="Back"
               leftIcon={IconType.BackArrow}
               type={ButtonType.Secondary}
+              size={screens["sm"] ? "large" : "middle"}
             />
           )}
           <div className={styles.transferBtn}>
-            <Button name="Continue" type={ButtonType.Primary} />
+            <Button
+              name="Continue"
+              type={ButtonType.Primary}
+              size={screens["sm"] ? "large" : "middle"}
+            />
           </div>
         </div>
       </div>

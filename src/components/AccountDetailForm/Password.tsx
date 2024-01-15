@@ -1,30 +1,27 @@
-import { Flex, Grid } from "antd";
 import React, { FC } from "react";
-import style from "./style.module.scss";
 import PasswordInput from "../Shared/Inputs/Password";
 import Button from "../Shared/Button";
 import styles from "./style.module.scss";
+import { useAppContext } from "@/contexts/App";
 
 const Password: FC = () => {
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+  const { isMobile } = useAppContext();
   return (
     <>
-      {/* <div className={styles.personalDetails}> */}
       <div className={styles.personalDetailsMin}>
-        <div style={screens["sm"] ? { width: "50%" } : { width: "100%" }}>
+        <div style={!isMobile ? { width: "50%" } : { width: "100%" }}>
           <span style={{ width: "100%" }}>
             <PasswordInput name="oldPassword" label="Old Password" />
           </span>
         </div>
-        <div style={screens["sm"] ? { width: "50%" } : { width: "100%" }}>
+        <div style={!isMobile ? { width: "50%" } : { width: "100%" }}>
           <span style={{ width: "100%" }}>
             <PasswordInput name="lastPassword" label="New Password" />
           </span>
         </div>
       </div>
       <div className={styles.btnEnd}>
-        <Button name="Save" fullWidth={!screens["sm"]} />
+        <Button name="Save" fullWidth={isMobile} />
       </div>
       {/* </div> */}
     </>

@@ -16,38 +16,39 @@ const FundsReleased: FC = () => {
   return (
     <>
       {/* ----------------------- */}
-      <div className={styles.methodMain}>
-        <div className={styles.btnRight}>
-          <div className={styles.flexDeposit}>
-            <span className={styles.iconOkGreen}>
-              <Image
-                className={styles.okIconGrn}
-                src={OklIcon}
-                alt="warning icon"
-              />
-            </span>
-            <div className={styles.flexTextDeposit}>
-              <p className={styles.headingDeposit}>
-                Funds released to your primary account:{" "}
-              </p>
-              <p className={styles.subHeadingDeposit}>Amount: $10.030.00</p>
+      <div className={styles.sellerMain}>
+        <div className={styles.methodMain}>
+          <div className={styles.btnRight}>
+            <div className={styles.flexDeposit}>
+              <span className={styles.iconOkGreen}>
+                <Image
+                  className={styles.okIconGrn}
+                  src={OklIcon}
+                  alt="warning icon"
+                />
+              </span>
+              <div className={styles.flexTextDeposit}>
+                <p className={styles.headingDeposit}>
+                  $10.030.00 released to your primary account:{" "}
+                </p>
+                <p className={styles.subHeadingDeposit}>16 dec 2023 </p>
+              </div>
             </div>
           </div>
-          <p>16 dec</p>
         </div>
-      </div>
-      <Flex vertical className="w-full">
-        <FormSection>
-          <span className={styles.flexInline}>
-            <Image src={InfoIcon} alt="info icon" />
-            <span className={styles.lastText}>
-              Wire transfers usually arrive within 1 to 5 business days,
-              depending on the bank
+        <Flex vertical className="w-full">
+          <FormSection>
+            <span className={styles.flexInline}>
+              <Image src={InfoIcon} alt="info icon" />
+              <span className={styles.lastText}>
+                Wire transfers usually arrive within 1 to 5 business days,
+                depending on the bank
+              </span>
             </span>
-          </span>
-        </FormSection>
-      </Flex>
-      {/* ------------------------------ */}
+          </FormSection>
+        </Flex>
+        {/* ------------------------------ */}
+      </div>
     </>
   );
 };

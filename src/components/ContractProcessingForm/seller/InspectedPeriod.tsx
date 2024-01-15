@@ -14,11 +14,12 @@ import { Grid } from "antd";
 
 const InspectedPeriod: FC = () => {
   const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint;
+  const screens: any = useBreakpoint();
 
   return (
     <>
       {/* ----------------------- */}
+      {/* <div className={styles.agreementMain}> */}
       <div className={styles.sellerMain}>
         <div className={styles.methodMainAbs}>
           <div className={styles.btnRight}>
@@ -56,6 +57,25 @@ const InspectedPeriod: FC = () => {
           </div>
         </div>
         {/* --------------------------------------- */}
+        <div className={styles.methodMain}>
+          <div className={styles.btnRight}>
+            <div className={styles.flexDeposit}>
+              <span className={styles.iconOkGreen}>
+                <Image
+                  className={styles.okIconGrn}
+                  src={OklIcon}
+                  alt="warning icon"
+                />
+              </span>
+              <div className={styles.flexTextDeposit}>
+                <p className={styles.headingDeposit}>
+                  Funds succesfully deposited in escrow
+                </p>
+                <p className={styles.subHeadingDeposit}>Amount: $10,030.00</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* ------------------------------ */}
         <div className={styles.methodMainLast}>
@@ -78,6 +98,7 @@ const InspectedPeriod: FC = () => {
           </div>
         </div>
       </div>
+      {/* </div> */}
     </>
   );
 };

@@ -6,7 +6,7 @@ import Image from "next/image";
 const PendingDeposit: FC = () => {
   return (
     <>
-      <div className={styles.agreementMain}>
+      <div className={styles.agreementMain} style={{ marginTop: "24px" }}>
         <div className={styles.depositMainPend}>
           <div className={styles.flexDeposit}>
             <Image

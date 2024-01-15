@@ -23,6 +23,7 @@ const BankLocation: FC = () => {
               name="Back"
               leftIcon={IconType.BackArrow}
               type={ButtonType.Secondary}
+              size={screens["sm"] ? "large" : "middle"}
             />
           )}
           <p className={styles.transferHeading}>Bank location</p>
@@ -36,11 +37,22 @@ const BankLocation: FC = () => {
               name="bank location"
               label="Bank Location"
               options={[{ value: "US", label: "United States" }]}
+              onChange={() => {
+                console.log("");
+              }}
             />
             <Dropdown
               name="currency"
               label="Currency"
-              options={[{ value: "usd", label: "USD" }]}
+              options={[
+                { value: "usd", label: "USD" },
+                { value: "eur", label: "EUR" },
+                { value: "gbp", label: "GBP" },
+                { value: "gel", label: "GEL" },
+              ]}
+              onChange={() => {
+                console.log("");
+              }}
             />
             <span className={styles.inlineText}>
               <input className={styles.checkBox} type="checkbox" />
@@ -54,10 +66,15 @@ const BankLocation: FC = () => {
               name="Back"
               leftIcon={IconType.BackArrow}
               type={ButtonType.Secondary}
+              size={screens["sm"] ? "large" : "middle"}
             />
           )}
           <div className={styles.bankBtn}>
-            <Button name="Continue" type={ButtonType.Primary} />
+            <Button
+              name="Continue"
+              type={ButtonType.Primary}
+              size={screens["sm"] ? "large" : "middle"}
+            />
           </div>
         </div>
       </div>

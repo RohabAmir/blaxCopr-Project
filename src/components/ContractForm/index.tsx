@@ -9,12 +9,16 @@ import StepCompliance from "./StepCompliance";
 import StepperResponsive from "./StepperResponsive";
 
 const ContractForm: FC = () => {
+  const [selectedCurrency, setSelectedCurrency] = useState(null);
+
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
   const methods = useForm();
   const [activeStep, setActiveStep] = useState<number>(0);
-  const handleStepChange = (current: number) => {
+  const handleStepChange = (current: number, data?: any) => {
     setActiveStep(current);
+    const { selectedCurrency } = data || {};
+    setSelectedCurrency(selectedCurrency);
   };
 
   return (
@@ -26,7 +30,11 @@ const ContractForm: FC = () => {
           <Create handleStepChange={handleStepChange} step={activeStep} />
         )}
         {activeStep === 1 && (
-          <StepDetail handleStepChange={handleStepChange} step={activeStep} />
+          <StepDetail
+            handleStepChange={handleStepChange}
+            step={activeStep}
+            selectedCurrency={selectedCurrency}
+          />
         )}
         {activeStep === 2 && (
           <StepCompliance

@@ -8,16 +8,13 @@ interface ITextInput {
   name: string;
   label?: string;
   options: any;
+  onChange: (e: any) => void;
 }
 
-const TextInput: FC<ITextInput> = ({ name, label, options }) => {
+const TextInput: FC<ITextInput> = ({ name, label, options, onChange }) => {
   const { control } = useFormContext();
   return (
-    <Flex
-      vertical
-      align="flex-start"
-      className="w-full"
-    >
+    <Flex vertical align="flex-start" className="w-full">
       {label && (
         <div style={{ margin: "5px 0", color: "#454745", fontSize: "14px" }}>
           {label}
@@ -29,6 +26,7 @@ const TextInput: FC<ITextInput> = ({ name, label, options }) => {
             {...field}
             defaultValue=""
             options={options}
+            onChange={(e) => onChange(e)}
             style={{
               height: "48px",
               width: "100%",
