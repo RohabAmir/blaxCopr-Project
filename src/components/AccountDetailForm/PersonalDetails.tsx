@@ -3,6 +3,7 @@ import React from "react";
 import TextInput from "../Shared/Inputs/Text";
 import Button from "../Shared/Button";
 import styles from "./style.module.scss";
+
 const PersonalDetails = () => {
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();

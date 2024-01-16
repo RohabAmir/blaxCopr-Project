@@ -12,26 +12,22 @@ import { useAppContext } from "@/contexts/App";
 const ResetPassword: FC<any> = () => {
   const methods = useForm();
   const { Title, Text } = Typography;
-  const {isMobile}=useAppContext()
-
-  
+  const { isMobile } = useAppContext();
 
   return (
-    <Flex
-      vertical
-      align="flex-start"
-      className={styles.rootFormWrapper}
-    >
-      {isMobile && <Image
-        className={styles.blaxcorpLogin}
-        src={BLAXCORP_LOGO}
-        alt="blaxcorp logo"
-      />}
+    <Flex vertical align="flex-start" className={styles.rootFormWrapper}>
+      {isMobile && (
+        <Image
+          className={styles.blaxcorpLogin}
+          src={BLAXCORP_LOGO}
+          alt="blaxcorp logo"
+        />
+      )}
       <Flex vertical align="flex-start">
-        <Title style={{ color: "#0E0F0C"}} level={2}>
+        <Title style={{ color: "#0E0F0C" }} level={2}>
           Password Reset
         </Title>
-        <Text style={{ color: "#0E0F0C" }}>
+        <Text style={{ color: "#0E0F0C", marginBottom: "24px" }}>
           Enter a new password for your account. After creating a new password,
           use it to sign in.{" "}
         </Text>

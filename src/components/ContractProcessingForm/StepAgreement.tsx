@@ -7,14 +7,16 @@ import { ButtonType, IconType } from "@/types";
 import Image from "next/image";
 import DownloadIcon from "../../../public/icons/Download.svg";
 
+import { useAppContext } from "@/contexts/App";
+
 const StepAgreement: FC = ({}) => {
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+  const { isMobile } = useAppContext();
+
   const [addButtons, setAddButtons] = useState(false);
   return (
     <>
       <div className={styles.agreementMain}>
-        {!screens["sm"] && (
+        {isMobile && (
           <>
             <Flex vertical className="w-full">
               <FormSection title="Agreement">
@@ -25,7 +27,7 @@ const StepAgreement: FC = ({}) => {
                     <Button
                       name="Review & Sign"
                       type={ButtonType.Primary}
-                      size={!screens["sm"] ? "small" : "large"}
+                      size={isMobile ? "small" : "large"}
                     />
                   </div>
                 </div>
@@ -40,7 +42,7 @@ const StepAgreement: FC = ({}) => {
                     <Button
                       name="Invite Seller"
                       type={ButtonType.Secondary}
-                      size={!screens["sm"] ? "small" : "large"}
+                      size={isMobile ? "small" : "large"}
                     />
                   </div>
                 </div>
@@ -60,7 +62,7 @@ const StepAgreement: FC = ({}) => {
                 <Button
                   name="Edit"
                   type={ButtonType.Primary}
-                  size={!screens["sm"] ? "small" : "large"}
+                  size={isMobile ? "small" : "large"}
                 />
               </div>
             </div>
@@ -88,7 +90,7 @@ const StepAgreement: FC = ({}) => {
                 <Button
                   name="Edit"
                   type={ButtonType.Primary}
-                  size={!screens["sm"] ? "small" : "large"}
+                  size={isMobile ? "small" : "large"}
                 />
               </div>
             </div>
@@ -130,7 +132,7 @@ const StepAgreement: FC = ({}) => {
                 <Button
                   name="Edit"
                   type={ButtonType.Primary}
-                  size={!screens["sm"] ? "small" : "large"}
+                  size={isMobile ? "small" : "large"}
                 />
               </div>
             </div>
@@ -196,7 +198,7 @@ const StepAgreement: FC = ({}) => {
                 <Button
                   name="Edit"
                   type={ButtonType.Primary}
-                  size={!screens["sm"] ? "small" : "large"}
+                  size={isMobile ? "small" : "large"}
                 />
               </div>
             </div>
@@ -238,7 +240,7 @@ const StepAgreement: FC = ({}) => {
                 <Button
                   name="Edit"
                   type={ButtonType.Primary}
-                  size={!screens["sm"] ? "small" : "large"}
+                  size={isMobile ? "small" : "large"}
                 />
               </div>
             </div>

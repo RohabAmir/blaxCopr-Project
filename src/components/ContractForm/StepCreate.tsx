@@ -7,18 +7,17 @@ import { ButtonType, IconType } from "@/types";
 import Title from "antd/es/typography/Title";
 import Image from "next/image";
 import ShieldIcon from "../../../public/icons/shield.svg";
-import { useRouter } from "next/router";
-import { usePathname } from "next/navigation";
+
 import OKIcon from "../../../public/icons/CheckOK.svg";
 import CurrentIcon from "../../../public/icons/CheckCurrent.svg";
 import InActiveIcon from "../../../public/icons/CheckInActive.svg";
-import { Steps, Popover } from "antd";
-import type { StepsProps } from "antd";
-import StepperResponsive from "./StepperResponsive";
+
 import Link from "next/link";
+import { useAppContext } from "@/contexts/App";
+
 const Create: FC<any> = ({ handleStepChange, step }) => {
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+  const { isMobile } = useAppContext();
+
   // -------------------------------------------
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
   const handlechange = (value: string) => {
@@ -54,11 +53,11 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
             name="Back"
             leftIcon={IconType.BackArrow}
             type={ButtonType.Secondary}
-            size={!screens["sm"] ? "middle" : "large"}
+            size={isMobile ? "middle" : "large"}
           />
         </Link>
 
-        {!screens["sm"] && (
+        {isMobile && (
           <div className={styles.stepperFlexMain}>
             <div className={styles.stepperFlexNew}>
               <Image src={OKIcon} alt="ok icon" />
@@ -78,7 +77,7 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
             </div>
           </div>
         )}
-        <Title level={screens["sm"] ? 2 : 3} className={styles.headingMain}>
+        <Title level={!isMobile ? 2 : 3} className={styles.headingMain}>
           {" "}
           Create new contract
         </Title>
@@ -131,7 +130,7 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
         <Button
           name="Next"
           onClickHandler={() => handleStepChange(1, { selectedCurrency })}
-          fullWidth={!screens["md"]}
+          fullWidth={isMobile}
         />
       </div>
     </Flex>

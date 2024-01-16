@@ -5,10 +5,11 @@ import Image from "next/image";
 import { Button } from "../../Shared";
 import { ButtonType } from "@/types";
 import { Grid } from "antd";
+import { useAppContext } from "@/contexts/App";
 
 const DisputOpened: FC = () => {
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+  const { isMobile } = useAppContext();
+
   return (
     <>
       <div className={styles.agreementMain}>
@@ -26,7 +27,7 @@ const DisputOpened: FC = () => {
           </div>
           <Button
             name="Go to messages"
-            fullWidth={!screens["sm"]}
+            fullWidth={isMobile}
             type={ButtonType.Primary}
           />
         </div>

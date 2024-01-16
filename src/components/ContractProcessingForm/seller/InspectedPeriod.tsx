@@ -8,10 +8,10 @@ import Image from "next/image";
 import { Button } from "../../Shared";
 import { ButtonType } from "@/types";
 import { Grid } from "antd";
+import { useAppContext } from "@/contexts/App";
 
 const InspectedPeriod: FC = () => {
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+  const { isMobile } = useAppContext();
 
   return (
     <>
@@ -90,7 +90,7 @@ const InspectedPeriod: FC = () => {
             <Button
               name="Review"
               type={ButtonType.Secondary}
-              fullWidth={!screens["sm"]}
+              fullWidth={isMobile}
             />
           </div>
         </div>

@@ -38,9 +38,11 @@ import { useState } from "react";
 // interface IContractProcessingForm {
 //     children: ReactNode
 // }
+import { useAppContext } from "@/contexts/App";
+
 const ContractProcessingForm: FC = () => {
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+  const { isMobile } = useAppContext();
+
   const path = usePathname();
   const dashboard = path.includes("dashboard");
   function handleClick() {
@@ -71,8 +73,10 @@ const ContractProcessingForm: FC = () => {
         name="Back"
         leftIcon={IconType.BackArrow}
         type={ButtonType.Secondary}
-        size={!screens["sm"] ? "middle" : "large"}
+        size={isMobile ? "middle" : "large"}
       />
+
+      {/* -------------------------Useful Code---------------------------------- */}
 
       {/* <Flex className="w-full">
         <div className={styles.agreementContainer}>
@@ -143,7 +147,7 @@ const ContractProcessingForm: FC = () => {
           align="center"
           style={{ width: "100%", padding: "0 24px" }}
         >
-          {!screens["sm"] && (
+          {isMobile && (
             <>
               {/* <div className={styles.flexBtnResp}>
                 <Button
@@ -172,7 +176,7 @@ const ContractProcessingForm: FC = () => {
           <Invoice />
           {/* --------------------------------------- */}
           {/* -----------------SELLER FLOW -------------------------- */}
-          <SetupWithDrawl />
+          {/* <SetupWithDrawl />
           <AddWithDrawl />
           <AddWithDrawlDisbursement />
           <WithDrawlMethod />
@@ -181,7 +185,7 @@ const ContractProcessingForm: FC = () => {
           <DisputOpened />
 
           <Invoice />
-          <FundsReleased />
+          <FundsReleased /> */}
           {/* ---Agreement form--- */}
           {/* <ConfirmContractCancellation closeModal={closeModal} /> */}
           <StepAgreement />

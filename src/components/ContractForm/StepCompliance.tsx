@@ -16,11 +16,13 @@ import { useDropzone } from "react-dropzone";
 import styles from "./style.module.scss";
 import Image from "next/image";
 import { ROUTES } from "@/constants";
+import { useAppContext } from "@/contexts/App";
+
 interface IStepCompliance {}
 
 const StepCompliance: FC<any> = ({ handleStepChange, step }) => {
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+  const { isMobile } = useAppContext();
+  
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles: any) => {
@@ -62,11 +64,11 @@ const StepCompliance: FC<any> = ({ handleStepChange, step }) => {
           leftIcon={IconType.BackArrow}
           type={ButtonType.Secondary}
           onClickHandler={handleBackClick}
-          size={!screens["sm"] ? "middle" : "large"}
+          size={isMobile ? "middle" : "large"}
         />
         <h1
           // level={!screens["md"] ? 2 : 3}
-          className={screens["md"] ? styles.textHeadingComplilance : ""}
+          className={!isMobile ? styles.textHeadingComplilance : ""}
         >
           Compliance
         </h1>
@@ -131,7 +133,7 @@ const StepCompliance: FC<any> = ({ handleStepChange, step }) => {
           name="Next"
           type={ButtonType.Primary}
           onClickHandler={handleButtonClick}
-          fullWidth={!screens["sm"]}
+          fullWidth={isMobile}
         />
       </Flex>
     </Flex>

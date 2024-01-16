@@ -10,15 +10,17 @@ import { ButtonType, IconType } from "@/types";
 // import { FormProvider, useForm } from "react-hook-form";
 import CopyIcon from "../../../public/icons/Copy.svg";
 import InfoIcon from "../../../public/icons/Info.svg";
-const { useBreakpoint } = Grid;
-const screens: any = useBreakpoint;
+
+import { useAppContext } from "@/contexts/App";
+
 const BankDetails: FC = () => {
+  const { isMobile } = useAppContext();
   return (
     <>
       <Flex vertical className="w-full">
         <div className={styles.bankDetailsMainRes}>
           <div className={styles.bankDetails}>
-            {screens["md"] && (
+            {!isMobile && (
               <Button
                 name="Back"
                 leftIcon={IconType.BackArrow}

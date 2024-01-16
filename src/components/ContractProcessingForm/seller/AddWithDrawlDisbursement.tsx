@@ -9,10 +9,11 @@ import { Button } from "../../Shared";
 import { ButtonType, IconType } from "@/types";
 import { FormProvider, useForm } from "react-hook-form";
 import PlusIcon from "../../../../public/icons/Plus.svg";
+import { useAppContext } from "@/contexts/App";
 
 const AddWithDrawlDisbursement: FC = () => {
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+  const { isMobile } = useAppContext();
+
   const methods = useForm();
   return (
     <>
@@ -38,8 +39,7 @@ const AddWithDrawlDisbursement: FC = () => {
                   name="withdrawl method"
                   label="Choose withdrawal method"
                   options={[{ value: "bank transfer", label: "Bank Transfer" }]}
-                  onChange={(e)=>console.log(e)}
-
+                  onChange={(e) => console.log(e)}
                 />
                 <TextInput name="Holder’sName" label="Account holder’s name" />
                 <TextInput name="AccountNumber" label="Account number" />{" "}
@@ -50,8 +50,7 @@ const AddWithDrawlDisbursement: FC = () => {
                   name="Currency"
                   label="Currency"
                   options={[{ value: "USD$", label: "USD$" }]}
-                  onChange={(e)=>console.log(e)}
-
+                  onChange={(e) => console.log(e)}
                 />
               </Row>
             </FormSection>
@@ -64,7 +63,7 @@ const AddWithDrawlDisbursement: FC = () => {
             <Button
               name="Remove"
               type={ButtonType.Secondary}
-              size={!screens["sm"] ? "small" : "large"}
+              size={isMobile ? "small" : "large"}
             />
           </div>
           <FormProvider {...methods}>
@@ -78,8 +77,7 @@ const AddWithDrawlDisbursement: FC = () => {
                   name="withdrawl method"
                   label="Choose withdrawal method"
                   options={[{ value: "bank transfer", label: "Bank Transfer" }]}
-                  onChange={(e)=>console.log(e)}
-                  
+                  onChange={(e) => console.log(e)}
                 />
                 <TextInput name="Holder’sName" label="Account holder’s name" />
                 <TextInput name="AccountNumber" label="Account number" />{" "}
@@ -90,8 +88,7 @@ const AddWithDrawlDisbursement: FC = () => {
                   name="Currency"
                   label="Currency"
                   options={[{ value: "USD$", label: "USD$" }]}
-                  onChange={(e)=>console.log(e)}
-
+                  onChange={(e) => console.log(e)}
                 />
               </Row>
             </FormSection>
@@ -117,7 +114,7 @@ const AddWithDrawlDisbursement: FC = () => {
             <Button
               name="Save"
               type={ButtonType.Primary}
-              fullWidth={!screens["md"]}
+              fullWidth={isMobile}
             />
           </div>
         </div>

@@ -8,7 +8,10 @@ import Image from "next/image";
 import styles from "./style.module.scss";
 import { ButtonType, IconType } from "@/types";
 import CopyIcon from "../../../public/icons/Copy.svg";
+import { useAppContext } from "@/contexts/App";
+
 const Security: FC = () => {
+  const { isMobile } = useAppContext();
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
   const { Text, Title } = Typography;
@@ -25,7 +28,7 @@ const Security: FC = () => {
     <>
       {step === 1 ? (
         <div>
-          {!screens["sm"] && (
+          {isMobile && (
             <>
               <Button
                 name="Back"
@@ -36,7 +39,7 @@ const Security: FC = () => {
               <h2>Two step verifictaion</h2>
             </>
           )}
-          {screens["sm"] && (
+          {!isMobile && (
             <Row style={{ margin: "16px 2px" }}>
               <Checkbox>Enable multi-factor authentication</Checkbox>
             </Row>
@@ -56,11 +59,11 @@ const Security: FC = () => {
                 <span className={styles.text}>
                   App will guide you to add a new token for Blaxcorp
                 </span>
-                {screens["sm"] && (
+                {!isMobile && (
                   <Button
                     name="I scanned the code"
                     onClickHandler={scanButtonHandler}
-                    fullWidth={!screens["sm"]}
+                    fullWidth={isMobile}
                   />
                 )}
               </Flex>
@@ -70,7 +73,7 @@ const Security: FC = () => {
             </div>
           </div>
 
-          {!screens["sm"] && (
+          {isMobile && (
             <Flex vertical gap={20} justify="center">
               <span className={styles.text}>
                 Can’t scan the QR code? Enter this code into your authenticator
@@ -83,14 +86,14 @@ const Security: FC = () => {
               <Button
                 name="Enter confirmation code"
                 onClickHandler={scanButtonHandler}
-                fullWidth={!screens["sm"]}
+                fullWidth={isMobile}
               />
             </Flex>
           )}
         </div>
       ) : (
         <>
-          {!screens["sm"] && (
+          {isMobile && (
             <>
               <Button
                 name="Back"
@@ -102,7 +105,7 @@ const Security: FC = () => {
             </>
           )}
           <div className={styles.securityVerified}>
-            {screens["sm"] && (
+            {!isMobile && (
               <div className={styles.security_left}>
                 <Image src={MobileSkeleton} alt="QR" />
               </div>
@@ -116,7 +119,7 @@ const Security: FC = () => {
                 <Text>This will connect the app</Text>
                 <Input name="code" type="number" placeholder="6-digit code" />
                 <Flex align="center" justify="flex-start" gap={10}>
-                  {screens["sm"] && (
+                  {!isMobile && (
                     <Button
                       name="Back"
                       type={ButtonType.Secondary}
@@ -124,10 +127,7 @@ const Security: FC = () => {
                       onClickHandler={backButtonHandler}
                     />
                   )}
-                  <Button
-                    name="Verify code"
-                    fullWidth={!screens["sm"]}
-                  />
+                  <Button name="Verify code" fullWidth={!isMobile} />
                 </Flex>
               </Flex>
             </Col>

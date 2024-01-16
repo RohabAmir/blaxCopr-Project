@@ -1,19 +1,19 @@
 "use client";
 import { Col, Flex, Row, Grid } from "antd";
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState } from "react";
 import { Button, Dropdown, FormSection, TextInput } from "../Shared";
 import { ButtonType, IconType } from "@/types";
 import styles from "./style.module.scss";
 import ShieldIcon from "../../../public/icons/shield.svg";
 import ChevronIcon from "../../../public/icons/TagChevron.svg";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
+
+import { useAppContext } from "@/contexts/App";
+
 const StepDetail: FC<any> = ({ handleStepChange, step, selectedCurrency }) => {
-  console.log(selectedCurrency);
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+  const { isMobile } = useAppContext();
+
+ 
   const [itemsCount, setItemsCount] = useState<number>(1);
   const [isShipping, setShipping] = useState(true);
   const [isTransactionDetails, setTransactionDetails] = useState(true);
@@ -29,7 +29,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step, selectedCurrency }) => {
           leftIcon={IconType.BackArrow}
           type={ButtonType.Secondary}
           onClickHandler={handleBackClick}
-          size={!screens["sm"] ? "middle" : "large"}
+          size={isMobile ? "middle" : "large"}
 
           // onClickHandler={() => router.back()}
         />
@@ -76,7 +76,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step, selectedCurrency }) => {
           <Button
             name="Add new item "
             onClickHandler={() => setItemsCount(itemsCount + 1)}
-            size={!screens["sm"] ? "middle" : "large"}
+            size={isMobile ? "middle" : "large"}
           />
         </Row>
       </FormSection>
@@ -178,7 +178,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step, selectedCurrency }) => {
               <p className={styles.total}>Shipping fee:</p>
               <p className={styles.amount}>$123.00</p>
             </div>
-            {screens["sm"] && (
+            {!isMobile && (
               <div className={styles.flexDetailsLine}>
                 <Flex align="center" className="w-full">
                   <span>Escrow fee paid by:</span>
@@ -206,7 +206,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step, selectedCurrency }) => {
                 <p className={styles.amount}>$30.00</p>
               </div>
             )}
-            {!screens["sm"] && (
+            {isMobile && (
               <>
                 <div
                   className={styles.flexDetails}
@@ -293,7 +293,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step, selectedCurrency }) => {
           name="Next"
           type={ButtonType.Primary}
           onClickHandler={() => handleStepChange(2)}
-          fullWidth={!screens["sm"]}
+          fullWidth={isMobile}
         />
       </Flex>
     </Flex>

@@ -34,7 +34,7 @@ const ForgotPassword: FC<any> = () => {
       />
       <Flex vertical align="start" justify="start">
         <Title level={2}>Forgot Password?</Title>
-        <Text style={{ color: "#0E0F0C" }}>
+        <Text style={{ color: "#0E0F0C", marginBottom: "24px" }}>
           Enter the email adress you used when you joined and we’ll send you
           instructions to reset your password.{" "}
         </Text>

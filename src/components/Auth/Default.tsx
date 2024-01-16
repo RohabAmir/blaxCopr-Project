@@ -1,5 +1,5 @@
 import { Flex, Typography } from "antd";
-import React, { FC } from 'react'
+import React, { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import CROSS_ICON from "../../../public/icons/cross_outlined.svg";
@@ -17,23 +17,44 @@ import { useAppContext } from "@/contexts/App";
 
 const Default: FC<any> = ({ children }) => {
   const { Text } = Typography;
-  const {isMobile}=useAppContext()
-  const { activePage } = useAuthContext()
+  const { isMobile } = useAppContext();
+  const { activePage } = useAuthContext();
 
   const DESKTOP_TAGLINE: any = {
-    DEFAULT: { title1: 'Step into the', title2: 'Digital Escrow Era', desc1: ' Engage in buying and selling with absolute safety,', desc2: 'free from the worries of chargebacks.' },
-    SIGN_UP: { title1: 'Step into the', title2: 'Digital Escrow Era', desc1: ' Engage in buying and selling with absolute safety,', desc2: 'free from the worries of chargebacks.' },
-    SIGN_IN: { title1: 'Secure Your Deal in', title2: ' 5 Swift Moves', desc1: 'Our streamlined 5-step process ensures effortless', desc2: 'androbust protection for every deal.' },
-    FORGOT_PASSWORD: { title1: 'Regain Account', title2: 'Access Smoothly', desc1: ' Reset your password in just a few clicks and', desc2: 'continue your secure journey with us.' },
-    RESET_PASSWORD: { title1: 'Reset and ', title2: 'Resume Securely', desc1: 'Quickly set up a new password and continue your', desc2: 'safe,hassle- free experience with Blaxcorp.' }
-  }
-  const sideData = DESKTOP_TAGLINE[activePage]
+    DEFAULT: {
+      title1: "Step into the",
+      title2: "Digital Escrow Era",
+      desc1: " Engage in buying and selling with absolute safety,",
+      desc2: "free from the worries of chargebacks.",
+    },
+    SIGN_UP: {
+      title1: "Step into the",
+      title2: "Digital Escrow Era",
+      desc1: " Engage in buying and selling with absolute safety,",
+      desc2: "free from the worries of chargebacks.",
+    },
+    SIGN_IN: {
+      title1: "Secure Your Deal in",
+      title2: " 5 Swift Moves",
+      desc1: "Our streamlined 5-step process ensures effortless",
+      desc2: "and robust protection for every deal.",
+    },
+    FORGOT_PASSWORD: {
+      title1: "Regain Account",
+      title2: "Access Smoothly",
+      desc1: " Reset your password in just a few clicks and",
+      desc2: "continue your secure journey with us.",
+    },
+    RESET_PASSWORD: {
+      title1: "Reset and ",
+      title2: "Resume Securely",
+      desc1: "Quickly set up a new password and continue your",
+      desc2: "safe,hassle- free experience with Blaxcorp.",
+    },
+  };
+  const sideData = DESKTOP_TAGLINE[activePage];
   return (
-    <Flex
-      justify="space-around"
-      align="center"
-      className={styles.root}
-    >
+    <Flex justify="space-around" align="center" className={styles.root}>
       {/*------------------------ For future ------------------ */}
       {/* {signup && (
       <Col span={12} className={styles.leftSubRoot}>
@@ -60,7 +81,12 @@ const Default: FC<any> = ({ children }) => {
       </Col>
     )} */}
 
-      <Flex vertical align="center" justify="center" className={styles.leftSubRoot}>
+      <Flex
+        vertical
+        align="center"
+        justify="center"
+        className={styles.leftSubRoot}
+      >
         <Image
           className={styles.blaxcorpLogin}
           src={BLAXCORP_LOGO}
@@ -91,8 +117,15 @@ const Default: FC<any> = ({ children }) => {
             gap={20}
             className="w-full"
           >
-            {!isMobile && <Text style={{ color: "#454745" }}>Or log in with</Text>}
-            <Flex className={styles.regBtns} align="center" justify="center" gap="large">
+            {!isMobile && (
+              <Text style={{ color: "#454745" }}>Or log in with</Text>
+            )}
+            <Flex
+              className={styles.regBtns}
+              align="center"
+              justify="center"
+              gap="large"
+            >
               <span className={styles.logoOutline}>
                 <Image src={GoogleLogo} alt="google logo" />
               </span>
@@ -113,21 +146,13 @@ const Default: FC<any> = ({ children }) => {
               By registering, you accept our{" "}
               <Link href="/">
                 {" "}
-                <Text
-                  underline
-                  style={{ textUnderlineOffset: "2px" }}
-                  strong
-                >
+                <Text underline style={{ textUnderlineOffset: "2px" }} strong>
                   Terms of Use
                 </Text>
               </Link>{" "}
               and{" "}
               <Link href="/">
-                <Text
-                  underline
-                  style={{ textUnderlineOffset: "2px" }}
-                  strong
-                >
+                <Text underline style={{ textUnderlineOffset: "2px" }} strong>
                   Privacy Policy
                 </Text>
               </Link>
@@ -136,7 +161,7 @@ const Default: FC<any> = ({ children }) => {
         </Flex>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
-export default Default
+export default Default;

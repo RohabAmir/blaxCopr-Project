@@ -7,15 +7,16 @@ import Image from "next/image";
 import { Button } from "../Shared";
 import { ButtonType, IconType } from "@/types";
 import { Grid } from "antd";
+import { useAppContext } from "@/contexts/App";
 
 const TransferAmount: FC = () => {
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+  const { isMobile } = useAppContext();
+
   return (
     <>
       <div className={styles.transferMain}>
         <div className={styles.transfer}>
-          {screens["md"] && (
+          {!isMobile && (
             <Button
               name="Back"
               leftIcon={IconType.BackArrow}
@@ -60,19 +61,19 @@ const TransferAmount: FC = () => {
           </div>
         </div>
         <div className={styles.transferFlexBtn}>
-          {!screens["md"] && (
+          {isMobile && (
             <Button
               name="Back"
               leftIcon={IconType.BackArrow}
               type={ButtonType.Secondary}
-              size={screens["sm"] ? "large" : "middle"}
+              size={!isMobile ? "large" : "middle"}
             />
           )}
           <div className={styles.transferBtn}>
             <Button
               name="Continue"
               type={ButtonType.Primary}
-              size={screens["sm"] ? "large" : "middle"}
+              size={!isMobile ? "large" : "middle"}
             />
           </div>
         </div>

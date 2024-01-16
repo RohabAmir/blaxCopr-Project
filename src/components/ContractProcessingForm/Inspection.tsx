@@ -7,10 +7,11 @@ import Image from "next/image";
 import { Button } from "../Shared";
 import { ButtonType, IconType } from "@/types";
 import { Grid } from "antd";
+import { useAppContext } from "@/contexts/App";
 
 const Inspection: FC = () => {
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+  const { isMobile } = useAppContext();
+
   return (
     <>
       {/* ---------------- */}

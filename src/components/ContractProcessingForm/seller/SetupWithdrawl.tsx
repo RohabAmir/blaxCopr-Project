@@ -10,7 +10,7 @@ import { ButtonType } from "@/types";
 import { useAppContext } from "@/contexts/App";
 
 const SetupWithDrawl: FC = () => {
-  const {isMobile}=useAppContext()
+  const { isMobile } = useAppContext();
   return (
     <div className={styles.sellerMain} style={{ marginTop: "12px" }}>
       <div className={styles.depositMain}>
@@ -54,7 +54,7 @@ const SetupWithDrawl: FC = () => {
             <Button
               name="Setup"
               type={ButtonType.Primary}
-              fullWidth={!isMobile}
+              fullWidth={isMobile}
             />
           </div>
         </div>

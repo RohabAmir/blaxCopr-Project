@@ -8,18 +8,18 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useAppContext } from "@/contexts/App";
 
 const BankLocation: FC = () => {
-const {isMobile}=useAppContext()
+  const { isMobile } = useAppContext();
   const methods = useForm();
   return (
     <>
       <div className={styles.bankMain}>
         <div className={styles.bank}>
-          {isMobile && (
+          {!isMobile && (
             <Button
               name="Back"
               leftIcon={IconType.BackArrow}
               type={ButtonType.Secondary}
-              size={isMobile ? "large" : "middle"}
+              size={!isMobile ? "large" : "middle"}
             />
           )}
           <p className={styles.transferHeading}>Bank location</p>
@@ -57,19 +57,19 @@ const {isMobile}=useAppContext()
           </FormSection>
         </FormProvider>
         <div className={styles.transferFlexBtn}>
-          {!isMobile && (
+          {isMobile && (
             <Button
               name="Back"
               leftIcon={IconType.BackArrow}
               type={ButtonType.Secondary}
-              size={isMobile ? "large" : "middle"}
+              size={!isMobile ? "large" : "middle"}
             />
           )}
           <div className={styles.bankBtn}>
             <Button
               name="Continue"
               type={ButtonType.Primary}
-              size={isMobile ? "large" : "middle"}
+              size={!isMobile ? "large" : "middle"}
             />
           </div>
         </div>

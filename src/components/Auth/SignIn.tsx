@@ -56,14 +56,14 @@ const SignIn: FC = () => {
           <Title level={isMobile ? 3 : 1}>Log in to Blaxcorp</Title>
           {!isMobile && (
             <Text style={{ color: "#454745" }}>
-              Don't have an account? &nbsp;
+              Don't have an account?
               <Text
                 underline
                 style={{ textUnderlineOffset: "4px" }}
                 strong
                 onClick={() => handleActivePage(AUTH_TABS.SIGN_UP)}
               >
-                Sign up
+                <span style={{ marginLeft: "3px" }}>Sign up</span>
               </Text>
             </Text>
           )}
