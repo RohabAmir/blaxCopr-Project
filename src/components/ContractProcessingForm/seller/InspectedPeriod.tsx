@@ -1,15 +1,12 @@
 import { FC } from "react";
 import styles from "./styles.module.scss";
 import ClockIcon from "../../../../public/icons/Clock.svg";
-import CheckIcon from "../../../../public/icons/Check.svg";
 import WithDrawlIcon from "../../../../public/icons/WithDrawl.svg";
-import ChevronIcon from "../../../../public/icons/Chevron.svg";
 import OklIcon from "../../../../public/icons/Ok.svg";
 
 import Image from "next/image";
 import { Button } from "../../Shared";
-import { ButtonType, IconType } from "@/types";
-import { types } from "util";
+import { ButtonType } from "@/types";
 import { Grid } from "antd";
 
 const InspectedPeriod: FC = () => {

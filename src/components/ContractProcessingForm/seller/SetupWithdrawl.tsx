@@ -6,12 +6,11 @@ import WithDrawlIcon from "../../../../public/icons/WithDrawl.svg";
 
 import Image from "next/image";
 import { Button } from "../../Shared";
-import { ButtonType, IconType } from "@/types";
-import { Grid } from "antd";
+import { ButtonType } from "@/types";
+import { useAppContext } from "@/contexts/App";
 
 const SetupWithDrawl: FC = () => {
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+  const {isMobile}=useAppContext()
   return (
     <div className={styles.sellerMain} style={{ marginTop: "12px" }}>
       <div className={styles.depositMain}>
@@ -55,7 +54,7 @@ const SetupWithDrawl: FC = () => {
             <Button
               name="Setup"
               type={ButtonType.Primary}
-              fullWidth={!screens["md"]}
+              fullWidth={!isMobile}
             />
           </div>
         </div>

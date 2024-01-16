@@ -34,6 +34,8 @@ const AddWithDrawl: FC = () => {
                   name="withdrawl method"
                   label="Choose withdrawal method"
                   options={[{ value: "bank transfer", label: "Bank Transfer" }]}
+                  onChange={(e)=>console.log(e)}
+
                 />
                 <TextInput name="Holder’sName" label="Account holder’s name" />
                 <TextInput name="AccountNumber" label="Account number" />{" "}
@@ -44,6 +46,7 @@ const AddWithDrawl: FC = () => {
                   name="Currency"
                   label="Currency"
                   options={[{ value: "USD$", label: "USD$" }]}
+                  onChange={(e)=>console.log(e)}
                 />
               </Row>
             </FormSection>

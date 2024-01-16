@@ -1,29 +1,25 @@
 import { FC } from "react";
 import styles from "./style.module.scss";
-import BankIcon from "../../../public/icons/Bank.svg";
-import CreditCardIcon from "../../../public/icons/CreditCard.svg";
-import { Flex, Row, Col, Grid } from "antd";
+import { Grid } from "antd";
 import { Dropdown, FormSection } from "../Shared";
-
-import Image from "next/image";
 import { Button } from "../Shared";
 import { ButtonType, IconType } from "@/types";
 import { FormProvider, useForm } from "react-hook-form";
+import { useAppContext } from "@/contexts/App";
 
 const BankLocation: FC = () => {
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
+const {isMobile}=useAppContext()
   const methods = useForm();
   return (
     <>
       <div className={styles.bankMain}>
         <div className={styles.bank}>
-          {screens["md"] && (
+          {isMobile && (
             <Button
               name="Back"
               leftIcon={IconType.BackArrow}
               type={ButtonType.Secondary}
-              size={screens["sm"] ? "large" : "middle"}
+              size={isMobile ? "large" : "middle"}
             />
           )}
           <p className={styles.transferHeading}>Bank location</p>
@@ -61,19 +57,19 @@ const BankLocation: FC = () => {
           </FormSection>
         </FormProvider>
         <div className={styles.transferFlexBtn}>
-          {!screens["md"] && (
+          {!isMobile && (
             <Button
               name="Back"
               leftIcon={IconType.BackArrow}
               type={ButtonType.Secondary}
-              size={screens["sm"] ? "large" : "middle"}
+              size={isMobile ? "large" : "middle"}
             />
           )}
           <div className={styles.bankBtn}>
             <Button
               name="Continue"
               type={ButtonType.Primary}
-              size={screens["sm"] ? "large" : "middle"}
+              size={isMobile ? "large" : "middle"}
             />
           </div>
         </div>

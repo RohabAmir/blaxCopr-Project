@@ -1,9 +1,7 @@
 import React, { FC } from "react";
 import styles from "./.styles.module.scss";
 import { FormSection } from "../../Shared";
-import { Flex, Row, Col } from "antd";
-import { Button } from "../../Shared";
-import { ButtonType, IconType } from "@/types";
+import { Flex} from "antd";
 import Image from "next/image";
 import DownloadIcon from "../../../public/icons/Download.svg";
 

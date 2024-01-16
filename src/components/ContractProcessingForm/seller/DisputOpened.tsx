@@ -3,7 +3,7 @@ import styles from "..style.module.scss";
 import ClockIcon from "../../../public/icons/Clock.svg";
 import Image from "next/image";
 import { Button } from "../../Shared";
-import { ButtonType, IconType } from "@/types";
+import { ButtonType } from "@/types";
 import { Grid } from "antd";
 
 const DisputOpened: FC = () => {

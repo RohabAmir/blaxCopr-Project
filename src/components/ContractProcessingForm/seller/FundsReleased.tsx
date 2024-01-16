@@ -1,16 +1,11 @@
 import { FC } from "react";
 import styles from "./styles.module.scss";
-import ClockIcon from "../../../../public/icons/Clock.svg";
-import CheckIcon from "../../../../public/icons/Check.svg";
-import WithDrawlIcon from "../../../../public/icons/WithDrawl.svg";
 import InfoIcon from "../../../../public/icons/Info.svg";
 import OklIcon from "../../../../public/icons/Ok.svg";
 import { Flex } from "antd";
 import { FormSection } from "../../Shared";
 
 import Image from "next/image";
-import { Button } from "../../Shared";
-import { ButtonType, IconType } from "@/types";
 
 const FundsReleased: FC = () => {
   return (
