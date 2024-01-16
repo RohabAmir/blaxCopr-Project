@@ -49,7 +49,7 @@ const Default: FC<any> = ({ children }) => {
       title1: "Reset and ",
       title2: "Resume Securely",
       desc1: "Quickly set up a new password and continue your",
-      desc2: "safe,hassle- free experience with Blaxcorp.",
+      desc2: "safe, hassle- free experience with Blaxcorp.",
     },
   };
   const sideData = DESKTOP_TAGLINE[activePage];
