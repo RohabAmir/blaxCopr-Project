@@ -285,6 +285,45 @@
 
 //
 //
+.textArea {
+  border-radius: 10px;
+  // border: 1px solid #868685;
+  border: 1px solid #d9d9d9;
+  width: 100%;
+  display: flex;
+  padding: 12px 16px;
+  align-items: center;
+  gap: 32px;
+  align-self: stretch;
+  // outline: 1px #d9d9d9;
+  //
+  color: #0e0f0c;
+
+  /* Body/Large */
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  letter-spacing: -0.08px;
+}
+.textArea:focus {
+  border: 1px solid #20c77c;
+  outline: 1px #20c77c;
+}
+.textAreaDes {
+  margin: 0;
+  color: #454745;
+
+  /* Body/Default */
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 157.143% */
+  letter-spacing: 0.14px;
+  margin-bottom: 3px;
+}
 
 /* Stepper.module.css */
 .customSteps {

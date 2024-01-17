@@ -55,7 +55,7 @@ const SignIn: FC = () => {
         >
           <Title level={isMobile ? 3 : 1}>Log in to Blaxcorp</Title>
           {!isMobile && (
-            <Text style={{ color: "#454745" }}>
+            <Text className={styles.authSpacing}>
               Don't have an account?
               <Text
                 underline

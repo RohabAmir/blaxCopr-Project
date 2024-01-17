@@ -1,4 +1,5 @@
 "use client";
+import { v4 as uuidv4 } from "uuid";
 import { Col, Flex, Row, Grid } from "antd";
 import React, { FC, useState } from "react";
 import { Button, Dropdown, FormSection, TextInput } from "../Shared";
@@ -9,18 +10,52 @@ import ChevronIcon from "../../../public/icons/TagChevron.svg";
 import Image from "next/image";
 
 import { useAppContext } from "@/contexts/App";
+import TextArea from "antd/es/input/TextArea";
 
 const StepDetail: FC<any> = ({ handleStepChange, step, selectedCurrency }) => {
   const { isMobile } = useAppContext();
 
- 
   const [itemsCount, setItemsCount] = useState<number>(1);
   const [isShipping, setShipping] = useState(true);
-  const [isTransactionDetails, setTransactionDetails] = useState(true);
 
   const handleBackClick = () => {
     if (step >= 0) handleStepChange(step - 1);
   };
+  const [items, setItems] = useState([
+    {
+      itemName: "",
+      price: "",
+      itemCategory: "",
+      description: "",
+    },
+  ]);
+
+  const addTransactionDetail = () => {
+    setItems([
+      ...items,
+      { itemName: "", price: "", itemCategory: "", description: "" },
+    ]);
+  };
+
+  // const removeTransactionDetail = (index: number) => {
+  //   const updatedItems = [...items];
+  //   updatedItems.splice(index, 1);
+  //   setItems(updatedItems);
+  // };
+  const removeTransactionDetail = (index: number) => {
+    setItems((prevItems) => {
+      console.log("index before--------------", index);
+      console.log("itemsBefore--------------", prevItems);
+
+      const updatedItems = prevItems.filter((_, i) => i !== index);
+
+      console.log("after--------------", index);
+      console.log("itemsAfter--------------", updatedItems);
+
+      return updatedItems;
+    });
+  };
+
   return (
     <Flex className={styles.detailsMain}>
       <Flex className="w-full" align="flex-start" vertical>
@@ -30,56 +65,46 @@ const StepDetail: FC<any> = ({ handleStepChange, step, selectedCurrency }) => {
           type={ButtonType.Secondary}
           onClickHandler={handleBackClick}
           size={isMobile ? "middle" : "large"}
-
-          // onClickHandler={() => router.back()}
         />
       </Flex>
-      {isTransactionDetails && (
-        <>
-          {new Array(itemsCount).fill("").map((_, i) => (
-            <FormSection
-              key={i}
-              title="Transaction Details"
-              buttonTitle="Remove"
-              buttonClickHandler={() => setTransactionDetails(false)}
-            >
-              <Flex style={{ width: "100%" }} className={styles.detialsCol}>
-                <div className={styles.detailsItem}>
-                  <TextInput name="itemName" label="Item name" />
-                </div>
-                <div className={styles.detailsItem}>
-                  <TextInput
-                    name="price"
-                    label={`price (${selectedCurrency})`}
-                  />
-                </div>
-              </Flex>
-              <Dropdown
-                name="itemCategory"
-                label="Item category"
-                options={[{ value: "123", label: "Item2" }]}
-                onChange={() => console.log("")}
-              />
-              <Row className="w-full">
-                <TextInput
-                  name="Description "
-                  label="Description of Item or Service"
-                />
-              </Row>
-            </FormSection>
-          ))}
-        </>
-      )}
+      {items.map((item, index) => (
+        <FormSection
+          key={index}
+          title="Transaction Details"
+          buttonTitle="Remove"
+          buttonClickHandler={() => removeTransactionDetail(index)}
+        >
+          <Flex style={{ width: "100%" }} className={styles.detialsCol}>
+            <div className={styles.detailsItem}>
+              <TextInput name="item name" label="Item name" />
+            </div>
+            <div className={styles.detailsItem}>
+              <TextInput name="price" label={`price (${selectedCurrency})`} />
+            </div>
+          </Flex>
+          <Dropdown
+            name="item category"
+            label="Item category"
+            options={[{ value: "123", label: "Item2" }]}
+            onChange={() => console.log("")}
+          />
+          <Row className="w-full">
+            <p className={styles.textAreaDes}>Description of Item or Service</p>
+            <textarea name="description" rows={6} className={styles.textArea} />
+          </Row>
+        </FormSection>
+      ))}
 
       <FormSection>
         <Row className="w-full">
           <Button
-            name="Add new item "
-            onClickHandler={() => setItemsCount(itemsCount + 1)}
+            name="Add new item"
+            onClickHandler={addTransactionDetail}
             size={isMobile ? "middle" : "large"}
           />
         </Row>
       </FormSection>
+
       {isShipping && (
         <FormSection
           title="Shipping "
