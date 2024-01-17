@@ -6,7 +6,6 @@ import { Flex, Grid } from "antd";
 import Create from "./StepCreate";
 import StepDetail from "./StepDetail";
 import StepCompliance from "./StepCompliance";
-import StepperResponsive from "./StepperResponsive";
 
 const ContractForm: FC = () => {
   const [selectedCurrency, setSelectedCurrency] = useState(null);
