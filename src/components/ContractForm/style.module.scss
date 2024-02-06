@@ -513,6 +513,8 @@
   gap: 64px;
   padding: 12px;
   max-width: 720px;
+  display: flex;
+  flex-direction: column;
 }
 // =========================================
 .detailsMain {

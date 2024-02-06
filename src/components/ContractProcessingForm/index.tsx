@@ -69,12 +69,7 @@ const ContractProcessingForm: FC = () => {
   return (
     <Flex vertical className="w-full">
       {/* <VerifyProfileBar /> */}
-      <Button
-        name="Back"
-        leftIcon={IconType.BackArrow}
-        type={ButtonType.Secondary}
-        size={isMobile ? "middle" : "large"}
-      />
+
 
       {/* -------------------------Useful Code---------------------------------- */}
 
@@ -141,7 +136,7 @@ const ContractProcessingForm: FC = () => {
 
       {/* stepper added */}
       <Flex vertical align="center">
-        {/* <Stepper /> */}
+        <Stepper />
         <Flex
           vertical
           align="center"
@@ -176,7 +171,7 @@ const ContractProcessingForm: FC = () => {
           <Invoice />
           {/* --------------------------------------- */}
           {/* -----------------SELLER FLOW -------------------------- */}
-          {/* <SetupWithDrawl />
+          <SetupWithDrawl />
           <AddWithDrawl />
           <AddWithDrawlDisbursement />
           <WithDrawlMethod />
@@ -185,7 +180,7 @@ const ContractProcessingForm: FC = () => {
           <DisputOpened />
 
           <Invoice />
-          <FundsReleased /> */}
+          <FundsReleased />
           {/* ---Agreement form--- */}
           {/* <ConfirmContractCancellation closeModal={closeModal} /> */}
           <StepAgreement />

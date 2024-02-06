@@ -8,41 +8,43 @@ import StepDetail from "./StepDetail";
 import StepCompliance from "./StepCompliance";
 
 const ContractForm: FC = () => {
-  const [selectedCurrency, setSelectedCurrency] = useState(null);
+      const [selectedCurrency, setSelectedCurrency] = useState(null);
 
-  const { useBreakpoint } = Grid;
-  const screens: any = useBreakpoint();
-  const methods = useForm();
-  const [activeStep, setActiveStep] = useState<number>(0);
-  const handleStepChange = (current: number, data?: any) => {
-    setActiveStep(current);
-    const { selectedCurrency } = data || {};
-    setSelectedCurrency(selectedCurrency);
-  };
+      const { useBreakpoint } = Grid;
+      const screens: any = useBreakpoint();
+      const [activeStep, setActiveStep] = useState<number>(0);
+      const handleStepChange = (current: number, data?: any) => {
+            setActiveStep(current);
+            const { selectedCurrency } = data || {};
+            setSelectedCurrency(selectedCurrency);
+      };
 
-  return (
-    <FormProvider {...methods}>
-      {screens["sm"] && <Stepper activeStep={activeStep} />}
+      return (
+            <div>
+                  {screens["sm"] && <Stepper activeStep={activeStep} />}
 
-      <Flex vertical align="center">
-        {activeStep === 0 && (
-          <Create handleStepChange={handleStepChange} step={activeStep} />
-        )}
-        {activeStep === 1 && (
-          <StepDetail
-            handleStepChange={handleStepChange}
-            step={activeStep}
-            selectedCurrency={selectedCurrency}
-          />
-        )}
-        {activeStep === 2 && (
-          <StepCompliance
-            handleStepChange={handleStepChange}
-            step={activeStep}
-          />
-        )}
-      </Flex>
-    </FormProvider>
-  );
+                  <Flex vertical align="center">
+                        {activeStep === 0 && (
+                              <Create
+                                    handleStepChange={handleStepChange}
+                                    step={activeStep}
+                              />
+                        )}
+                        {activeStep === 1 && (
+                              <StepDetail
+                                    handleStepChange={handleStepChange}
+                                    step={activeStep}
+                                    selectedCurrency={selectedCurrency}
+                              />
+                        )}
+                        {activeStep === 2 && (
+                              <StepCompliance
+                                    handleStepChange={handleStepChange}
+                                    step={activeStep}
+                              />
+                        )}
+                  </Flex>
+            </div>
+      );
 };
 export default ContractForm;

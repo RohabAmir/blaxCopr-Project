@@ -11,7 +11,7 @@ interface I_APP {
 }
 const AppContext = createContext<I_APP>(defaultValues)
 
-const AuthContainer: FC<any> = ({ children }) => {
+const AppContainer: FC<any> = ({ children }) => {
     const { useBreakpoint } = Grid;
     const screens: any = useBreakpoint();
     const isMobile = useMemo(() => screens["sm"] && !screens['md'] || screens['xs'] && !screens['md'], [screens])
@@ -23,7 +23,7 @@ const AuthContainer: FC<any> = ({ children }) => {
     )
 }
 
-export default AuthContainer
+export default AppContainer
 
 const useAppContext = () => {
     return useContext(AppContext)

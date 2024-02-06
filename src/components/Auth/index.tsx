@@ -30,6 +30,7 @@ const Auth: FC = () => {
       </Default>
     }
   }
+
   return (isMobile ? getActiveUI(activePage) :
     <Default >
       {getActiveUI(activePage)}

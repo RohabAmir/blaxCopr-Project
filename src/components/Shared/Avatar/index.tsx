@@ -5,7 +5,7 @@ interface IAvatar {
 }
 
 const Avatar: FC<IAvatar> = ({ name }) => {
-    const firstLetter = name.split('')[0].toUpperCase()
+    const firstLetter = name?.split('')[0].toUpperCase()
     return (
         <div className={style.root}>{firstLetter}</div>
     )
