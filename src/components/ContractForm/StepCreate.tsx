@@ -34,9 +34,12 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
       } = useFetchContractDetailsQuery(contractId, {
             skip: !contractId, // Skip querying if no ID
       });
-      console.log("contractData>>", contractDetails);
 
+      const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
+      const [selectedRole, setSelectedRole] = useState<string | null>(null);
+      const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null);
       const { isMobile } = useAppContext();
+      
       const methods = useForm({
             defaultValues: {
                   contractName: "",
@@ -56,13 +59,13 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
                         currency: contractDetails.currency,
                         InspectionPeriod: contractDetails.inspectionPeriod,
                   });
+                  setSelectedRole(contractDetails.createrRole);
             }
       }, [contractDetails, isSuccess, methods]);
 
-      // -------------------------------------------
-      const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
-      const [selectedRole, setSelectedRole] = useState<string | null>(null);
-      const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null);
+
+      // Determine if the role dropdown should be disabled
+      const isRoleSelected = !!selectedRole; // This checks if a role has already been selected
 
       const handlechange = (value: string) => {
             setSelectedCurrency(value);
@@ -97,7 +100,7 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
                         inspectionPeriod: data.InspectionPeriod,
                         createrRole: data.role,
                         currency: data.currency,
-                        status: "PENDING",
+                        status: "INCOMPLETE",
                   },
             };
 
@@ -248,6 +251,7 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
                                                 options={roleOptions}
                                                 onChange={handlechange}
                                                 required
+                                                disabled={isRoleSelected} // Disable the dropdown if a role is selected
                                           />
                                           <Dropdown
                                                 name="currency"

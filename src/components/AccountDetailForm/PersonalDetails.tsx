@@ -4,6 +4,7 @@ import TextInput from "../Shared/Inputs/Text";
 import Button from "../Shared/Button";
 import styles from "./style.module.scss";
 import { useUpdateUserDetailsMutation } from "@/Store/services/authApi";
+import { useRouter } from "next/navigation";
 
 interface UserDetails {
       firstName: string;
@@ -33,6 +34,7 @@ const PersonalDetails: FC<PersonalDetailsProps> = ({
             phone: userDetails?.phone || "",
       });
       const [isDirty, setIsDirty] = useState(false);
+      const router = useRouter();
 
       const handleInputChange = (
             name: keyof UserDetails,
@@ -57,6 +59,7 @@ const PersonalDetails: FC<PersonalDetailsProps> = ({
                   await updateUserDetails(
                         updatedFields as updateUserDetailsProps
                   );
+                  router.push('/dashboard');
             }
       };
 

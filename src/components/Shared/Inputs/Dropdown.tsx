@@ -12,6 +12,7 @@ interface ITextInput {
       onChange: (e: any) => void;
       required?: boolean;
       defaultValue?: string;
+      disabled?: boolean;
 }
 
 const TextInput: FC<ITextInput> = ({
@@ -21,7 +22,8 @@ const TextInput: FC<ITextInput> = ({
       options,
       onChange,
       required = false,
-      defaultValue
+      defaultValue,
+      disabled = false
 }) => {
       const { Text } = Typography;
       const {
@@ -61,6 +63,7 @@ const TextInput: FC<ITextInput> = ({
                                                 width: "100%",
                                                 borderRadius: "12px",
                                           }}
+                                          disabled={disabled}
                                           
                                           
                                     />

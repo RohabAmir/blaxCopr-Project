@@ -2,21 +2,21 @@ import React, { FC } from 'react'
 import style from "./style.module.scss"
 type Tag = {
     title: string,
-    link: string
+    link: string[]
 }
 interface ITag {
     data: Tag;
     isActive: boolean;
-    navClickHandler: (title: string) => void
+    navClickHandler: (title: string[]) => void
 }
 interface Nav {
     title: string;
-    link: string;
+    link: string[];
 }
 interface INavbar {
     navs: Array<Nav>;
-    activeNav: string;
-    navClickHandler: (nav: string) => void
+    activeNav: string[];
+    navClickHandler: (nav: string[]) => void
 }
 
 const Tag: FC<ITag> = ({ data, isActive, navClickHandler }) => {

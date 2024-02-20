@@ -99,18 +99,13 @@ const ForgotPassword: FC<any> = () => {
                                                             : "An error occurred. Please try again later."}
                                                 </div>
                                           )
-                                    )}
+                                    )} 
                               </div>
                               <div className={styles.formLowerSection}>
                                     <Button
                                           name="Reset password"
                                           fullWidth
                                           size="large"
-                                          // onClickHandler={() =>
-                                          //       handleActivePage(
-                                          //             AUTH_TABS.RESET_PASSWORD
-                                          //       )
-                                          // }
                                           isSubmit
                                           isLoading={isLoading}
                                     />

@@ -1,5 +1,5 @@
 // const api = "https://blaxcorp-api.azurewebsites.net/";
-const api = "https://a0c5-182-188-102-45.ngrok-free.app/";
+const api = "https://4a8c-103-179-241-113.ngrok-free.app";
 
 
 export default api;

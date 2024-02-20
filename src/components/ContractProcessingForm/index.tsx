@@ -34,160 +34,267 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import ConfirmContractCancellation from "./ConfirmContractCancellation";
 import { useState } from "react";
+import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
+import { useGetUserDetailsQuery } from "@/Store/services/authApi";
+import { storeLocalData, getLocalData } from "@/utils";
 
-// interface IContractProcessingForm {
-//     children: ReactNode
-// }
+
 import { useAppContext } from "@/contexts/App";
 
 const ContractProcessingForm: FC = () => {
-  const { isMobile } = useAppContext();
+      const { isMobile } = useAppContext();
+      const contractId = getLocalData("contract_id");
+      const {
+            data: contractDetails,
+      } = useFetchContractDetailsQuery(contractId, {
+            skip: !contractId, // Skip querying if no ID
+      });
+      const { data: userDetails } = useGetUserDetailsQuery();
+      const { useBreakpoint } = Grid;
+      const screens: any = useBreakpoint();
 
-  const path = usePathname();
-  const dashboard = path.includes("dashboard");
-  function handleClick() {
-    return dashboard;
-  }
-  //
-  const [isModalOpen, setIsModalOpen] = useState(false);
+      const path = usePathname();
+      const dashboard = path.includes("dashboard");
+      function handleClick() {
+            return dashboard;
+      }
+      const [isModalOpen, setIsModalOpen] = useState(false);
+      const roleType = userDetails?.id === contractDetails?.buyerId ;
+      console.log(roleType)
 
-  const openModal = () => {
-    setIsModalOpen(true);
-    document.body.style.overflow = "hidden";
-    document.body.style.zIndex = "-1";
-    document.body.style.background = "rgba(0, 0, 0, 0.30";
-    document.body.style.pointerEvents = "none";
-  };
+      const openModal = () => {
+            setIsModalOpen(true);
+            document.body.style.overflow = "hidden";
+            document.body.style.zIndex = "-1";
+            document.body.style.background = "rgba(0, 0, 0, 0.30";
+            document.body.style.pointerEvents = "none";
+      };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    document.body.style.background = "#fff";
-    document.body.style.pointerEvents = "auto";
-    document.body.style.overflow = "auto";
-  };
+      const closeModal = () => {
+            setIsModalOpen(false);
+            document.body.style.background = "#fff";
+            document.body.style.pointerEvents = "auto";
+            document.body.style.overflow = "auto";
+      };
 
-  return (
-    <Flex vertical className="w-full">
-      {/* <VerifyProfileBar /> */}
+      // Assuming contractDetails.createdAt holds the API response date-time string
+      const createdAtISO = contractDetails?.createdAt || "";
 
+      // Parsing the ISO date string into a Date object
+      const date = new Date(createdAtISO);
 
-      {/* -------------------------Useful Code---------------------------------- */}
+      // Formatting the date
+      const formattedDate = `${date.getDate()} ${date.toLocaleString(
+            "default",
+            { month: "short" }
+      )}, ${date.getFullYear()}`;
 
-      {/* <Flex className="w-full">
-        <div className={styles.agreementContainer}>
-          <>
-            <Flex vertical style={{ width: "100%" }}>
-              <Title level={screens["sm"] ? 2 : 3}>Contract Name</Title>
-              <div className={styles.flexTransaction}>
-                <span className={styles.transactionText}>
-                  Transaction #10942007
-                </span>
-                <span>
-                  <Image
-                    className={styles.copyIcon}
-                    src={CopyIcon}
-                    alt="copy icon"
-                  />
-                </span>
-              </div>
-            </Flex> */}
+      return (
+            <Flex vertical className="w-full">
+                  <VerifyProfileBar />
 
-      {/* <Flex style={{ width: "100%" }}>
-              <div className={styles.boxesAgreement}>
-                <div className={styles.detailBox}>
+                  {/* -------------------------Useful Code---------------------------------- */}
+
+                  <Flex className="w-full">
+                        <div className={styles.agreementContainer}>
+                              <>
+                                    <Flex vertical style={{ width: "100%" }}>
+                                          <Title level={screens["sm"] ? 2 : 3}>
+                                                {contractDetails?.contractName ||
+                                                      ""}
+                                          </Title>
+                                          <div
+                                                className={
+                                                      styles.flexTransaction
+                                                }
+                                          >
+                                                <span
+                                                      className={
+                                                            styles.transactionText
+                                                      }
+                                                >
+                                                      Transaction #10942007
+                                                </span>
+                                                <span>
+                                                      <Image
+                                                            className={
+                                                                  styles.copyIcon
+                                                            }
+                                                            src={CopyIcon}
+                                                            alt="copy icon"
+                                                      />
+                                                </span>
+                                          </div>
+                                    </Flex>
+
+                                    <Flex style={{ width: "100%" }}>
+                                          <div
+                                                className={
+                                                      styles.boxesAgreement
+                                                }
+                                          >
+                                                <div
+                                                      className={
+                                                            styles.detailBox
+                                                      }
+                                                >
+                                                      <div>
+                                                            <Image
+                                                                  src={UserIcon}
+                                                                  alt="user icon"
+                                                            />
+                                                      </div>
+                                                      <div
+                                                            className={
+                                                                  styles.center
+                                                            }
+                                                      >
+                                                            {roleType? "Buyer" : "Seller"}
+                                                      </div>
+                                                </div>
+                                                <div
+                                                      className={
+                                                            styles.detailBox
+                                                      }
+                                                >
+                                                      <div>
+                                                            <Image
+                                                                  src={
+                                                                        CalenderIcon
+                                                                  }
+                                                                  alt="calendar icon"
+                                                            />
+                                                      </div>
+                                                      <div
+                                                            className={
+                                                                  styles.center
+                                                            }
+                                                      >
+                                                            Created {formattedDate}
+                                                      </div>
+                                                </div>
+
+                                                <div
+                                                      className={
+                                                            styles.detailBox
+                                                      }
+                                                      onClick={openModal}
+                                                >
+                                                      <div
+                                                            className={
+                                                                  styles.crossBox
+                                                            }
+                                                      >
+                                                            <Image
+                                                                  className={
+                                                                        styles.xIcon
+                                                                  }
+                                                                  src={XIcon}
+                                                                  alt="X icon"
+                                                            />
+                                                      </div>
+                                                      <div
+                                                            className={
+                                                                  styles.center
+                                                            }
+                                                      >
+                                                            Cancel contract{" "}
+                                                      </div>
+                                                </div>
+                                                {isModalOpen && (
+                                                      <ConfirmContractCancellation
+                                                            closeModal={
+                                                                  closeModal
+                                                            }
+                                                      />
+                                                )}
+                                          </div>
+                                    </Flex>
+                              </>
+                        </div>
+                  </Flex>
+
                   <div>
-                    <Image src={UserIcon} alt="user icon" />
+                        <div className={styles.transactionDetails}>
+                              <span style={{ color: "#006ACC" }}>
+                                    example@gmail.com
+                              </span>{" "}
+                              is buying a{" "}
+                              <span style={{ fontWeight: "600" }}>
+                                    domain name
+                              </span>{" "}
+                              from
+                              <span style={{ color: "#006ACC" }}>
+                                    {" "}
+                                    name@gmail.com.
+                              </span>
+                              <br /> The{" "}
+                              <span style={{ fontWeight: "600" }}>
+                                    inspection period
+                              </span>{" "}
+                              for this transaction is{" "}
+                              <span style={{ fontWeight: "600" }}>
+                                    3 calendar days.
+                              </span>
+                        </div>
                   </div>
-                  <div className={styles.center}>Buyer</div>
-                </div>
-                <div className={styles.detailBox}>
-                  <div>
-                    <Image src={CalenderIcon} alt="calendar icon" />
-                  </div>
-                  <div className={styles.center}>Created 17 Dec, 2023</div>
-                </div>
-               
-                <div className={styles.detailBox} onClick={openModal}>
-                  <div className={styles.crossBox}>
-                    <Image className={styles.xIcon} src={XIcon} alt="X icon" />
-                  </div>
-                  <div className={styles.center}>Cancel contract </div>
-                </div>
-                {isModalOpen && (
-                  <ConfirmContractCancellation closeModal={closeModal} />
-                )}
-              </div>
-            </Flex> */}
-      {/* </>
-        </div>
-      </Flex> */}
 
-      {/* <div>
-        <div className={styles.transactionDetails}>
-          <span style={{ color: "#006ACC" }}>example@gmail.com</span> is buying
-          a <span style={{ fontWeight: "600" }}>domain name</span> from
-          <span style={{ color: "#006ACC" }}> name@gmail.com.</span>
-          <br /> The{" "}
-          <span style={{ fontWeight: "600" }}>inspection period</span> for this
-          transaction is{" "}
-          <span style={{ fontWeight: "600" }}>3 calendar days.</span>
-        </div>
-      </div> */}
+                  {/* stepper added */}
+                  <Flex vertical align="center">
+                        <Stepper />
+                        <Flex
+                              vertical
+                              align="center"
+                              style={{ width: "100%", padding: "0 24px" }}
+                        >
+                              {isMobile && (
+                                    <>
+                                          {/* <div className={styles.flexBtnResp}>
+                                          <Button
+                                                name="Action"
+                                                type={ButtonType.Tertioary}
+                                                fullWidth={!screens["md"]}
+                                          />
+                                          <Button
+                                                name="Overview"
+                                                type={ButtonType.Tertioary}
+                                                fullWidth={!screens["md"]}
+                                          />
+                                          </div> */}
+                                    </>
+                              )}
 
-      {/* stepper added */}
-      <Flex vertical align="center">
-        <Stepper />
-        <Flex
-          vertical
-          align="center"
-          style={{ width: "100%", padding: "0 24px" }}
-        >
-          {isMobile && (
-            <>
-              {/* <div className={styles.flexBtnResp}>
-                <Button
-                  name="Action"
-                  type={ButtonType.Tertioary}
-                  fullWidth={!screens["md"]}
-                />
-                <Button
-                  name="Overview"
-                  type={ButtonType.Tertioary}
-                  fullWidth={!screens["md"]}
-                />
-              </div> */}
-            </>
-          )}
-          {/* agrrement buyer components */}
-          {/* ------------------------------------ */}
-          <Deposit />
-          <TransferAmount />
-          <BankLocation />
-          <BankDetails />
-          <PendingDeposit />
-          <SuccessfulDeposit />
-          <Inspection />
-          <DisputOpened />
-          <Invoice />
-          {/* --------------------------------------- */}
-          {/* -----------------SELLER FLOW -------------------------- */}
-          <SetupWithDrawl />
-          <AddWithDrawl />
-          <AddWithDrawlDisbursement />
-          <WithDrawlMethod />
-          <WithDrawlBuyerWaiting />
-          <InspectedPeriod />
-          <DisputOpened />
-
-          <Invoice />
-          <FundsReleased />
-          {/* ---Agreement form--- */}
-          {/* <ConfirmContractCancellation closeModal={closeModal} /> */}
-          <StepAgreement />
-        </Flex>
-      </Flex>
-    </Flex>
-  );
+                              {/* agrrement buyer components */}
+                              {/* ------------------------------------ */}
+                              {/*   <Deposit />
+                                    <TransferAmount />
+                                    <BankLocation />
+                                    <BankDetails />
+                                    <PendingDeposit />
+                                    <SuccessfulDeposit />
+                                    <Inspection />
+                                    <DisputOpened />
+                                    <Invoice /> 
+                              */}
+                              {/* --------------------------------------- */}
+                              {/* -----------------SELLER FLOW -------------------------- */}
+                                          {/* <SetupWithDrawl />
+                                          <AddWithDrawl />
+                                          <AddWithDrawlDisbursement />
+                                          <WithDrawlMethod />
+                                          <WithDrawlBuyerWaiting />
+                                          <InspectedPeriod />
+                                          <DisputOpened />
+                                          <Invoice />
+                                          <FundsReleased />  */}
+                              
+                              {/* ---Agreement form--- */}
+                              {/* <ConfirmContractCancellation closeModal={closeModal} /> */}
+                              <StepAgreement contractDetails={contractDetails}/>
+                        </Flex>
+                  </Flex>
+            </Flex>
+      );
 };
 
 export default ContractProcessingForm;
