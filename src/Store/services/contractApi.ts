@@ -2,6 +2,14 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getAccessToken } from "@/utils/jwtTokens";
 import api from "@/utils/api";
 
+
+
+interface sendInviteProps{
+      email: string;
+      message: string;
+      role:string;
+      id: number;
+}
 export const contractApi = createApi({
       reducerPath: "contractApi",
       baseQuery: fetchBaseQuery({
@@ -43,6 +51,42 @@ export const contractApi = createApi({
                         };
                   },
             }),
+            SendInvite: builder.mutation<any, any>({
+                  query: ({ id ,...data }) => {
+
+                      return {
+                          url: `/contracts/send-invite/${id}`,
+                          method: "POST",
+                          body: data ,
+                      };
+                  },
+            }),
+            CompleteContractDetails: builder.mutation<any, any>({
+                  query: ({ id ,...contractData}) => {
+
+                      return {
+                          url: `/contracts/complete/${id}`,
+                          method: "POST",
+                          body: contractData ,
+                      };
+                  },
+            }),
+            getAllContractDetails: builder.query<any, void>({
+                  query: () => {
+                        return {
+                             url: `/contracts/get-all`,
+                              method: "GET",
+                        };
+                  },
+            }),
+            deleteContract: builder.mutation<any, any>({
+                  query: (id) => {
+                        return {
+                             url: `/contracts/delete/${id}`,
+                              method: "DELETE",
+                        };
+                  },
+            }),
       }),
 });
 
@@ -50,4 +94,8 @@ export const {
       usePostContractDetailsMutation,
       useUpdateContractDetailsMutation,
       useFetchContractDetailsQuery,
+      useSendInviteMutation,
+      useGetAllContractDetailsQuery,
+      useDeleteContractMutation,
+      useCompleteContractDetailsMutation
 } = contractApi;

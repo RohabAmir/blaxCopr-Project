@@ -132,6 +132,4 @@ const ResetPassword: FC<any> = () => {
 };
 
 export default ResetPassword;
-function handleActivePage(RESET_PASSWORD: any) {
-      throw new Error("Function not implemented.");
-}
+

@@ -8,8 +8,12 @@ import { Button } from "../Shared";
 import { ButtonType, IconType } from "@/types";
 import { Grid } from "antd";
 import { useAppContext } from "@/contexts/App";
+interface TransferProps {
+  onNext: () => void;
+  onBack: () => void;
+}
 
-const TransferAmount: FC = () => {
+const TransferAmount: FC<TransferProps> = ({ onNext, onBack }) => {
   const { isMobile } = useAppContext();
 
   return (
@@ -21,6 +25,7 @@ const TransferAmount: FC = () => {
               name="Back"
               leftIcon={IconType.BackArrow}
               type={ButtonType.Secondary}
+              onClickHandler={onBack}
             />
           )}
           <p className={styles.transferHeading}>Choose how you want to pay</p>
@@ -67,6 +72,7 @@ const TransferAmount: FC = () => {
               leftIcon={IconType.BackArrow}
               type={ButtonType.Secondary}
               size={!isMobile ? "large" : "middle"}
+              onClickHandler={onBack}
             />
           )}
           <div className={styles.transferBtn}>
@@ -74,6 +80,7 @@ const TransferAmount: FC = () => {
               name="Continue"
               type={ButtonType.Primary}
               size={!isMobile ? "large" : "middle"}
+              onClickHandler={onNext}
             />
           </div>
         </div>

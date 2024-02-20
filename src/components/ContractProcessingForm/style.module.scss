@@ -88,7 +88,27 @@
 .btnOpen:hover {
   background: #89e64f;
 }
-
+.cross {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  padding: 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  border-radius: 100px;
+  background: rgba(22, 51, 0, 0.08);
+  font-size: 26px;
+  border: none;
+  position: absolute;
+  top: 56px;
+  right: 24px;
+  cursor: pointer;
+}
+.cross:hover {
+  background: rgba(3, 7, 0, 0.08);
+}
 .crossNew {
   display: flex;
   width: 48px;
@@ -233,6 +253,7 @@
   width: 16px;
   height: 16px;
   padding-right: 24px;
+  cursor: pointer;
 }
 .subHeading {
   color: #0e0f0c;
@@ -253,6 +274,7 @@
 .copyIcon {
   width: 24x;
   height: 24px;
+  cursor: pointer;
 }
 .flexTransaction {
   display: flex;
@@ -282,6 +304,8 @@
   line-height: 22px; /* 157.143% */
   letter-spacing: 0.14px;
   margin-bottom: 48px;
+  max-width: 1190px;
+  margin: 0 auto;
 }
 .detailBox {
   display: flex;
@@ -866,6 +890,8 @@
   align-items: center;
   gap: 20px;
   width: 100%;
+  max-width: 1190px;
+  margin: 0 auto;
 }
 .flexBtnResp {
   display: flex;

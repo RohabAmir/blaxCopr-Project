@@ -34,22 +34,35 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import ConfirmContractCancellation from "./ConfirmContractCancellation";
 import { useState } from "react";
+import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
+import { useGetUserDetailsQuery } from "@/Store/services/authApi";
+import { storeLocalData, getLocalData } from "@/utils";
 
-// interface IContractProcessingForm {
-//     children: ReactNode
-// }
 import { useAppContext } from "@/contexts/App";
 
 const ContractProcessingForm: FC = () => {
+  const [currentComponent, setCurrentComponent] = useState(1);
+  const [previousComponent, setPreviousComponent] = useState<number | null>(
+    null
+  );
+
   const { isMobile } = useAppContext();
+  const contractId = getLocalData("contract_id");
+  const { data: contractDetails } = useFetchContractDetailsQuery(contractId, {
+    skip: !contractId, // Skip querying if no ID
+  });
+  const { data: userDetails } = useGetUserDetailsQuery();
+  const { useBreakpoint } = Grid;
+  const screens: any = useBreakpoint();
 
   const path = usePathname();
   const dashboard = path.includes("dashboard");
   function handleClick() {
     return dashboard;
   }
-  //
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const roleType = userDetails?.id === contractDetails?.buyerId;
+  console.log(roleType);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -66,18 +79,69 @@ const ContractProcessingForm: FC = () => {
     document.body.style.overflow = "auto";
   };
 
+  // Assuming contractDetails.createdAt holds the API response date-time string
+  const createdAtISO = contractDetails?.createdAt || "";
+
+  // Parsing the ISO date string into a Date object
+  const date = new Date(createdAtISO);
+
+  // Formatting the date
+  const formattedDate = `${date.getDate()} ${date.toLocaleString("default", {
+    month: "short",
+  })}, ${date.getFullYear()}`;
+
+  const handlePreviousComponent = () => {
+    if (previousComponent !== null) {
+      setCurrentComponent(previousComponent);
+      setPreviousComponent(null);
+    }
+  };
+  const handleNextComponent = () => {
+    setPreviousComponent(currentComponent);
+    setCurrentComponent(currentComponent + 1);
+  };
+  const renderComponent = () => {
+    switch (currentComponent) {
+      case 1:
+        return <Deposit onNext={handleNextComponent} />;
+      case 2:
+        return (
+          <TransferAmount
+            onNext={handleNextComponent}
+            onBack={handlePreviousComponent}
+          />
+        );
+      case 3:
+        return (
+          <BankLocation
+            onNext={handleNextComponent}
+            onBack={handlePreviousComponent}
+          />
+        );
+      case 4:
+        return (
+          <BankDetails
+            onNext={handleNextComponent}
+            onBack={handlePreviousComponent}
+          />
+        );
+      default:
+        return null;
+    }
+  };
   return (
     <Flex vertical className="w-full">
-      {/* <VerifyProfileBar /> */}
-
+      <VerifyProfileBar />
 
       {/* -------------------------Useful Code---------------------------------- */}
 
-      {/* <Flex className="w-full">
+      <Flex className="w-full">
         <div className={styles.agreementContainer}>
           <>
             <Flex vertical style={{ width: "100%" }}>
-              <Title level={screens["sm"] ? 2 : 3}>Contract Name</Title>
+              <Title level={screens["sm"] ? 2 : 3}>
+                {contractDetails?.contractName || ""}
+              </Title>
               <div className={styles.flexTransaction}>
                 <span className={styles.transactionText}>
                   Transaction #10942007
@@ -90,23 +154,25 @@ const ContractProcessingForm: FC = () => {
                   />
                 </span>
               </div>
-            </Flex> */}
+            </Flex>
 
-      {/* <Flex style={{ width: "100%" }}>
+            <Flex style={{ width: "100%" }}>
               <div className={styles.boxesAgreement}>
                 <div className={styles.detailBox}>
                   <div>
                     <Image src={UserIcon} alt="user icon" />
                   </div>
-                  <div className={styles.center}>Buyer</div>
+                  <div className={styles.center}>
+                    {roleType ? "Buyer" : "Seller"}
+                  </div>
                 </div>
                 <div className={styles.detailBox}>
                   <div>
                     <Image src={CalenderIcon} alt="calendar icon" />
                   </div>
-                  <div className={styles.center}>Created 17 Dec, 2023</div>
+                  <div className={styles.center}>Created {formattedDate}</div>
                 </div>
-               
+
                 <div className={styles.detailBox} onClick={openModal}>
                   <div className={styles.crossBox}>
                     <Image className={styles.xIcon} src={XIcon} alt="X icon" />
@@ -117,12 +183,12 @@ const ContractProcessingForm: FC = () => {
                   <ConfirmContractCancellation closeModal={closeModal} />
                 )}
               </div>
-            </Flex> */}
-      {/* </>
+            </Flex>
+          </>
         </div>
-      </Flex> */}
+      </Flex>
 
-      {/* <div>
+      <div>
         <div className={styles.transactionDetails}>
           <span style={{ color: "#006ACC" }}>example@gmail.com</span> is buying
           a <span style={{ fontWeight: "600" }}>domain name</span> from
@@ -132,11 +198,11 @@ const ContractProcessingForm: FC = () => {
           transaction is{" "}
           <span style={{ fontWeight: "600" }}>3 calendar days.</span>
         </div>
-      </div> */}
+      </div>
 
       {/* stepper added */}
       <Flex vertical align="center">
-        <Stepper />
+        <Stepper currentComponent={currentComponent} />
         <Flex
           vertical
           align="center"
@@ -145,45 +211,47 @@ const ContractProcessingForm: FC = () => {
           {isMobile && (
             <>
               {/* <div className={styles.flexBtnResp}>
-                <Button
-                  name="Action"
-                  type={ButtonType.Tertioary}
-                  fullWidth={!screens["md"]}
-                />
-                <Button
-                  name="Overview"
-                  type={ButtonType.Tertioary}
-                  fullWidth={!screens["md"]}
-                />
-              </div> */}
+                                          <Button
+                                                name="Action"
+                                                type={ButtonType.Tertioary}
+                                                fullWidth={!screens["md"]}
+                                          />
+                                          <Button
+                                                name="Overview"
+                                                type={ButtonType.Tertioary}
+                                                fullWidth={!screens["md"]}
+                                          />
+                                          </div> */}
             </>
           )}
+
           {/* agrrement buyer components */}
           {/* ------------------------------------ */}
-          <Deposit />
-          <TransferAmount />
-          <BankLocation />
-          <BankDetails />
-          <PendingDeposit />
-          <SuccessfulDeposit />
-          <Inspection />
-          <DisputOpened />
-          <Invoice />
+
+          {renderComponent()}
+
+          {/*    
+                                    <PendingDeposit />
+                                    <SuccessfulDeposit />
+                                    <Inspection />
+                                    <DisputOpened />
+                                    <Invoice /> 
+                              */}
           {/* --------------------------------------- */}
           {/* -----------------SELLER FLOW -------------------------- */}
-          <SetupWithDrawl />
-          <AddWithDrawl />
-          <AddWithDrawlDisbursement />
-          <WithDrawlMethod />
-          <WithDrawlBuyerWaiting />
-          <InspectedPeriod />
-          <DisputOpened />
+          {/* <SetupWithDrawl /> */}
+          {/* <AddWithDrawl />
+          <AddWithDrawlDisbursement /> */}
+          {/*  <WithDrawlMethod />
+                                          <WithDrawlBuyerWaiting />
+                                          <InspectedPeriod />
+                                          <DisputOpened />
+                                          <Invoice />
+                                          <FundsReleased />  */}
 
-          <Invoice />
-          <FundsReleased />
           {/* ---Agreement form--- */}
           {/* <ConfirmContractCancellation closeModal={closeModal} /> */}
-          <StepAgreement />
+          {/* <StepAgreement contractDetails={contractDetails}/> */}
         </Flex>
       </Flex>
     </Flex>

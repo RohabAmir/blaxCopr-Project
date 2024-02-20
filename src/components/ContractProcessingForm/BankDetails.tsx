@@ -12,8 +12,19 @@ import CopyIcon from "../../../public/icons/Copy.svg";
 import InfoIcon from "../../../public/icons/Info.svg";
 
 import { useAppContext } from "@/contexts/App";
+interface BankDetailsProps {
+  onNext: () => void;
+  onBack: () => void;
+}
 
-const BankDetails: FC = () => {
+const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
+  const handleCopyText = (event: any) => {
+    const textToCopy = event.target.previousSibling.textContent.trim();
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => alert("Copied to clipboard"))
+      .catch((error) => console.error("Failed to copy:", error));
+  };
   const { isMobile } = useAppContext();
   return (
     <>
@@ -25,6 +36,7 @@ const BankDetails: FC = () => {
                 name="Back"
                 leftIcon={IconType.BackArrow}
                 type={ButtonType.Secondary}
+                onClickHandler={onBack}
               />
             )}
             <p className={styles.transferHeading}>Send money from your bank</p>
@@ -66,6 +78,7 @@ const BankDetails: FC = () => {
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
+                      onClick={handleCopyText}
                     />
                   </span>
                 </div>
@@ -98,6 +111,7 @@ const BankDetails: FC = () => {
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
+                      onClick={handleCopyText}
                     />
                   </span>
                 </div>
@@ -124,6 +138,7 @@ const BankDetails: FC = () => {
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
+                      onClick={handleCopyText}
                     />
                   </span>
                 </div>
@@ -146,6 +161,7 @@ const BankDetails: FC = () => {
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
+                      onClick={handleCopyText}
                     />
                   </span>
                 </div>
@@ -161,6 +177,7 @@ const BankDetails: FC = () => {
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
+                      onClick={handleCopyText}
                     />
                   </span>
                 </div>
@@ -176,6 +193,7 @@ const BankDetails: FC = () => {
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
+                      onClick={handleCopyText}
                     />
                   </span>
                 </div>
@@ -191,6 +209,7 @@ const BankDetails: FC = () => {
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
+                      onClick={handleCopyText}
                     />
                   </span>
                 </div>
@@ -218,6 +237,7 @@ const BankDetails: FC = () => {
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
+                      onClick={handleCopyText}
                     />
                   </span>
                 </div>

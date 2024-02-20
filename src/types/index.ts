@@ -1,6 +1,6 @@
 export type Nav = {
   title: string;
-  link: string;
+  link: string[];
 };
 
 export enum ButtonType {

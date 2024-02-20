@@ -6,10 +6,16 @@ import { Button } from "../Shared";
 import { ButtonType, IconType } from "@/types";
 import { Grid } from "antd";
 import { useAppContext } from "@/contexts/App";
-
-const Deposit: FC = () => {
+interface DepositProps {
+  onNext: () => void;
+}
+const Deposit: FC<DepositProps> = ({ onNext }) => {
   const { isMobile } = useAppContext();
+  const handleDeposit = () => {
+    console.log("handle deposit---");
+  };
   const { useBreakpoint } = Grid;
+
   const screens: any = useBreakpoint();
   return (
     <>
@@ -28,6 +34,7 @@ const Deposit: FC = () => {
           </div>
           <Button
             name="Deposit Now"
+            onClickHandler={onNext}
             type={ButtonType.Primary}
             fullWidth={!screens["sm"]}
           />

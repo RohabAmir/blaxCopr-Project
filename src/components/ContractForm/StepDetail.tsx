@@ -17,25 +17,138 @@ import { useUpdateContractDetailsMutation } from "@/Store/services/contractApi";
 import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
 import { storeLocalData, getLocalData } from "@/utils";
 import { useAppContext } from "@/contexts/App";
+import {
+      updateBuyerPrice,
+      updateSubTotal,
+      updateEscrowPrice
+} from "@/Store/services/contractSlice";
+import { useDispatch } from "react-redux";
 
 
-interface TransactionItem {
+interface Transaction {
+      id?: number; // Include 'id' as optional for new transactions
       itemName: string;
+      description: string;
       price: string;
       category: string;
-      description: string;
 }
-interface ShippingDetails {
+
+interface TransactionId {
+      id: number;
+}
+
+interface CategoryFee {
+      [category: string]: number;
+}
+
+interface FeeStructure {
+      min: number;
+      max: number;
+      baseFee: number;
+      percentageFee: number;
+      categoryFees: CategoryFee;
+}
+
+interface FormValues {
+      transactions: Transaction[];
       shippingCost: string;
       shippingMethod: string;
+      collectionServiceUpgrade: boolean;
+      lienHolderUpgrade: boolean;
+      escrowFeePaidBy: string;
       inspectionPeriod: string;
       shippingFeePaidBy: string;
       cancellationFeePaidBy: string;
-      collectionServiceUpgrade: boolean;
-      lienHolderUpgrade: boolean;
 }
 
 const StepDetail: FC<any> = ({ handleStepChange, step }) => {
+
+      const categoryFee: CategoryFee = {
+            "Real Estate": 0.0075,
+            "Legal Services": 0.035,
+            "Financial Services": 0.0075,
+            "Loan Disbursement": 0.0125,
+            "Freelancing Platforms": 0.03,
+            "Payment Processors": 0.025,
+            "Insurance Services": 0.015,
+            "Construction Services": 0.0125,
+            "Healthcare Services": 0.02,
+            "Education Services": 0.01,
+            "Retail and eCommerce": 0.0175,
+            "Transportation Services": 0.025,
+            "Utilities Services": 0.0125,
+            "Government Services": 0.0225,
+            "Non-Profit Organizations": 0.0125,
+            "Hospitality and Tourism": 0.035,
+            "Technology Services": 0.02,
+            "Entertainment Industry": 0.035,
+            "Manufacturing Sector": 0.02,
+            "Agriculture Services": 0.0175,
+            "General Goods": 0.015,
+            "Luxury Items": 0.0225,
+            "Automobiles": 0.0125,
+            "Marine Vehicles": 0.02,
+            "Aircraft": 0.015,
+           " Jewelry": 0.025,
+      };
+
+      const feeStructures: FeeStructure[] = [
+            {
+                  min: 1.0,
+                  max: 9999.99,
+                  baseFee: 100.0,
+                  percentageFee: 0.008,
+                  categoryFees: categoryFee,
+            },
+
+            {
+                  min: 10000.0,
+                  max: 49999.99,
+                  baseFee: 150.0,
+                  percentageFee: 0.006,
+                  categoryFees: categoryFee,
+            },
+
+            {
+                  min: 50000.0,
+                  max: 99999.99,
+                  baseFee: 200.0,
+                  percentageFee: 0.005,
+                  categoryFees: categoryFee,
+            },
+
+            {
+                  min: 100000.0,
+                  max: 249999.99,
+                  baseFee: 250.0,
+                  percentageFee: 0.004,
+                  categoryFees: categoryFee,
+            },
+
+            {
+                  min: 250000.0,
+                  max: 499999.99,
+                  baseFee: 300.0,
+                  percentageFee: 0.003,
+                  categoryFees: categoryFee,
+            },
+
+            {
+                  min: 500000.0,
+                  max: 999999.99,
+                  baseFee: 350.0,
+                  percentageFee: 0.0025,
+                  categoryFees: categoryFee,
+            },
+      ];
+
+
+      // Convert categoryFee to an array of options
+      const options = Object.keys(categoryFee).map((key) => ({
+            value: key,
+            label: key,
+      }));
+
       const text = Typography;
       const contractId = getLocalData("contract_id");
 
@@ -48,9 +161,9 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
       } = useFetchContractDetailsQuery(contractId, {
             skip: !contractId, // Skip querying if no ID
       });
-      console.log("contractData>>", contractDetails);
       const { isMobile } = useAppContext();
-      const methods = useForm({
+      const dispatch = useDispatch();
+      const methods = useForm<FormValues>({
             defaultValues: {
                   transactions: [
                         {
@@ -65,6 +178,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                   inspectionPeriod: "",
                   shippingFeePaidBy: "",
                   cancellationFeePaidBy: "",
+                  escrowFeePaidBy: "",
                   collectionServiceUpgrade: false,
                   lienHolderUpgrade: false,
             },
@@ -74,18 +188,89 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
             control: methods.control,
             name: "transactions",
       });
-      const { handleSubmit, control, reset, formState} = methods;
+
+      const { handleSubmit, reset, formState, watch, control } = methods;
+      // const { watch } = useFormContext<FormValues>();
       const { isDirty } = formState;
 
-      const [itemsCount, setItemsCount] = useState<number>(1);
+      // Watch for changes in the relevant fields
+      const watchedTransactions = watch("transactions");
+      const watchedShippingCost = watch("shippingCost");
+      const watchedCollectionServiceUpgrade = watch("collectionServiceUpgrade");
+      const watchedLienHolderUpgrade = watch("lienHolderUpgrade");
+      const watchedEscrowFeePaidBy = watch("escrowFeePaidBy");
+
       const [isShipping, setShipping] = useState(true);
       const [selectedCategory, setSelectedCategory] = useState<string | null>(
             null
       );
+      const [subTotal, setSubTotal] = useState<number>(0);
+      const [buyerPrice, setBuyerPrice] = useState<number>(0);
+      const [escrowFee, setEscrowFee] = useState<number>(0);
+      const [shippingFee, setShippingFee] = useState<number>(0);
+
 
       const handlechange = (value: string) => {
             setSelectedCategory(value);
       };
+
+
+      // useEffect hook adjusted to include dynamic escrow fee calculation and other transaction summaries
+      useEffect(() => {
+            let totalTransactionAmount = 0;
+            let totalCategoryFee = 0;
+
+            // Calculate total amount and category fees
+            watchedTransactions.forEach(
+                  (transaction: {
+                        price: string;
+                        category: string | number;
+                  }) => {
+                        const price = parseFloat(transaction.price) || 0;
+                        const categoryFeePercentage =
+                              categoryFee[transaction.category] || 0;
+                        totalTransactionAmount += price;
+                        totalCategoryFee += price * categoryFeePercentage;
+                  }
+            );
+
+            // Find applicable fee structure
+            const applicableFeeStructure = feeStructures.find(
+                  (fs) =>
+                        totalTransactionAmount >= fs.min &&
+                        totalTransactionAmount <= fs.max
+            );
+
+            const baseFee = applicableFeeStructure? applicableFeeStructure.baseFee: 0;
+            const percentageFee = applicableFeeStructure? totalTransactionAmount *applicableFeeStructure.percentageFee: 0;
+
+            // Calculate subtotal and buyer price
+            const shippingCost = parseFloat(watchedShippingCost) || 0;
+            const serviceUpgradeCost =
+                  (watchedCollectionServiceUpgrade ? 60 : 0) +
+                  (watchedLienHolderUpgrade ? 60 : 0);
+            const dynamicEscrowFee = baseFee + percentageFee + totalCategoryFee;
+            let dynamicSubTotal =
+                  totalTransactionAmount + shippingCost + serviceUpgradeCost;
+            let dynamicBuyerPrice =
+                  dynamicSubTotal +
+                  (watchedEscrowFeePaidBy === "BUYER" ? dynamicEscrowFee : 0);
+
+            setSubTotal(dynamicSubTotal);
+            setBuyerPrice(dynamicBuyerPrice);
+            setEscrowFee(dynamicEscrowFee);
+            setShippingFee(shippingCost);
+
+
+            // Optionally, update Redux or local state as needed
+            dispatch(updateSubTotal(subTotal));
+            dispatch(updateBuyerPrice(buyerPrice));
+            dispatch(updateEscrowPrice(escrowFee));
+
+
+
+      }, [watchedTransactions, watchedShippingCost, watchedCollectionServiceUpgrade, watchedLienHolderUpgrade, watchedEscrowFeePaidBy, dispatch, feeStructures, subTotal, buyerPrice, categoryFee, escrowFee]);
+
       //for fetching the contractDetails field values and populating them
       useEffect(() => {
             if (isSuccess && contractDetails) {
@@ -95,22 +280,35 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                               ? contractDetails.transactions
                               : [
                                       {
-                                          itemName: "",
-                                          price: "",
-                                          category: "",
-                                          description: "",
+                                            itemName: "",
+                                            price: "",
+                                            category: "",
+                                            description: "",
                                       },
                                 ];
                   methods.reset({
                         transactions,
                         shippingCost: contractDetails.shipping?.shippingCost,
-                        shippingMethod: contractDetails.shipping?.shippingMethod,
-                        inspectionPeriod: contractDetails.shipping?.inspectionPeriod,
-                        shippingFeePaidBy: contractDetails.shipping?.shippingFeePaidBy,
-                        cancellationFeePaidBy: contractDetails.shipping?.cancellationFeePaidBy,
-                        collectionServiceUpgrade: contractDetails.shipping?.collectionServiceUpgrade,
-                        lienHolderUpgrade: contractDetails.shipping?.lienHolderUpgrade,
+                        shippingMethod:
+                              contractDetails.shipping?.shippingMethod,
+                        inspectionPeriod:
+                              contractDetails.shipping?.inspectionPeriod,
+                        shippingFeePaidBy:
+                              contractDetails.shipping?.shippingFeePaidBy,
+                        cancellationFeePaidBy:
+                              contractDetails.shipping?.cancellationFeePaidBy,
+                        escrowFeePaidBy:
+                              contractDetails.shipping?.escrowFeePaidBy,
+                        collectionServiceUpgrade:
+                              contractDetails.shipping
+                                    ?.collectionServiceUpgrade,
+                        lienHolderUpgrade:
+                              contractDetails.shipping?.lienHolderUpgrade,
                   });
+                  // Calculate and update summary values
+                  // const { subTotal, buyerPrice } = calculateSummary(contractDetails);
+                  // setSubTotal(subTotal);
+                  // setBuyerPrice(buyerPrice);
             }
       }, [contractDetails, isSuccess, methods]);
 
@@ -120,22 +318,23 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
 
       // Function to handle form submission
       const onSubmit = async (data: any) => {
-            console.log("formData>>>", data);
-            const transactionId = getLocalData("transaction_id");
+            // Retrieve the stored string and parse it back to an array
+            const storedTransactionIdsString =
+                  getLocalData("transaction_ids") || "[]";
+            const transactionIds = JSON.parse(storedTransactionIdsString);
             const shippingId = getLocalData("shipping_id");
             // Create the transactions array with the desired structure
-            const transactionsPayload = data.transactions.map(
-                  (transaction: {
-                        itemName: any;
-                        description: any;
-                        price: string;
-                        category: any;
-                  }) => ({
-                        itemName: transaction.itemName,
-                        description: transaction.description,
-                        price: parseFloat(transaction.price),
-                        category: transaction.category,
-                  })
+            const transactionsPayload: Transaction[] = data.transactions.map(
+                  (transaction: Transaction, index: number) => {
+                        const transactionId = transactionIds[index]?.id;
+                        return {
+                              ...(transactionId ? { id: transactionId } : {}),
+                              itemName: transaction.itemName,
+                              description: transaction.description,
+                              price: parseFloat(transaction.price),
+                              category: transaction.category,
+                        };
+                  }
             );
 
             // Create the shipping object with the desired structure
@@ -146,6 +345,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                   inspectionPeriod: parseFloat(data.inspectionPeriod),
                   shippingFeePaidBy: data.shippingFeePaidBy,
                   cancellationFeePaidBy: data.cancellationFeePaidBy,
+                  escrowFeePaidBy: data.escrowFeePaidBy,
                   collectionServiceUpgrade: data.collectionServiceUpgrade,
                   lienHolderUpgrade: data.lienHolderUpgrade,
             };
@@ -155,11 +355,15 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                   shipping: shippingPayload,
             };
 
-            if ( (transactionId || shippingId) && isDirty ) {
-                  //Second step patch request 
-                   // Update existing contract
-                  console.log('running in transactionId || shippingId) && isDirty ')
-                   try {
+            dispatch(updateSubTotal(subTotal));
+            dispatch(updateBuyerPrice(buyerPrice));
+            dispatch(updateEscrowPrice(escrowFee));
+
+
+            if ((transactionIds.length > 0 || shippingId) && isDirty) {
+                  //Second step patch request
+                  // Update existing details
+                  try {
                         await updateContractDetails({
                               id: contractId,
                               ...payload,
@@ -173,28 +377,49 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                               error
                         );
                   }
-
-            } else if (!transactionId || !shippingId){
-                  //Firt step patch request 
-                  console.log('running in transactionId || shippingId)')
+            } else if (transactionIds.length === 0 || !shippingId) {
+                  //Firt step patch request
+                  console.log("running in transactionId || shippingId)");
                   try {
-                        const response:any = await updateContractDetails({ id: contractId, ...payload });
-                        console.log('reponse>>>>>>>>',response)
-                        if ( response.data && response.data.response.updatedContract.shipping.id){
-                              // storeLocalData("transaction_id",response.data.response.updatedContract.transactions.id );
-                              storeLocalData("shipping_id",response.data.response.updatedContract.shipping.id);
-                               // Refetch contract details after successful update
+                        const response: any = await updateContractDetails({
+                              id: contractId,
+                              ...payload,
+                        });
+                        // Extract the transaction IDs from the response
+                        const transactionIds: TransactionId[] =
+                              response.data.response.updatedContract.transactions.map(
+                                    (t: Transaction) => ({ id: t.id })
+                              );
+                        if (
+                              response.data &&
+                              response.data.response.updatedContract.shipping
+                                    .id &&
+                              transactionIds
+                        ) {
+                              // Store the array of IDs in local storage as a string
+                              storeLocalData(
+                                    "transaction_ids",
+                                    JSON.stringify(transactionIds)
+                              );
+                              storeLocalData(
+                                    "shipping_id",
+                                    response.data.response.updatedContract
+                                          .shipping.id
+                              );
+                              // Refetch contract details after successful update
                               refetch();
                               handleStepChange(2); // Proceed to the next step upon successful update
                         }
                   } catch (error) {
-                        console.error("Failed to update contract details:", error);
+                        console.error(
+                              "Failed to update contract details:",
+                              error
+                        );
                   }
-            }else {
-                     // No changes made, simply navigate to the next step
-                     handleStepChange(2);
+            } else {
+                  // No changes made, simply navigate to the next step
+                  handleStepChange(2);
             }
-
       };
 
       return (
@@ -241,12 +466,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                                     <Dropdown
                                           name={`transactions.${index}.category`}
                                           label="Item category"
-                                          options={[
-                                                {
-                                                      value: "123",
-                                                      label: "Item2",
-                                                },
-                                          ]}
+                                          options={options}
                                           onChange={handlechange}
                                           required
                                     />
@@ -478,7 +698,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                                                       Subtotal:
                                                 </p>
                                                 <p className={styles.amount}>
-                                                      $10.000.00
+                                                      ${subTotal.toFixed(2)}
                                                 </p>
                                           </div>
                                           <div className={styles.flexDetails}>
@@ -486,7 +706,13 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                                                       Shipping fee:
                                                 </p>
                                                 <p className={styles.amount}>
-                                                      $123.00
+                                                      {/* {` $ ${
+                                                            contractDetails
+                                                                  ?.shipping
+                                                                  ?.shippingCost ||
+                                                            ""
+                                                      }`} */}
+                                                      ${shippingFee.toFixed(2)}
                                                 </p>
                                           </div>
                                           {!isMobile && (
@@ -512,19 +738,38 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                                                                               "24px",
                                                                   }}
                                                             >
-                                                                  <select
-                                                                        className={
-                                                                              styles.select
+                                                                  <Controller
+                                                                        name="escrowFeePaidBy"
+                                                                        control={
+                                                                              methods.control
                                                                         }
-                                                                        name="Seller"
-                                                                  >
-                                                                        <option value="seller">
-                                                                              Seller
-                                                                        </option>
-                                                                        <option value="buyer">
-                                                                              Buyer
-                                                                        </option>
-                                                                  </select>
+                                                                        rules={{
+                                                                              required: "This field is required",
+                                                                        }} // Validation rule
+                                                                        render={({
+                                                                              field,
+                                                                        }) => (
+                                                                              <select
+                                                                                    {...field}
+                                                                                    className={
+                                                                                          styles.select
+                                                                                    }
+                                                                              >
+                                                                                    <option
+                                                                                          value=""
+                                                                                          disabled
+                                                                                    >
+                                                                                          Select
+                                                                                    </option>
+                                                                                    <option value="SELLER">
+                                                                                          Seller
+                                                                                    </option>
+                                                                                    <option value="BUYER">
+                                                                                          Buyer
+                                                                                    </option>
+                                                                              </select>
+                                                                        )}
+                                                                  />
                                                             </span>
                                                       </Flex>
                                                       <p
@@ -532,7 +777,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                                                                   styles.amount
                                                             }
                                                       >
-                                                            $30.00
+                                                             ${escrowFee.toFixed(2)}
                                                       </p>
                                                 </div>
                                           )}
@@ -559,7 +804,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                                                                         styles.amount
                                                                   }
                                                             >
-                                                                  $30.00
+                                                                  ${escrowFee.toFixed(2)}
                                                             </p>
                                                       </div>
                                                       <div
@@ -577,19 +822,38 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                                                                         by:
                                                                   </span>
                                                             </Flex>
-                                                            <select
-                                                                  className={
-                                                                        styles.selectAfter
+                                                            <Controller
+                                                                  name="escrowFeePaidBy"
+                                                                  control={
+                                                                        methods.control
                                                                   }
-                                                                  name="Seller"
-                                                            >
-                                                                  <option value="seller">
-                                                                        Seller
-                                                                  </option>
-                                                                  <option value="buyer">
-                                                                        Buyer
-                                                                  </option>
-                                                            </select>
+                                                                  rules={{
+                                                                        required: "This field is required",
+                                                                  }} // Validation rule
+                                                                  render={({
+                                                                        field,
+                                                                  }) => (
+                                                                        <select
+                                                                              {...field}
+                                                                              className={
+                                                                                    styles.select
+                                                                              }
+                                                                        >
+                                                                              <option
+                                                                                    value=""
+                                                                                    disabled
+                                                                              >
+                                                                                    Select
+                                                                              </option>
+                                                                              <option value="SELLER">
+                                                                                    Seller
+                                                                              </option>
+                                                                              <option value="BUYER">
+                                                                                    Buyer
+                                                                              </option>
+                                                                        </select>
+                                                                  )}
+                                                            />
                                                       </div>
                                                 </>
                                           )}
@@ -599,7 +863,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                                                       Buyer price:
                                                 </p>
                                                 <p className={styles.amount}>
-                                                      $10.153.00
+                                                      ${buyerPrice.toFixed(2)}
                                                 </p>
                                           </div>
                                     </div>

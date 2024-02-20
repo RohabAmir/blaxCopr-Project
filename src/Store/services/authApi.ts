@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getAccessToken } from "@/utils/jwtTokens";
 import api from "@/utils/api";
+import Password from '../../components/AccountDetailForm/Password';
 
 // Interfaces
 interface RegisterUserProps {
@@ -17,12 +18,22 @@ interface ForgetPasswordProps {
       email: string;
 }
 
+interface UpdatePasswordProps {
+      oldPassword: string;
+      newPassword: string;
+     
+}
+
 interface resetPasswordProps {
       password: string;
       token: string;
 }
 interface updateUserDetailsProps {
       email: string;
+      firstName: string;
+      lastName: string;
+      phone: string
+
       
 }
 
@@ -90,6 +101,24 @@ export const authApi = createApi({
                         };
                   },
             }),
+            updatePassword: builder.mutation<any, UpdatePasswordProps>({
+                  query: (userData) => {
+                        const payload = {
+                              oldPassword: userData.oldPassword,
+                              newPassword: userData.newPassword,
+
+                        };
+                        const token = getAccessToken(); 
+                        return {
+                              url: "/auth/update-password/",
+                              method: "POST",
+                              body: payload,
+                              headers: token
+                              ? { Authorization: `Bearer ${token}` }
+                              : {},
+                        };
+                  },
+            }),
             getUserDetails: builder.query<any, void>({
                   query: () => {
                         const token = getAccessToken(); // Retrieve token from cookies
@@ -106,6 +135,10 @@ export const authApi = createApi({
                   query: (userData) => {
                         const payload = {
                               email: userData.email,
+                              firstName: userData.firstName,
+                              lastName: userData.lastName,
+                              phone: userData.phone,
+
                         };
                         const token = getAccessToken(); 
 
@@ -127,5 +160,6 @@ export const {
       useForgetPasswordMutation,
       useResetPasswordMutation,
       useGetUserDetailsQuery,
-      useUpdateUserDetailsMutation
+      useUpdateUserDetailsMutation,
+      useUpdatePasswordMutation
 } = authApi;

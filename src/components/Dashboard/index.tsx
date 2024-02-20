@@ -7,29 +7,29 @@ import Header from "../Shared/VerifyProfileBar";
 import Navbar from "../Shared/Navbar";
 import { Nav } from "@/types";
 import { useGetUserDetailsQuery } from "@/Store/services/authApi";
+import { useGetAllContractDetailsQuery } from "@/Store/services/contractApi";
 
 const Dashboard: FC = () => {
       const NavList: Array<Nav> = [
-            { title: "All", link: "all" },
-            { title: "Action required", link: "action required" },
-            { title: "Open", link: "open" },
-            { title: "Closed", link: "closed" },
+            { title: "All", link: ["all"] },
+            { title: "Action required", link: ["INCOMPLETE", "PENDING"] },
+            { title: "Open", link: ["open"] },
+            { title: "Closed", link: ["closed"] },
       ];
-      const [activeNav, setActiveNav] = useState(NavList[0].link);
-      const navClickHandler = (nav: string) => {
+      const [activeNav, setActiveNav] = useState<string[]>(NavList[0].link);
+      const navClickHandler = (nav: string[]) => {
             setActiveNav(nav);
       };
-      const {
-            data: userDetails,
-            isError,
-            isLoading,
-            refetch,
-      } = useGetUserDetailsQuery();
-     
+      // Fetch user details
+      const { data: userDetails, refetch: refetchUserDetails } = useGetUserDetailsQuery();
+
+      // Fetch all contract details
+      const { data: allContractDetails, refetch: refetchAllContractDetails } = useGetAllContractDetailsQuery();
 
       useEffect(() => {
-            refetch(); // Refetch user details on component mount
-      }, [refetch]);
+            refetchUserDetails(); // Refetch user details on component mount
+            refetchAllContractDetails(); // Refetch all contract details on component mount
+      }, [refetchUserDetails, refetchAllContractDetails]);
 
       return (
             <div className={styles.main}>
@@ -40,7 +40,7 @@ const Dashboard: FC = () => {
                         activeNav={activeNav}
                         navClickHandler={navClickHandler}
                   />
-                  <CardContainer activeNav={activeNav} />
+                  <CardContainer allContractDetails={allContractDetails} activeNav={activeNav} userDetails={userDetails} refetchAllContractDetails={refetchAllContractDetails} />
             </div>
       );
 };
