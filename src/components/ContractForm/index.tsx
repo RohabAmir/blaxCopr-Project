@@ -41,14 +41,18 @@ const ContractForm: FC = () => {
             setActiveStep(current);
             const { selectedCurrency } = data || {};
             setSelectedCurrency(selectedCurrency);
-
-            // Update the URL to reflect the current step
+      
+            // Check if isEditing query param exists and append it if true
+            const isEditing = searchParams.get("editing") === "true" ? "&editing=true" : "";
+      
+            // Update the URL to reflect the current step, including isEditing parameter if present
             const stepName = reverseSteps[current];
             // Use the Next.js router to update the URL without navigating away from the page
-            router.push(`/contract-form?page=${stepName}`, undefined, {
+            router.push(`/contract-form?page=${stepName}${isEditing}`, undefined, {
                   shallow: true,
             });
       };
+      
 
       return (
             <div>

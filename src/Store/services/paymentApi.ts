@@ -19,12 +19,14 @@ export const paymentApi = createApi({
     getPaymentData: builder.query<any, any>({
       query: (id) => `/payment/payment-data/${id}`,
     }),
-    depositData: builder.mutation<any, { id: string; data: any }>({
-      query: ({ id, ...data }) => ({
-        url: `/payment/payment-data/${id}`,
-        method: "POST",
-        body: data,
-      }),
+    depositData: builder.mutation<any, any>({
+      query: ({ id, ...data }) => {
+        return {
+          url: `/payment/payment-data/${id}`,
+          method: "POST",
+          body: data,
+        };
+      },
     }),
   }),
 });

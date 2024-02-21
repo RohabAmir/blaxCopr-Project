@@ -3,7 +3,7 @@ import styles from "./style.module.scss";
 import ClockIcon from "../../../public/icons/Clock.svg";
 import Image from "next/image";
 
-const PendingDeposit: FC = () => {
+const PendingDeposit: FC<pendingDepositProps> = ({ onNext }) => {
   return (
     <>
       <div className={styles.agreementMain} style={{ marginTop: "24px" }}>

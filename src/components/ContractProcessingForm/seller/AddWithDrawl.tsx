@@ -11,16 +11,22 @@ import PlusIcon from "../../../../public/icons/Plus.svg";
 import { useAppContext } from "@/contexts/App";
 
 const AddWithDrawl: FC = () => {
-  // const { data, error, isLoading } = useGetPokemonByNameQuery('bulbasaur')
   const { isMobile } = useAppContext();
-  const [currency, setCurrency] = useState("");
+  const [currency, setCurrency] = useState<string | null>(null);
   const [formData, setFormData] = useState([{ id: 1 }]);
 
+  const methods = useForm({
+    defaultValues: {
+      Currency: "",
+    },
+  });
+
+  const { watch } = methods;
+  const selectedCurrency = watch("Currency");
   const handleAdd = () => {
     setFormData([...formData, { id: formData.length + 1 }]);
   };
 
-  const methods = useForm();
   return (
     <>
       <div className={styles.sellerMain}>
@@ -47,8 +53,7 @@ const AddWithDrawl: FC = () => {
                       { value: "EUR€", label: "EUR€" },
                       { value: "GEL€", label: "GEL€" },
                     ]}
-                    value={currency}
-                    onChange={(val) => setCurrency(val)}
+                    required
                   />
                   <Dropdown
                     name="withdrawl method"
@@ -66,13 +71,9 @@ const AddWithDrawl: FC = () => {
                   <TextInput name="country" label="Country" />
                   <TextInput name="state" label="State" />
                   <TextInput name="city" label="City" />
-                  <TextInput name="firstline" label="FirstLine" />
+                  <TextInput name="firstline" label="First Line" />
                   <TextInput name="postcode" label="Post Code" />
-                  <TextInput name="email" label="Email" />
-                  {currency === "GBP€" && (
-                    <TextInput name="sortnumber" label="SortNumber" />
-                  )}
-                  {currency === "USD$" && (
+                  {selectedCurrency === "USD$" && (
                     <>
                       <TextInput
                         name="SWIFT/BIC"
@@ -80,7 +81,11 @@ const AddWithDrawl: FC = () => {
                       />
 
                       <TextInput name="routing number" label="Routing Number" />
+                      <TextInput name="email" label="Email" />
                     </>
+                  )}
+                  {selectedCurrency === "GBP€" && (
+                    <TextInput name="sortnumber" label="SortNumber" />
                   )}
                 </Row>
               </FormSection>

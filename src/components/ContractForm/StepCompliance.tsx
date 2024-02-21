@@ -5,7 +5,7 @@ import Title from "antd/es/typography/Title";
 import Text from "antd/es/typography/Text";
 import { ButtonType, IconType } from "@/types";
 import ShieldIcon from "../../../public/icons/shield.svg";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useUpdateContractDetailsMutation } from "@/Store/services/contractApi";
 import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
 import { storeLocalData, getLocalData } from "@/utils";
@@ -42,6 +42,7 @@ const StepCompliance: FC<StepComplianceProps> = ({
       handleStepChange,
       step,
 }) => {
+      const searchParams = useSearchParams();
       const { isMobile } = useAppContext();
       const contractId = getLocalData("contract_id");
       const [uploadedFiles, setUploadedFiles] = useState<Document[]>([]);
@@ -102,7 +103,8 @@ const StepCompliance: FC<StepComplianceProps> = ({
 
       const router = useRouter();
       const handleButtonClick = () => {
-            router.push(`/${ROUTES.CONTRACT_PROCESSING_FORM}`, {
+            const isEditing = searchParams.get("editing") === "true" ? "?editing=true" : "";
+            router.push(`/${ROUTES.CONTRACT_PROCESSING_FORM}${isEditing}`, {
                   scroll: false,
             });
       };

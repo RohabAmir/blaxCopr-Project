@@ -15,9 +15,10 @@ import { useAppContext } from "@/contexts/App";
 interface BankDetailsProps {
   onNext: () => void;
   onBack: () => void;
+  responseGet: any;
 }
 
-const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
+const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
   const handleCopyText = (event: any) => {
     const textToCopy = event.target.previousSibling.textContent.trim();
     navigator.clipboard
@@ -26,6 +27,8 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
       .catch((error) => console.error("Failed to copy:", error));
   };
   const { isMobile } = useAppContext();
+  // console.log("response-----------", responseGet);
+  // console.log("after----", responseGet.data.responseData);
   return (
     <>
       <Flex vertical className="w-full">
@@ -52,7 +55,10 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
                 <p className={styles.headingDeposit}>
                   Send money from your bank with information below
                 </p>
-                <p className={styles.subHeadingDeposit}>Amount: $10.030.00</p>
+                <p className={styles.subHeadingDeposit}>
+                  {" "}
+                  {responseGet?.data?.responseData?.totalAmountToDeposit}
+                </p>
               </div>
             </div>
           </div>
@@ -73,7 +79,9 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
                   <p className={styles.subHeadingDt}>Amount due </p>
 
                   <span className={styles.bankInlineText}>
-                    <span className={styles.bankDHeading}>$10.030.00</span>
+                    <span className={styles.bankDHeading}>
+                      {responseGet?.data?.responseData?.totalAmountToDeposit}
+                    </span>
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
@@ -105,7 +113,7 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
 
                   <span className={styles.bankInlineText}>
                     <span className={styles.currencyHeading}>
-                      BLAXCORPVMNUBR
+                      {responseGet.data.responseData.referenceNo}
                     </span>
                     <Image
                       className={styles.copyIcon}
@@ -133,7 +141,9 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
                   <p className={styles.currencySubHeading}>Currency</p>
 
                   <span className={styles.bankInlineText}>
-                    <span className={styles.currencyHeading}>USD</span>
+                    <span className={styles.currencyHeading}>
+                      {responseGet.data.responseData.currency}
+                    </span>
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
@@ -156,7 +166,9 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
                   <p className={styles.currencySubHeading}>Beneficiary</p>
 
                   <span className={styles.bankInlineText}>
-                    <span className={styles.currencyHeading}>Blaxcorp</span>
+                    <span className={styles.currencyHeading}>
+                      {responseGet.data.responseData.routingNumber}
+                    </span>
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
@@ -172,7 +184,9 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
                   <p className={styles.currencySubHeading}>Account Name</p>
 
                   <span className={styles.bankInlineText}>
-                    <span className={styles.currencyHeading}>BLXTRUST LTD</span>
+                    <span className={styles.currencyHeading}>
+                      {responseGet.data.responseData.accountName}
+                    </span>
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
@@ -188,7 +202,9 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
                   <p className={styles.currencySubHeading}>SWIFT/BIC</p>
 
                   <span className={styles.bankInlineText}>
-                    <span className={styles.currencyHeading}>CAYEBZBZ</span>
+                    <span className={styles.currencyHeading}>
+                      {responseGet.data.responseData.swift}
+                    </span>
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
@@ -204,7 +220,9 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
                   <p className={styles.currencySubHeading}>Account number</p>
 
                   <span className={styles.bankInlineText}>
-                    <span className={styles.currencyHeading}>190489506</span>
+                    <span className={styles.currencyHeading}>
+                      {responseGet.data.responseData.accountNumber}
+                    </span>
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
@@ -224,13 +242,7 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
                   <span className={styles.bankInlineTextLast}>
                     <div className={styles.flexColumnBank}>
                       <span className={styles.currencyHeadingLast}>
-                        P.O. Box 105,
-                      </span>
-                      <span className={styles.currencyHeadingLast}>
-                        Coconut Drive
-                      </span>
-                      <span className={styles.currencyHeadingLast}>
-                        San Pedro Town, Ambergris Caye
+                        {responseGet.data.responseData.bankAddress}
                       </span>
                     </div>
                     <Image
@@ -260,7 +272,7 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
             </FormSection>
           </Flex>
           {/* ----------------- */}
-          <Flex vertical className="w-full">
+          {/* <Flex vertical className="w-full">
             <FormSection>
               <span className={styles.flexInline}>
                 <Image src={InfoIcon} alt="info icon" />
@@ -271,7 +283,7 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
                 </span>
               </span>
             </FormSection>
-          </Flex>
+          </Flex> */}
           {/* --------------- */}
           <Flex vertical className="w-full">
             <FormSection>
@@ -283,6 +295,14 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext }) => {
                 </span>
               </span>
             </FormSection>
+            <div className={styles.bankBtn}>
+              <Button
+                name="Continue"
+                type={ButtonType.Primary}
+                size={!isMobile ? "large" : "middle"}
+                onClickHandler={onNext}
+              />
+            </div>
           </Flex>
         </div>
       </Flex>

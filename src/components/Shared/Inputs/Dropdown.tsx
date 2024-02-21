@@ -9,11 +9,10 @@ interface ITextInput {
   name: string;
   label?: string;
   options: any;
-  onChange: (e: any) => void;
+  onChange?: (e: any) => void;
   required?: boolean;
-  defaultValue?: string;
+  defaultValue?: any;
   disabled?: boolean;
-  value?: any;
 }
 
 const TextInput: FC<ITextInput> = ({
@@ -25,7 +24,6 @@ const TextInput: FC<ITextInput> = ({
   required = false,
   defaultValue,
   disabled = false,
-  value,
 }) => {
   const { Text } = Typography;
   const {
@@ -56,11 +54,10 @@ const TextInput: FC<ITextInput> = ({
               key={key}
               {...field}
               options={options}
-              value={value}
               onChange={(value) => {
-                onChange(value);
+                field.onChange(value);
               }}
-              defaultValue=""
+              defaultValue={defaultValue}
               style={{
                 height: "48px",
                 width: "100%",

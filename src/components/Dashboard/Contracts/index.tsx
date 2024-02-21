@@ -9,134 +9,99 @@ import AccountDetailForm from "@/app/(dashboard)/(forms)/account-details-form/pa
 import { ROUTES } from "@/constants";
 import { removeLocalData } from "@/utils";
 import { useDeleteContractMutation } from "@/Store/services/contractApi";
+import Spinner from "@/utils/Spinner";
+import { useRouter } from "next/navigation";
 
 interface CardDetails {
-      status: string;
-      type: string;
-      price: string;
-      company: string;
-      date: string;
-      id: number;
+  status: string;
+  type: string;
+  price: string;
+  company: string;
+  date: string;
+  id: number;
 }
 interface UserDetails {
-      firstName: string;
-      lastName: string;
-      email: string;
-      phone: string;
-      id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  id: number;
 }
 interface CardContainerProps {
-      activeNav: string[];
-      allContractDetails: any;
-      userDetails: UserDetails;
-      refetchAllContractDetails: ()=>void;
+  activeNav: string[];
+  allContractDetails: any;
+  userDetails: UserDetails;
+  refetchAllContractDetails: () => void;
 }
 
 const CardContainer: FC<CardContainerProps> = ({
-      activeNav,
-      allContractDetails,
-      userDetails,
-      refetchAllContractDetails,
+  activeNav,
+  allContractDetails,
+  userDetails,
+  refetchAllContractDetails,
 }) => {
-      console.log("allContractDetails>>", allContractDetails);
-      const [CardList, setCardList] = useState<Array<CardDetails>>([]);
-      const [deleteContract] = useDeleteContractMutation();
+  const [loading, setLoading] = useState(false);
+  console.log("allContractDetails>>", allContractDetails);
+  const router = useRouter();
+  const [CardList, setCardList] = useState<Array<CardDetails>>([]);
+  const [deleteContract] = useDeleteContractMutation();
 
-      const handleDeleteContract = async (id: number) => {
-            try {
-                  await deleteContract(id).unwrap();
-                  refetchAllContractDetails();
+  const handleDeleteContract = async (id: number) => {
+    try {
+      await deleteContract(id).unwrap();
+      refetchAllContractDetails();
+    } catch (error) {
+      console.error("Error deleting contract:", error);
+    }
+  };
 
-            } catch (error) {
-                  console.error("Error deleting contract:", error);
-            }
-      };
+  const filteredCardList = !activeNav.includes("all")
+    ? allContractDetails?.response.filter((data: { status: string }) =>
+        activeNav.includes(data.status)
+      )
+    : allContractDetails?.response;
 
-      // useEffect(() => {
-      //       const formattedCardList = allContractDetails?.response?.map(
-      //             (contract: {
-      //                   id:number
-      //                   buyerId: number;
-      //                   createdAt: string ;
-      //                   status: any;
-      //                   contractName: any;
-      //             }) => {
-                        // const roleType =
-                        //       userDetails?.id === contract?.buyerId
-                        //             ? "Buyer"
-                        //             : "Seller";
-                        // // Assuming contractDetails.createdAt holds the API response date-time string
-                        // const createdAtISO = contract?.createdAt || "";
-                        // // Parsing the ISO date string into a Date object
-                        // const date = new Date(createdAtISO);
-                        // // Formatting the date
-                        // const formattedDate = `${date.getDate()} ${date.toLocaleString(
-                        //       "default",
-                        //       { month: "short" }
-                        // )}, ${date.getFullYear()}`;
+  const removeContractLocalData = () => {
+    removeLocalData("contract_id");
+    removeLocalData("shipping_id");
+    removeLocalData("transaction_ids");
+    removeLocalData("document_ids");
+  };
 
-      //                   return {
-      //                         id:contract.id,
-      //                         status: contract.status,
-      //                         type: roleType,
-      //                         price: "--",
-      //                         company: contract.contractName,
-      //                         date: `Created ${formattedDate}`,
-      //                   };
-      //             }
-      //       );
+  const createOnClickHandler = () => {
+    setLoading(true);
+    removeContractLocalData();
+  };
 
-      //     setCardList(formattedCardList);
-      // }, [allContractDetails, userDetails]);
-
-      const filteredCardList =
-            !activeNav.includes("all")
-                  ? allContractDetails?.response.filter(
-                          (data: { status: string; }) =>
-                              activeNav.includes(data.status)
-                    )
-                  : allContractDetails?.response;
-
-      const removeContractLocalData = () => {
-            removeLocalData("contract_id");
-            removeLocalData("shipping_id");
-            removeLocalData("transaction_ids");
-            removeLocalData("document_ids");
-      };
-
-      const createOnClickHandler = () => {
-            removeContractLocalData();
-      };
-
-
-      return (
-            <>
-                  <div className={styles.grid}>
-                        <div className={styles.cardContainerMainPlus}>
-                              <Link href={ROUTES.CONTRACT_FORM}>
-                                    <button className={styles.button}>
-                                          <Image
-                                                src={PlusIcon}
-                                                alt="plus icon"
-                                                onClick={createOnClickHandler}
-                                          />
-                                    </button>
-                              </Link>
-                              <p className={styles.titleScreen}>Create</p>
-                        </div>
-                        {filteredCardList?.map((data:any, idx:any) => {
-                              return (
-                                    <Card  
-                                          key={idx}
-                                          data={data}
-                                          onDelete={handleDeleteContract}
-                                          userDetails ={userDetails}
-                                    />
-                              );
-                        })}
-                  </div>
-            </>
-      );
+  return (
+    <>
+      <div className={styles.grid}>
+        <div className={styles.cardContainerMainPlus}>
+          {loading && <Spinner />}
+          <Link href={ROUTES.CONTRACT_FORM}>
+            <button className={styles.button}>
+              <Image
+                src={PlusIcon}
+                alt="plus icon"
+                onClick={createOnClickHandler}
+              />
+            </button>
+          </Link>
+          <p className={styles.titleScreen}>Create</p>
+        </div>
+        {filteredCardList?.map((data: any, idx: any) => {
+          return (
+            <Card
+              key={idx}
+              data={data}
+              onDelete={handleDeleteContract}
+              userDetails={userDetails}
+            />
+          );
+        })}
+      </div>
+    </>
+  );
 };
 
 export default CardContainer;

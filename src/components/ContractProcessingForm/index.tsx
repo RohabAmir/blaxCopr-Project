@@ -41,15 +41,16 @@ import { storeLocalData, getLocalData } from "@/utils";
 import { useAppContext } from "@/contexts/App";
 
 const ContractProcessingForm: FC = () => {
+  const { isMobile } = useAppContext();
+  const [response, setResponse] = useState(null); // State to store the response data
   const [currentComponent, setCurrentComponent] = useState(1);
   const [previousComponent, setPreviousComponent] = useState<number | null>(
     null
   );
 
-  const { isMobile } = useAppContext();
   const contractId = getLocalData("contract_id");
   const { data: contractDetails } = useFetchContractDetailsQuery(contractId, {
-    skip: !contractId, // Skip querying if no ID
+    skip: !contractId,
   });
   const { data: userDetails } = useGetUserDetailsQuery();
   const { useBreakpoint } = Grid;
@@ -64,6 +65,14 @@ const ContractProcessingForm: FC = () => {
   const roleType = userDetails?.id === contractDetails?.buyerId;
   console.log(roleType);
 
+  const handleCopyText = (event: any) => {
+    const textToCopy = event.target.previousSibling.textContent.trim();
+    navigator.clipboard
+
+      .writeText(textToCopy)
+      .then(() => alert("Copied to clipboard"))
+      .catch((error) => console.error("Failed to copy:", error));
+  };
   const openModal = () => {
     setIsModalOpen(true);
     document.body.style.overflow = "hidden";
@@ -78,28 +87,35 @@ const ContractProcessingForm: FC = () => {
     document.body.style.pointerEvents = "auto";
     document.body.style.overflow = "auto";
   };
-
-  // Assuming contractDetails.createdAt holds the API response date-time string
   const createdAtISO = contractDetails?.createdAt || "";
 
-  // Parsing the ISO date string into a Date object
   const date = new Date(createdAtISO);
-
-  // Formatting the date
   const formattedDate = `${date.getDate()} ${date.toLocaleString("default", {
     month: "short",
   })}, ${date.getFullYear()}`;
 
+  const isBuyer = userDetails?.id === contractDetails?.buyerId;
+  const isContractCompleted = contractDetails?.status === "COMPLETED";
+
   const handlePreviousComponent = () => {
     if (previousComponent !== null) {
-      setCurrentComponent(previousComponent);
-      setPreviousComponent(null);
+      const newCurrentComponent = previousComponent;
+      const newPreviousComponent = newCurrentComponent - 1;
+      setCurrentComponent(newCurrentComponent);
+      setPreviousComponent(
+        newPreviousComponent >= 1 ? newPreviousComponent : null
+      );
     }
   };
+
   const handleNextComponent = () => {
     setPreviousComponent(currentComponent);
     setCurrentComponent(currentComponent + 1);
   };
+  const handleResponse = (responseData: any) => {
+    setResponse(responseData);
+  };
+
   const renderComponent = () => {
     switch (currentComponent) {
       case 1:
@@ -116,6 +132,7 @@ const ContractProcessingForm: FC = () => {
           <BankLocation
             onNext={handleNextComponent}
             onBack={handlePreviousComponent}
+            onResponse={handleResponse}
           />
         );
       case 4:
@@ -123,12 +140,23 @@ const ContractProcessingForm: FC = () => {
           <BankDetails
             onNext={handleNextComponent}
             onBack={handlePreviousComponent}
+            responseGet={response}
           />
         );
+      case 5:
+        return contractDetails?.contractPayments?.paymentStatus ===
+          "DEPOSITED" ? (
+          <SuccessfulDeposit onNext={handleNextComponent} />
+        ) : (
+          <PendingDeposit />
+        );
+
       default:
         return null;
     }
   };
+
+  // console.log("-----contract details----------", contractDetails?.paymentStatus);
   return (
     <Flex vertical className="w-full">
       <VerifyProfileBar />
@@ -143,16 +171,17 @@ const ContractProcessingForm: FC = () => {
                 {contractDetails?.contractName || ""}
               </Title>
               <div className={styles.flexTransaction}>
-                <span className={styles.transactionText}>
-                  Transaction #10942007
-                </span>
-                <span>
-                  <Image
-                    className={styles.copyIcon}
-                    src={CopyIcon}
-                    alt="copy icon"
-                  />
-                </span>
+                {/* <span className={styles.transactionText}> */}
+                Transaction #10942007
+                {/* </span> */}
+                {/* <span> */}
+                <Image
+                  className={styles.copyIcon}
+                  src={CopyIcon}
+                  alt="copy icon"
+                  onClick={handleCopyText}
+                />
+                {/* </span> */}
               </div>
             </Flex>
 
@@ -202,7 +231,7 @@ const ContractProcessingForm: FC = () => {
 
       {/* stepper added */}
       <Flex vertical align="center">
-        <Stepper currentComponent={currentComponent} />
+        <Stepper />
         <Flex
           vertical
           align="center"
@@ -227,11 +256,16 @@ const ContractProcessingForm: FC = () => {
 
           {/* agrrement buyer components */}
           {/* ------------------------------------ */}
-
-          {renderComponent()}
-
+          {isBuyer && isContractCompleted ? (
+            <>
+              {renderComponent()}
+              <StepAgreement contractDetails={contractDetails} />
+            </>
+          ) : (
+            <StepAgreement contractDetails={contractDetails} />
+          )}
           {/*    
-                                    <PendingDeposit />
+                                   
                                     <SuccessfulDeposit />
                                     <Inspection />
                                     <DisputOpened />
@@ -240,8 +274,8 @@ const ContractProcessingForm: FC = () => {
           {/* --------------------------------------- */}
           {/* -----------------SELLER FLOW -------------------------- */}
           {/* <SetupWithDrawl /> */}
-          {/* <AddWithDrawl />
-          <AddWithDrawlDisbursement /> */}
+          {/* <AddWithDrawl /> */}
+          {/* <AddWithDrawlDisbursement /> */}
           {/*  <WithDrawlMethod />
                                           <WithDrawlBuyerWaiting />
                                           <InspectedPeriod />
@@ -251,7 +285,6 @@ const ContractProcessingForm: FC = () => {
 
           {/* ---Agreement form--- */}
           {/* <ConfirmContractCancellation closeModal={closeModal} /> */}
-          {/* <StepAgreement contractDetails={contractDetails}/> */}
         </Flex>
       </Flex>
     </Flex>
