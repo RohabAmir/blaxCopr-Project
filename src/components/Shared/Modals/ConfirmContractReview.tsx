@@ -16,6 +16,11 @@ interface SignatureState {
       secondPartySigned: boolean;
 }
 
+interface UpdateData {
+      buyerSign?: string | null;
+      sellerSign?: string | null;
+}
+
 interface ModalProps {
       closeModal: () => void;
       contractDetails: any;
@@ -73,44 +78,55 @@ const ConfirmContractReview: FC<ModalProps> = ({
             sigCanvasRef.current?.clear();
       };
 
-      const saveSignature = async () => {
+          
+          const saveSignature = async (): Promise<void> => {
             if (sigCanvasRef.current) {
-                  const signatureImage = sigCanvasRef.current
-                        .getTrimmedCanvas()
-                        .toDataURL("image/png");
-                  try {
-                        const signatureUrl = await uploadToAzureAndGetUrl(signatureImage);
-                        const isBuyer = userDetails.id === contractDetails.buyerId;
-                        let updateData: { buyerSign?: string | null; sellerSign?: string | null; }
-            
-                        if (isBuyer) {
-                            // First party (buyer) signs
-                            updateData = { buyerSign: signatureUrl };
-                        } else {
-                            // Second party (seller) signs
-                            updateData = { sellerSign: signatureUrl };
-            
-                            // Remove first party's signature if the contract was edited after their signing
-                            if (isEditedBeforeSign) {
-                                updateData.buyerSign = null;
-                            }
-                        }
-            
-                        // Constructing the payload for the PATCH request
-                        const payload = {
-                            id: contractId,
-                            contract: updateData
-                        };
-            
-                        const updatedContractDetails = await updateContractDetails(payload);
-                        onContractUpdate(updatedContractDetails); // Notify parent component
-            
-                        closeModal();
-                  }catch (error) {
-                        console.error("Error uploading signature:", error);
+              const signatureImage = sigCanvasRef.current
+                    .getTrimmedCanvas()
+                    .toDataURL("image/png");
+              try {
+                const signatureUrl = await uploadToAzureAndGetUrl(signatureImage);
+                const isBuyer = userDetails.id === contractDetails.buyerId; // buyer as fisrt party
+                const isSeller = userDetails.id === contractDetails.sellerId; // seller as fisrt party
+          
+                let updateData: UpdateData = {};
+          
+                if (isBuyer) {
+                  // Buyer is signing
+                  updateData.buyerSign = signatureUrl;
+          
+                  // If the contract was edited after the seller signed, nullify the seller's sign
+                  if (isEditedBeforeSign && contractDetails.sellerSign) {
+                    updateData.sellerSign = null;
                   }
+                } else if (isSeller) {
+                  // Seller is signing
+                  updateData.sellerSign = signatureUrl;
+          
+                  // If the contract was edited after the buyer signed, nullify the buyer's sign
+                  if (isEditedBeforeSign && contractDetails.buyerSign) {
+                    updateData.buyerSign = null;
+                  }
+                }
+          
+                // Constructing the payload for the PATCH request
+                const payload = {
+                  id: contractId,
+                  contract: updateData
+                };
+          
+                const updatedContractDetails = await updateContractDetails(payload);
+                onContractUpdate(updatedContractDetails); // Notify parent component
+          
+                closeModal();
+              } catch (error) {
+                console.error("Error uploading signature:", error);
+              }
             }
-      };
+          };
+          
+
+        
 
       return (
             <>

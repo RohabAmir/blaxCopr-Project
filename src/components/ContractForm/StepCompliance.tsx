@@ -11,6 +11,7 @@ import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
 import { storeLocalData, getLocalData } from "@/utils";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { BlobServiceClient } from "@azure/storage-blob";
+import { useDeleteDocumentMutation } from "@/Store/services/contractApi";
 
 import {
       CheckCircleOutlined,
@@ -42,6 +43,7 @@ const StepCompliance: FC<StepComplianceProps> = ({
       handleStepChange,
       step,
 }) => {
+      const [deleteDocument] = useDeleteDocumentMutation();
       const searchParams = useSearchParams();
       const { isMobile } = useAppContext();
       const contractId = getLocalData("contract_id");
@@ -103,7 +105,8 @@ const StepCompliance: FC<StepComplianceProps> = ({
 
       const router = useRouter();
       const handleButtonClick = () => {
-            const isEditing = searchParams.get("editing") === "true" ? "?editing=true" : "";
+            const isEditing =
+                  searchParams.get("editing") === "true" ? "?editing=true" : "";
             router.push(`/${ROUTES.CONTRACT_PROCESSING_FORM}${isEditing}`, {
                   scroll: false,
             });
@@ -140,12 +143,23 @@ const StepCompliance: FC<StepComplianceProps> = ({
       }, [contractDetails, isSuccess]);
 
       // Function to remove a file from the uploadedFiles list
-      const removeFile = (index: number) => {
-            setUploadedFiles((currentFiles) =>
-                  currentFiles.filter((_, i) => i !== index)
-            );
-            setFilesChanged(true);
-      };
+      const removeFile = async (index: number, documentId: number) => {
+            if (documentId) {
+                try {
+                    // Call the deleteDocument mutation with the document ID
+                    await deleteDocument(documentId).unwrap();
+        
+                    // Update the state only after successful deletion
+                    setUploadedFiles((currentFiles) =>
+                        currentFiles.filter((_, i) => i !== index)
+                    );
+                    setFilesChanged(true);
+                } catch (error) {
+                    // Handle any errors here (e.g., show an error message to the user)
+                    console.error("Error deleting the document:", error);
+                }
+            }
+        };
 
       const azureUrl = process.env.NEXT_PUBLIC_BLOB_STORAGE_URL;
       const sasKey = process.env.NEXT_PUBLIC_BLOB_STORAGE_SAS_KEY;
@@ -376,11 +390,7 @@ const StepCompliance: FC<StepComplianceProps> = ({
                                                                               Uploaded
                                                                         </Text>
                                                                         <CloseCircleOutlined
-                                                                              onClick={() =>
-                                                                                    removeFile(
-                                                                                          index
-                                                                                    )
-                                                                              }
+                                                                              onClick={() => removeFile(index, uploadedFiles[index].id)}
                                                                         />
                                                                   </div>
                                                             </div>
@@ -426,9 +436,8 @@ const StepCompliance: FC<StepComplianceProps> = ({
                                     type={ButtonType.Primary}
                                     isSubmit
                                     isLoading={isLoading}
-                                    fullWidth={isMobile}   
+                                    fullWidth={isMobile}
                                     customDisabled={uploadedFiles.length === 0} // Disable if no files uploaded
-                              
                               />
                         </Flex>
                   </FormProvider>

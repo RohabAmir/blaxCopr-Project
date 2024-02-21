@@ -87,6 +87,22 @@ export const contractApi = createApi({
                         };
                   },
             }),
+            deleteDocument: builder.mutation<any, any>({
+                  query: (id) => {
+                        return {
+                             url: `/contracts/delete-document/${id}`,
+                              method: "DELETE",
+                        };
+                  },
+            }),
+            deleteTransaction: builder.mutation<any, any>({
+                  query: (id) => {
+                        return {
+                             url: `/contracts/delete-transaction/${id}`,
+                              method: "DELETE",
+                        };
+                  },
+            }),
       }),
 });
 
@@ -97,5 +113,7 @@ export const {
       useSendInviteMutation,
       useGetAllContractDetailsQuery,
       useDeleteContractMutation,
+      useDeleteTransactionMutation,
+      useDeleteDocumentMutation,
       useCompleteContractDetailsMutation
 } = contractApi;

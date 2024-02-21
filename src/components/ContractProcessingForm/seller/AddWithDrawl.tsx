@@ -1,9 +1,7 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import styles from "./styles.module.scss";
-
 import { Flex, Row, Col, Grid } from "antd";
 import { Dropdown, FormSection, TextInput } from "../../Shared";
-
 import Image from "next/image";
 import { Button } from "../../Shared";
 import { ButtonType, IconType } from "@/types";
@@ -11,16 +9,40 @@ import { FormProvider, useForm } from "react-hook-form";
 import PlusIcon from "../../../../public/icons/Plus.svg";
 import { useAppContext } from "@/contexts/App";
 
-const AddWithDrawl: FC = () => {
-  const { isMobile } = useAppContext();
+interface addWithDrawlProps {
+  onNext: () => void;
+  onBack: () => void;
 
-  const methods = useForm();
+}
+
+const AddWithDrawl: FC<addWithDrawlProps> = ({onBack, onNext}) => {
+  const { isMobile } = useAppContext();
+  const [currency, setCurrency] = useState<string | null>(null);
+  const [formData, setFormData] = useState([{ id: 1 }]);
+  const methods = useForm({
+    defaultValues: {
+      Currency: "",
+    },
+  });
+  const { watch } = methods;
+  const selectedCurrency = watch("Currency");
+  const handleAdd = () => {
+    setFormData([...formData, { id: formData.length + 1 }]);
+  };
   return (
     <>
       <div className={styles.sellerMain}>
         <div className={styles.withDrawlMain}>
+        {!isMobile && (
+            <Button
+              name="Back"
+              leftIcon={IconType.BackArrow}
+              type={ButtonType.Secondary}
+              size={!isMobile ? "large" : "middle"}
+              onClickHandler={onBack}
+            />
+          )}
           <p className={styles.withDrawlHeading}>Add withdrawl method</p>
-
           <p className={styles.withdrawlPrimaryHeading}>
             Primary Disbursement Bank
           </p>
@@ -29,27 +51,54 @@ const AddWithDrawl: FC = () => {
             upon the successful completion of a contract
           </p>
           <FormProvider {...methods}>
-            <FormSection>
-              <Row>
-                <Dropdown
-                  name="withdrawl method"
-                  label="Choose withdrawal method"
-                  options={[{ value: "bank transfer", label: "Bank Transfer" }]}
-                  onChange={(e) => console.log(e)}
-                />
-                <TextInput name="Holder’sName" label="Account holder’s name" />
-                <TextInput name="AccountNumber" label="Account number" />{" "}
-                <TextInput name="SWIFT/BIC" label="SWIFT/BIC (if applicable)" />{" "}
-                <TextInput name="IBAN" label="IBAN" />{" "}
-                <TextInput name="BankName" label="Bank name " />{" "}
-                <Dropdown
-                  name="Currency"
-                  label="Currency"
-                  options={[{ value: "USD$", label: "USD$" }]}
-                  onChange={(e) => console.log(e)}
-                />
-              </Row>
-            </FormSection>
+            {formData.map((data, index) => (
+              <FormSection key={index}>
+                <Row>
+                  <Dropdown
+                    name="Currency"
+                    label="Currency"
+                    options={[
+                      { value: "USD$", label: "USD$" },
+                      { value: "GBP€", label: "GBP€" },
+                      { value: "EUR€", label: "EUR€" },
+                      { value: "GEL€", label: "GEL€" },
+                    ]}
+                    required
+                  />
+                  <Dropdown
+                    name="withdrawl method"
+                    label="Choose withdrawal method"
+                    options={[
+                      { value: "bank transfer", label: "Bank Transfer" },
+                    ]}
+                    onChange={(e) => console.log(e)}
+                  />
+                  <TextInput
+                    name="Holder’sName"
+                    label="Account holder’s name"
+                  />
+                  <TextInput name="AccountNumber" label="Account number" />{" "}
+                  <TextInput name="country" label="Country" />
+                  <TextInput name="state" label="State" />
+                  <TextInput name="city" label="City" />
+                  <TextInput name="firstline" label="First Line" />
+                  <TextInput name="postcode" label="Post Code" />
+                  {selectedCurrency === "USD$" && (
+                    <>
+                      <TextInput
+                        name="SWIFT/BIC"
+                        label="SWIFT/BIC (if applicable)"
+                      />
+                      <TextInput name="routing number" label="Routing Number" />
+                      <TextInput name="email" label="Email" />
+                    </>
+                  )}
+                  {selectedCurrency === "GBP€" && (
+                    <TextInput name="sortnumber" label="SortNumber" />
+                  )}
+                </Row>
+              </FormSection>
+            ))}{" "}
           </FormProvider>
           <div className={styles.btnText}>
             <span className={styles.flexBtn}>
@@ -58,6 +107,7 @@ const AddWithDrawl: FC = () => {
                   className={styles.iconPlus}
                   src={PlusIcon}
                   alt="plus icon"
+                  onClick={handleAdd}
                 />
               </button>
             </span>
@@ -70,6 +120,7 @@ const AddWithDrawl: FC = () => {
               name="Save"
               type={ButtonType.Primary}
               fullWidth={isMobile}
+              onClickHandler={onNext}
             />
           </div>
         </div>

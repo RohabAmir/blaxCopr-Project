@@ -822,6 +822,25 @@
   cursor: pointer;
 }
 
+.textHeadingDetailsNew {
+  @extend .textHeading;
+  font-size: 16px;
+  text-align: end;
+  text-align: justify;
+}
+
+.flexTextColorNew {
+  @extend .flexText;
+  border-radius: 10px;
+  background: rgba(22, 51, 0, 0.04);
+  margin-top: 10px;
+  padding: 4px;
+  margin-bottom: 12px;
+  gap: 40px;
+  display: flex;
+  align-items: baseline;
+}
+
 .customSteps {
   box-sizing: border-box !important;
   margin: 0 !important;

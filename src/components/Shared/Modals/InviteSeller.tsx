@@ -7,6 +7,8 @@ import { useSendInviteMutation } from "@/Store/services/contractApi";
 interface ModalProps {
       closeModal: () => void;
       contractDetails: any;
+      userDetails: any;
+
 }
 interface sendInviteProps {
       email: string;
@@ -14,7 +16,8 @@ interface sendInviteProps {
       role: string;
       id: string;
 }
-const InviteSeller: FC<ModalProps> = ({ closeModal, contractDetails }) => {
+const InviteSeller: FC<ModalProps> = ({ closeModal, userDetails, contractDetails }) => {
+      const userRole = userDetails?.id === contractDetails?.buyerId 
       const contractId = getLocalData("contract_id");
       const [sendInviteDetails, { isLoading, isError, error }] =
             useSendInviteMutation();
@@ -27,7 +30,7 @@ const InviteSeller: FC<ModalProps> = ({ closeModal, contractDetails }) => {
             const payload = {
                   email: email,
                   message: message,
-                  role: contractDetails?.createrRole,
+                  role: userRole ? "SELLER" : "BUYER",
             };
 
             const response = await sendInviteDetails({
@@ -35,9 +38,9 @@ const InviteSeller: FC<ModalProps> = ({ closeModal, contractDetails }) => {
                   ...payload,
             }).unwrap();
             setSuccessMessage(response.response.message);
-            if (response?.response?.statusCode === 200) {
-                  closeModal(); // Only close modal on success
-            }
+            // if (response?.response?.statusCode === 200) {
+            //       closeModal(); // Only close modal on success
+            // }
       };
 
       // A utility function to handle the Api error message

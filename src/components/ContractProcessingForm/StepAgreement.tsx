@@ -16,10 +16,7 @@ import { RootState } from "@reduxjs/toolkit/query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUpdateContractDetailsMutation } from "@/Store/services/contractApi";
 import { useCompleteContractDetailsMutation } from "@/Store/services/contractApi";
-
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { toast } from "react-toastify";
 
 interface stepAgreementProps {
       contractDetails: any;
@@ -42,7 +39,8 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
       console.log("contractDetails>>>", contractDetails);
       const [updateContractDetails, { isLoading }] =
             useUpdateContractDetailsMutation();
-      const [completeContractDetails, { isLoading: isCompleting }] = useCompleteContractDetailsMutation();
+      const [completeContractDetails, { isLoading: isCompleting }] =
+            useCompleteContractDetailsMutation();
       const [Details, setDetails] = useState(contractDetails);
       const router = useRouter();
       const { isMobile } = useAppContext();
@@ -71,26 +69,35 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
       );
 
       const isContractSignedByBoth = firstPartySigned && secondPartySigned;
-      const isContractKeysAvailable = contractDetails?.buyerSign && contractDetails?.sellerSign;
-      const isNextButtonEnabled = isContractSignedByBoth && isContractKeysAvailable;
-  
+      const isContractKeysAvailable =
+            contractDetails?.buyerSign && contractDetails?.sellerSign;
+      const isNextButtonEnabled =
+            isContractSignedByBoth && isContractKeysAvailable;
+
+      // Determine if the user is not the seller or if the contract is not completed
+      const isNotSellerOrContractNotCompleted =
+            userDetails?.id !== contractDetails?.sellerId ||
+            contractDetails?.status !== "COMPLETED";
+
       const handleNextButtonClick = async () => {
-          try {
-              const payload = {
-                  contract: {
-                      status: "COMPLETED",
-                  },
-              };
-              await completeContractDetails({
-                  id: contractId,
-                  ...payload
-              }).unwrap();
-              toast.success("Now both parties have signed the contract, moving to the payment form.");
-              // Add any additional navigation or state updates here
-          } catch (error) {
-              // Handle error here, perhaps with a toast notification
-              toast.error("Error completing contract.");
-          }
+            try {
+                  const payload = {
+                        contract: {
+                              status: "COMPLETED",
+                        },
+                  };
+                  await completeContractDetails({
+                        id: contractId,
+                        ...payload,
+                  }).unwrap();
+                  toast.success(
+                        "Moving To PAYMENT Flow"
+                  );
+                  // Add any additional navigation or state updates here
+            } catch (error) {
+                  // Handle error here, perhaps with a toast notification
+                  toast.error("Error completing contract.");
+            }
       };
 
       const handleContractUpdate = (updatedContractDetails: {
@@ -125,11 +132,6 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
                   (currentUserRoleType === "seller" && secondPartySigned);
             setIsEditedAfterSign(editDisabled);
       }, [contractDetails, searchParams, userDetails]);
-
-      // const isUserFirstParty = userDetails?.id === contractDetails?.buyerId; // assuming buyer to be first party here
-      // console.log('firtsParty>>' , isUserFirstParty);
-      // const canInviteSecondParty = isUserFirstParty && firstPartySigned;
-      // console.log('secondPartyinvitation>>' , canInviteSecondParty);
 
       const openModal = (modalType: string) => {
             setModalState({ ...modalState, [modalType]: true });
@@ -175,7 +177,7 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
       return (
             <>
                   <div className={styles.agreementMain}>
-                        {!isMobile && (
+                        {!isMobile && isNotSellerOrContractNotCompleted && (
                               <>
                                     <Flex vertical className="w-full">
                                           <FormSection title="Agreement">
@@ -290,6 +292,9 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
                                                             <InviteSeller
                                                                   contractDetails={
                                                                         contractDetails
+                                                                  }
+                                                                  userDetails={
+                                                                        userDetails
                                                                   }
                                                                   closeModal={() =>
                                                                         closeModal(
@@ -648,25 +653,31 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
                                                       >
                                                             <div
                                                                   className={
-                                                                        styles.flexTextColor
+                                                                        styles.main
                                                                   }
                                                             >
-                                                                  <p
+                                                                  <div
                                                                         className={
-                                                                              styles.subHeading
+                                                                              styles.flexTextColorNew
                                                                         }
                                                                   >
-                                                                        Description
-                                                                  </p>
-                                                                  <p
-                                                                        className={
-                                                                              styles.textHeadingDetails
-                                                                        }
-                                                                  >
-                                                                        {
-                                                                              transaction.description
-                                                                        }
-                                                                  </p>
+                                                                        <p
+                                                                              className={
+                                                                                    styles.subHeading
+                                                                              }
+                                                                        >
+                                                                              Description
+                                                                        </p>
+                                                                        <p
+                                                                              className={
+                                                                                    styles.textHeadingDetailsNew
+                                                                              }
+                                                                        >
+                                                                              {
+                                                                                    transaction.description
+                                                                              }
+                                                                        </p>
+                                                                  </div>
                                                             </div>
                                                       </div>
                                                 </div>
@@ -965,7 +976,9 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
                                     onClickHandler={handleNextButtonClick}
                                     // isLoading={isLoading}
                                     fullWidth={isMobile}
-                                    customDisabled={!isNextButtonEnabled || isCompleting}
+                                    customDisabled={
+                                          !isNextButtonEnabled || isCompleting
+                                    }
                               />
                         </Flex>
                   </div>

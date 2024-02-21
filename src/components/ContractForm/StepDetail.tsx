@@ -17,6 +17,8 @@ import { useUpdateContractDetailsMutation } from "@/Store/services/contractApi";
 import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
 import { storeLocalData, getLocalData } from "@/utils";
 import { useAppContext } from "@/contexts/App";
+import { useDeleteTransactionMutation } from "@/Store/services/contractApi";
+
 import {
       updateBuyerPrice,
       updateSubTotal,
@@ -63,6 +65,7 @@ interface FormValues {
 
 const StepDetail: FC<any> = ({ handleStepChange, step }) => {
 
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       const categoryFee: CategoryFee = {
             "Real Estate": 0.0075,
             "Legal Services": 0.035,
@@ -92,6 +95,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
            " Jewelry": 0.025,
       };
 
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       const feeStructures: FeeStructure[] = [
             {
                   min: 1.0,
@@ -149,9 +153,9 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
             label: key,
       }));
 
+      const [ deleteTransaction ] = useDeleteTransactionMutation();
       const text = Typography;
       const contractId = getLocalData("contract_id");
-
       const [updateContractDetails, { isLoading, isError, error }] =
             useUpdateContractDetailsMutation();
       const {
@@ -219,6 +223,8 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
       useEffect(() => {
             let totalTransactionAmount = 0;
             let totalCategoryFee = 0;
+            let percentageFee = 0;
+            let wirefee = 25;
 
             // Calculate total amount and category fees
             watchedTransactions.forEach(
@@ -242,14 +248,24 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
             );
 
             const baseFee = applicableFeeStructure? applicableFeeStructure.baseFee: 0;
-            const percentageFee = applicableFeeStructure? totalTransactionAmount *applicableFeeStructure.percentageFee: 0;
+            let remainingAmount  = totalTransactionAmount;
+            for (const fee of feeStructures){
+                  if(remainingAmount>fee.max){
+                        percentageFee+=(fee.max * fee.percentageFee);
+                        remainingAmount-=fee.max;
+                  }
+                  else{
+                        percentageFee +=remainingAmount*fee.percentageFee;
+                        break;
+                  }
+            }
 
             // Calculate subtotal and buyer price
             const shippingCost = parseFloat(watchedShippingCost) || 0;
             const serviceUpgradeCost =
                   (watchedCollectionServiceUpgrade ? 60 : 0) +
                   (watchedLienHolderUpgrade ? 60 : 0);
-            const dynamicEscrowFee = baseFee + percentageFee + totalCategoryFee;
+            const dynamicEscrowFee = baseFee + percentageFee + totalCategoryFee + wirefee;
             let dynamicSubTotal =
                   totalTransactionAmount + shippingCost + serviceUpgradeCost;
             let dynamicBuyerPrice =
@@ -314,6 +330,24 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
 
       const handleBackClick = () => {
             if (step >= 0) handleStepChange(step - 1);
+      };
+
+      const handleRemoveTransaction = async (index: number, transactionId?: number) => {
+            if (transactionId) {
+                try {
+                    // Call the deleteTransaction mutation with the transaction ID
+                    await deleteTransaction(transactionId).unwrap();
+    
+                    // Update the state only after successful deletion
+                    remove(index);
+                } catch (error) {
+                    // Handle any errors here (e.g., show an error message to the user)
+                    console.error("Error deleting the transaction:", error);
+                }
+            } else {
+                // If the transaction doesn't have an ID yet (e.g., it hasn't been saved to the server), just remove it from the form
+                remove(index);
+            }
       };
 
       // Function to handle form submission

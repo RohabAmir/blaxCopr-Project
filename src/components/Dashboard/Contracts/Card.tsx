@@ -11,6 +11,7 @@ import SecondaryButton from "../../../../public/icons/Secondary Button.svg";
 import UserIcon from "../../../../public/icons/User.svg";
 import Router, { useRouter } from "next/navigation";
 import { storeLocalData, getLocalData } from "@/utils";
+import Spinner from "@/utils/spinner";
 
 
 interface CardDetails {
@@ -47,7 +48,7 @@ interface ICard {
 }
 const Card: FC<ICard> = ({ data,  userDetails, onDelete}) => {
       console.log("data>>>",data);
-
+const[loading,setLoading]=useState(false);
       const router = useRouter();
       const [activeType, setActiveType] = useState(false);
       const [isMouseOver, setMouseOver] = useState(false);
@@ -86,7 +87,8 @@ const Card: FC<ICard> = ({ data,  userDetails, onDelete}) => {
       };
 
       const handleClick = (e: { stopPropagation: () => void }) => {
-        
+            e.stopPropagation();
+            setLoading(true);
             storeLocalData('contract_id' , `${data?.id}`);
             storeLocalData('shipping_id' , `${data?.shipping?.id}`);
             const transactionIds: TransactionId[] = data?.transactions?.map((t: TransactionId) => ({ id: t.id }));
@@ -97,13 +99,14 @@ const Card: FC<ICard> = ({ data,  userDetails, onDelete}) => {
 
             if (data?.status === "INCOMPLETE") {
                   router.push("/contract-form");
-            } else if (data?.status === "PENDING") {
+            } else if (data?.status === "PENDING" || data?.status === "COMPLETED") {
                   router.push("/contract-processing-form");
             }
       };
 
       return (
             <>
+            {loading&&<Spinner/>}
                   <div
                         className={
                               status === "Closed"

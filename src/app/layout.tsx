@@ -6,6 +6,8 @@ import Layout_C from "@/components/Layout";
 import AppContextContainer from "@/contexts/App";
 import AuthContextContainer from "@/contexts/Auth";
 import "./globals.scss";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
       title: "Blaxcorp",
@@ -24,7 +26,10 @@ export default function RootLayout({
                               <ConfigProvider theme={theme}>
                                     <AuthContextContainer>
                                           <AppContextContainer>
-                                                <Layout_C>{children}</Layout_C>
+                                                <Layout_C>
+                                                      <ToastContainer />
+                                                      {children}
+                                                </Layout_C>
                                           </AppContextContainer>
                                     </AuthContextContainer>
                               </ConfigProvider>

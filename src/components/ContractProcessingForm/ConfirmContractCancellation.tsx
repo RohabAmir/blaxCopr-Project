@@ -6,14 +6,32 @@ import styles from "./style.module.scss";
 // import ChevronIcon from "../../../../public/icons/TagChevron.svg";
 import WarningIcon from "../../../public/icons/Dash.svg";
 import ChevronIcon from "../../../public/icons/TagChevron.svg";
-
+import { useDeleteContractMutation } from "@/Store/services/contractApi";
+import { toast } from "react-toastify";
+import { getLocalData } from "@/utils";
 import { Button } from "../Shared";
 import { ButtonType } from "@/types";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 interface ModalProps {
   closeModal: () => void;
 }
 const ConfirmContractCancellation: FC<ModalProps> = ({ closeModal }) => {
+  const router = useRouter();
+  const contractId = getLocalData("contract_id");
+  const [deleteContract] = useDeleteContractMutation();
+
+  const handleDeleteContract = async (id: number) => {
+    try {
+          await deleteContract(contractId).unwrap();
+          closeModal();
+          router.push('/dashboard');
+
+    } catch (error) {
+          console.error("Error deleting contract:", error);
+    }
+};
+
   return (
     <>
       <div className={styles.overlay}>
@@ -42,7 +60,7 @@ const ConfirmContractCancellation: FC<ModalProps> = ({ closeModal }) => {
             <p className={styles.descriptionNew}>3. Administrative Fee: $20</p>
           </div>
 
-          <button className={styles.btnOpen}>Cancel Contract</button>
+          <button className={styles.btnOpen} onClick={handleDeleteContract}>Cancel Contract</button>
           <button className={styles.crossNew} onClick={closeModal}>
             &times;
           </button>

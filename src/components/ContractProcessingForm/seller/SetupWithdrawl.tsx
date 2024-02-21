@@ -9,7 +9,11 @@ import { Button } from "../../Shared";
 import { ButtonType } from "@/types";
 import { useAppContext } from "@/contexts/App";
 
-const SetupWithDrawl: FC = () => {
+interface setupWithDrawlProps {
+  onNext: () => void;
+}
+
+const SetupWithDrawl: FC<setupWithDrawlProps> = ({onNext}) => {
   const { isMobile } = useAppContext();
   return (
     <div className={styles.sellerMain} style={{ marginTop: "12px" }}>
@@ -55,6 +59,7 @@ const SetupWithDrawl: FC = () => {
               name="Setup"
               type={ButtonType.Primary}
               fullWidth={isMobile}
+              onClickHandler={onNext}
             />
           </div>
         </div>

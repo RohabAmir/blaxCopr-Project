@@ -69,8 +69,6 @@ const SignIn: FC = () => {
             if (result?.access_token) {
                   setJWTToken(result.access_token); // Store the token in cookies
             }
-
-            toast.success("Login successful!");
             router.push("/dashboard");
       };
 

@@ -61,3 +61,25 @@ Link {
     left: -7px;
   }
 }
+.Toastify__toast {
+  /* Increase the font size for better readability */
+  font-size: 1.2rem; // You can adjust this value as needed
+
+  /* Increase padding for a larger appearance */
+  padding: 20px; // Adjust this value as per your design
+
+  /* Optionally, you can adjust the width of the toast */
+  min-width: 350px; // Adjust this value as per your design
+}
+
+.Toastify__toast-container {
+  /* Centering the toast container */
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* Positioning the container at the bottom or top as per your preference */
+  bottom: 20px; // or top: 20px;
+}
+
+

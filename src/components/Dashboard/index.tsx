@@ -1,5 +1,4 @@
 "use client";
-
 import { FC, useEffect, useState } from "react";
 import CardContainer from "./Contracts";
 import styles from "./style.module.scss";
@@ -8,6 +7,7 @@ import Navbar from "../Shared/Navbar";
 import { Nav } from "@/types";
 import { useGetUserDetailsQuery } from "@/Store/services/authApi";
 import { useGetAllContractDetailsQuery } from "@/Store/services/contractApi";
+import Spinner from "@/utils/spinner";
 
 const Dashboard: FC = () => {
       const NavList: Array<Nav> = [
@@ -21,16 +21,18 @@ const Dashboard: FC = () => {
             setActiveNav(nav);
       };
       // Fetch user details
-      const { data: userDetails, refetch: refetchUserDetails } = useGetUserDetailsQuery();
-
+      const { data: userDetails, refetch: refetchUserDetails } =
+            useGetUserDetailsQuery();
       // Fetch all contract details
-      const { data: allContractDetails, refetch: refetchAllContractDetails } = useGetAllContractDetailsQuery();
-
+      const {
+            data: allContractDetails,
+            refetch: refetchAllContractDetails,
+            isLoading: contractsLoading,
+      } = useGetAllContractDetailsQuery();
       useEffect(() => {
             refetchUserDetails(); // Refetch user details on component mount
             refetchAllContractDetails(); // Refetch all contract details on component mount
       }, [refetchUserDetails, refetchAllContractDetails]);
-
       return (
             <div className={styles.main}>
                   <Header />
@@ -40,9 +42,19 @@ const Dashboard: FC = () => {
                         activeNav={activeNav}
                         navClickHandler={navClickHandler}
                   />
-                  <CardContainer allContractDetails={allContractDetails} activeNav={activeNav} userDetails={userDetails} refetchAllContractDetails={refetchAllContractDetails} />
+                  {contractsLoading ? (
+                        <Spinner />
+                  ) : (
+                        <CardContainer
+                              allContractDetails={allContractDetails}
+                              activeNav={activeNav}
+                              userDetails={userDetails}
+                              refetchAllContractDetails={
+                                    refetchAllContractDetails
+                              }
+                        />
+                  )}
             </div>
       );
 };
-
 export default Dashboard;

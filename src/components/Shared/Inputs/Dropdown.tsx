@@ -9,7 +9,7 @@ interface ITextInput {
       name: string;
       label?: string;
       options: any;
-      onChange: (e: any) => void;
+      onChange?: (e: any) => void;
       required?: boolean;
       defaultValue?: string;
       disabled?: boolean;

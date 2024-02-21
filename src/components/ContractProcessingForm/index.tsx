@@ -38,17 +38,17 @@ import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
 import { useGetUserDetailsQuery } from "@/Store/services/authApi";
 import { storeLocalData, getLocalData } from "@/utils";
 
-
 import { useAppContext } from "@/contexts/App";
 
 const ContractProcessingForm: FC = () => {
       const { isMobile } = useAppContext();
       const contractId = getLocalData("contract_id");
-      const {
-            data: contractDetails,
-      } = useFetchContractDetailsQuery(contractId, {
-            skip: !contractId, // Skip querying if no ID
-      });
+      const { data: contractDetails } = useFetchContractDetailsQuery(
+            contractId,
+            {
+                  skip: !contractId, // Skip querying if no ID
+            }
+      );
       const { data: userDetails } = useGetUserDetailsQuery();
       const { useBreakpoint } = Grid;
       const screens: any = useBreakpoint();
@@ -59,8 +59,11 @@ const ContractProcessingForm: FC = () => {
             return dashboard;
       }
       const [isModalOpen, setIsModalOpen] = useState(false);
-      const roleType = userDetails?.id === contractDetails?.buyerId ;
-      console.log(roleType)
+      const [currentComponent, setCurrentComponent] = useState(1);
+      const [previousComponent, setPreviousComponent] = useState<number | null>(
+            null
+      );
+      const roleType = userDetails?.id === contractDetails?.buyerId;
 
       const openModal = () => {
             setIsModalOpen(true);
@@ -88,6 +91,57 @@ const ContractProcessingForm: FC = () => {
             "default",
             { month: "short" }
       )}, ${date.getFullYear()}`;
+
+      // Determine if the user is a seller and if the contract is completed
+      const isSeller = userDetails?.id === contractDetails?.sellerId;
+      const isContractCompleted = contractDetails?.status === "COMPLETED";
+
+      // Determine the current step for the stepper
+      let currentStep = 0; // Default to the first step
+      if (isSeller && isContractCompleted) {
+            currentStep = 2; // Assuming the payment step is the 4th step (index 3)
+      }
+
+      const renderComponent = () => {
+            switch (currentComponent) {
+                  case 1:
+                        return <SetupWithDrawl onNext={handleNextComponent} />;
+                  case 2:
+                        return (
+                              <AddWithDrawlDisbursement
+                                    onNext={handleNextComponent}
+                                    onBack={handlePreviousComponent}
+                              />
+                        );
+                  case 3:
+                        return (
+                              <WithDrawlMethod
+                                    onNext={handleNextComponent}
+                                    onBack={handlePreviousComponent}
+                              />
+                        );
+                  case 4:
+                        return (
+                              <WithDrawlMethod
+                                    onNext={handleNextComponent}
+                                    onBack={handlePreviousComponent}
+                              />
+                        );
+                  default:
+                        return null;
+            }
+      };
+
+      const handlePreviousComponent = () => {
+            if (previousComponent !== null) {
+                  setCurrentComponent(previousComponent);
+                  setPreviousComponent(null);
+            }
+      };
+      const handleNextComponent = () => {
+            setPreviousComponent(currentComponent);
+            setCurrentComponent(currentComponent + 1);
+      };
 
       return (
             <Flex vertical className="w-full">
@@ -149,7 +203,9 @@ const ContractProcessingForm: FC = () => {
                                                                   styles.center
                                                             }
                                                       >
-                                                            {roleType? "Buyer" : "Seller"}
+                                                            {roleType
+                                                                  ? "Buyer"
+                                                                  : "Seller"}
                                                       </div>
                                                 </div>
                                                 <div
@@ -170,7 +226,8 @@ const ContractProcessingForm: FC = () => {
                                                                   styles.center
                                                             }
                                                       >
-                                                            Created {formattedDate}
+                                                            Created{" "}
+                                                            {formattedDate}
                                                       </div>
                                                 </div>
 
@@ -241,7 +298,6 @@ const ContractProcessingForm: FC = () => {
 
                   {/* stepper added */}
                   <Flex vertical align="center">
-                        <Stepper />
                         <Flex
                               vertical
                               align="center"
@@ -278,19 +334,47 @@ const ContractProcessingForm: FC = () => {
                               */}
                               {/* --------------------------------------- */}
                               {/* -----------------SELLER FLOW -------------------------- */}
-                                          {/* <SetupWithDrawl />
-                                          <AddWithDrawl />
-                                          <AddWithDrawlDisbursement />
-                                          <WithDrawlMethod />
-                                          <WithDrawlBuyerWaiting />
-                                          <InspectedPeriod />
-                                          <DisputOpened />
-                                          <Invoice />
-                                          <FundsReleased />  */}
-                              
+                              {/* <SetupWithDrawl /> */}
+                              {/* <AddWithDrawl /> */}
+                              {/* <AddWithDrawlDisbursement /> */}
+                              {/* <WithDrawlMethod /> */}
+                              {/* <WithDrawlBuyerWaiting /> */}
+                              {/* <InspectedPeriod /> */}
+                              {/* <DisputOpened /> */}
+                              {/* <Invoice /> */}
+                              {/* <FundsReleased />  */}
+
                               {/* ---Agreement form--- */}
                               {/* <ConfirmContractCancellation closeModal={closeModal} /> */}
-                              <StepAgreement contractDetails={contractDetails}/>
+                              {/* <StepAgreement
+                                    contractDetails={contractDetails}
+                              /> */}
+                              {isSeller && isContractCompleted ? (
+                                    <>
+                                          <Stepper currentStep={2} />
+                                          {/* Render Seller Flow Components */}
+                                          {renderComponent()}
+
+                                          {/* Show StepAgreement component only if currentComponent is not case 2 */}
+                                          {currentComponent !== 2 &&  (
+                                                <StepAgreement
+                                                      contractDetails={
+                                                            contractDetails
+                                                      }
+                                                />
+                                          )}
+                                    </>
+                              ) : (
+                                    <>
+                                          {/* Render StepAgreement Component */}
+                                          <Stepper currentStep={1} />
+                                          <StepAgreement
+                                                contractDetails={
+                                                      contractDetails
+                                                }
+                                          />
+                                    </>
+                              )}
                         </Flex>
                   </Flex>
             </Flex>

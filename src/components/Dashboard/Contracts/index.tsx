@@ -9,6 +9,7 @@ import AccountDetailForm from "@/app/(dashboard)/(forms)/account-details-form/pa
 import { ROUTES } from "@/constants";
 import { removeLocalData } from "@/utils";
 import { useDeleteContractMutation } from "@/Store/services/contractApi";
+import Spinner from "@/utils/spinner";
 
 interface CardDetails {
       status: string;
@@ -38,6 +39,7 @@ const CardContainer: FC<CardContainerProps> = ({
       userDetails,
       refetchAllContractDetails,
 }) => {
+      const[loading,setLoading]=useState(false);
       console.log("allContractDetails>>", allContractDetails);
       const [CardList, setCardList] = useState<Array<CardDetails>>([]);
       const [deleteContract] = useDeleteContractMutation();
@@ -52,42 +54,6 @@ const CardContainer: FC<CardContainerProps> = ({
             }
       };
 
-      // useEffect(() => {
-      //       const formattedCardList = allContractDetails?.response?.map(
-      //             (contract: {
-      //                   id:number
-      //                   buyerId: number;
-      //                   createdAt: string ;
-      //                   status: any;
-      //                   contractName: any;
-      //             }) => {
-                        // const roleType =
-                        //       userDetails?.id === contract?.buyerId
-                        //             ? "Buyer"
-                        //             : "Seller";
-                        // // Assuming contractDetails.createdAt holds the API response date-time string
-                        // const createdAtISO = contract?.createdAt || "";
-                        // // Parsing the ISO date string into a Date object
-                        // const date = new Date(createdAtISO);
-                        // // Formatting the date
-                        // const formattedDate = `${date.getDate()} ${date.toLocaleString(
-                        //       "default",
-                        //       { month: "short" }
-                        // )}, ${date.getFullYear()}`;
-
-      //                   return {
-      //                         id:contract.id,
-      //                         status: contract.status,
-      //                         type: roleType,
-      //                         price: "--",
-      //                         company: contract.contractName,
-      //                         date: `Created ${formattedDate}`,
-      //                   };
-      //             }
-      //       );
-
-      //     setCardList(formattedCardList);
-      // }, [allContractDetails, userDetails]);
 
       const filteredCardList =
             !activeNav.includes("all")
@@ -105,6 +71,8 @@ const CardContainer: FC<CardContainerProps> = ({
       };
 
       const createOnClickHandler = () => {
+            setLoading(true);
+
             removeContractLocalData();
       };
 
@@ -114,6 +82,7 @@ const CardContainer: FC<CardContainerProps> = ({
                   <div className={styles.grid}>
                         <div className={styles.cardContainerMainPlus}>
                               <Link href={ROUTES.CONTRACT_FORM}>
+                                    {loading&& <Spinner/>}
                                     <button className={styles.button}>
                                           <Image
                                                 src={PlusIcon}
