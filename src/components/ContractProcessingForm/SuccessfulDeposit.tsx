@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import styles from "./style.module.scss";
 import ClockIcon from "../../../public/icons/Clock.svg";
 import OkIcon from ".././../../public/icons/Ok.svg";
@@ -17,9 +17,26 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
   const screens: any = useBreakpoint();
   const contractId = getLocalData("contract_id");
 
-  const [updateContractDetails, { isLoading, isError, error }] =
+  const [transitionContract, { isLoading, isError, error }] =
     useTransitionContractMutation();
-  const { data: transitionDetails } = useTransitionContractMutation();
+
+  //
+  const markAsReceived = async () => {
+    const payload = {
+      contract: {
+        status: "RECEIVED",
+      },
+    };
+
+    try {
+      console.log("mark as receievd");
+
+      await transitionContract({ id: contractId, ...payload });
+      onNext();
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   return (
     <>
       <div className={styles.agreementMain}>
@@ -80,6 +97,7 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
             name="Mark as Received"
             type={ButtonType.Primary}
             fullWidth={!screens["sm"]}
+            onClickHandler={markAsReceived}
           />
         </div>
         {/* ----------- */}

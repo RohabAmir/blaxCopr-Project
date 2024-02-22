@@ -2,8 +2,16 @@ import { FC } from "react";
 import styles from "./style.module.scss";
 import ClockIcon from "../../../public/icons/Clock.svg";
 import Image from "next/image";
+import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
+import { getLocalData } from "@/utils";
 
-const PendingDeposit: FC<pendingDepositProps> = ({ onNext }) => {
+const PendingDeposit: FC = () => {
+  const contractId = getLocalData("contract_id");
+  const { data: contractDetails } = useFetchContractDetailsQuery(contractId);
+  console.log(
+    "contract----------------",
+    contractDetails?.contractPayments?.totlaAmountToDeposit
+  );
   return (
     <>
       <div className={styles.agreementMain} style={{ marginTop: "24px" }}>
@@ -16,7 +24,10 @@ const PendingDeposit: FC<pendingDepositProps> = ({ onNext }) => {
             />
             <div className={styles.flexTextDeposit}>
               <p className={styles.headingDeposit}>Pending escrow deposit:</p>
-              <p className={styles.subHeadingDeposit}>Amount: $10.030.00</p>
+              <p className={styles.subHeadingDeposit}>
+                {" "}
+                {contractDetails?.contractPayments?.totlaAmountToDeposit}{" "}
+              </p>
             </div>
           </div>
         </div>

@@ -113,7 +113,7 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
 
                   <span className={styles.bankInlineText}>
                     <span className={styles.currencyHeading}>
-                      {responseGet.data.responseData.referenceNo}
+                      {responseGet?.data?.responseData?.referenceNo}
                     </span>
                     <Image
                       className={styles.copyIcon}
@@ -142,7 +142,7 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
 
                   <span className={styles.bankInlineText}>
                     <span className={styles.currencyHeading}>
-                      {responseGet.data.responseData.currency}
+                      {responseGet?.data?.responseData?.currency}
                     </span>
                     <Image
                       className={styles.copyIcon}

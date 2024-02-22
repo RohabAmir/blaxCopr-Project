@@ -117,7 +117,6 @@ const BankLocation: FC<BankLocationProps> = ({
                 name="Continue"
                 type={ButtonType.Primary}
                 size={!isMobile ? "large" : "middle"}
-                isSubmit={true}
                 isLoading={isLoading}
               />
             </div>

@@ -1,6 +1,6 @@
 "use client";
 import { Flex, Grid } from "antd";
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useEffect } from "react";
 import styles from "./style.module.scss";
 import { ButtonType, IconType } from "@/types";
 import { Button, VerifyProfileBar } from "../Shared";
@@ -42,8 +42,10 @@ import { useAppContext } from "@/contexts/App";
 
 const ContractProcessingForm: FC = () => {
   const { isMobile } = useAppContext();
-  const [response, setResponse] = useState(null); // State to store the response data
+  const [response, setResponse] = useState(null);
   const [currentComponent, setCurrentComponent] = useState(1);
+  const [isDepositSuccessful, setIsDepositSuccessful] = useState(false);
+
   const [previousComponent, setPreviousComponent] = useState<number | null>(
     null
   );
@@ -96,7 +98,10 @@ const ContractProcessingForm: FC = () => {
 
   const isBuyer = userDetails?.id === contractDetails?.buyerId;
   const isContractCompleted = contractDetails?.status === "COMPLETED";
-
+  let currentStep = 0;
+  if (isBuyer && isContractCompleted) {
+    currentStep = 2;
+  }
   const handlePreviousComponent = () => {
     if (previousComponent !== null) {
       const newCurrentComponent = previousComponent;
@@ -115,44 +120,60 @@ const ContractProcessingForm: FC = () => {
   const handleResponse = (responseData: any) => {
     setResponse(responseData);
   };
+  const handleReceived = () => {
+    if (isDepositSuccessful) {
+      setCurrentComponent(6);
+    }
+  };
+  useEffect(() => {
+    if (
+      contractDetails?.status === "COMPLETED" &&
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+    ) {
+      setIsDepositSuccessful(true);
+    } else {
+      setIsDepositSuccessful(false);
+    }
+  }, [contractDetails]);
 
   const renderComponent = () => {
-    switch (currentComponent) {
-      case 1:
-        return <Deposit onNext={handleNextComponent} />;
-      case 2:
-        return (
-          <TransferAmount
-            onNext={handleNextComponent}
-            onBack={handlePreviousComponent}
-          />
-        );
-      case 3:
-        return (
-          <BankLocation
-            onNext={handleNextComponent}
-            onBack={handlePreviousComponent}
-            onResponse={handleResponse}
-          />
-        );
-      case 4:
-        return (
-          <BankDetails
-            onNext={handleNextComponent}
-            onBack={handlePreviousComponent}
-            responseGet={response}
-          />
-        );
-      case 5:
-        return contractDetails?.contractPayments?.paymentStatus ===
-          "DEPOSITED" ? (
-          <SuccessfulDeposit onNext={handleNextComponent} />
-        ) : (
-          <PendingDeposit />
-        );
+    if (isDepositSuccessful && currentComponent !== 6) {
+      return <SuccessfulDeposit onNext={handleReceived} />;
+    } else if (currentComponent === 6) {
+      return <Inspection onNext={handleNextComponent} />;
+    } else {
+      switch (currentComponent) {
+        case 1:
+          return <Deposit onNext={handleNextComponent} />;
+        case 2:
+          return (
+            <TransferAmount
+              onNext={handleNextComponent}
+              onBack={handlePreviousComponent}
+            />
+          );
+        case 3:
+          return (
+            <BankLocation
+              onNext={handleNextComponent}
+              onBack={handlePreviousComponent}
+              onResponse={handleResponse}
+            />
+          );
+        case 4:
+          return (
+            <BankDetails
+              onNext={handleNextComponent}
+              onBack={handlePreviousComponent}
+              responseGet={response}
+            />
+          );
+        case 5:
+          return <PendingDeposit />;
 
-      default:
-        return null;
+        default:
+          return null;
+      }
     }
   };
 
@@ -231,7 +252,7 @@ const ContractProcessingForm: FC = () => {
 
       {/* stepper added */}
       <Flex vertical align="center">
-        <Stepper />
+        {/* <Stepper /> */}
         <Flex
           vertical
           align="center"
@@ -258,16 +279,22 @@ const ContractProcessingForm: FC = () => {
           {/* ------------------------------------ */}
           {isBuyer && isContractCompleted ? (
             <>
+              <Stepper currentStep={3} />
               {renderComponent()}
-              <StepAgreement contractDetails={contractDetails} />
+              {currentComponent !== 2 && (
+                <StepAgreement contractDetails={contractDetails} />
+              )}
             </>
           ) : (
-            <StepAgreement contractDetails={contractDetails} />
+            <>
+              <Stepper currentStep={1} />
+
+              <StepAgreement contractDetails={contractDetails} />
+            </>
           )}
           {/*    
                                    
-                                    <SuccessfulDeposit />
-                                    <Inspection />
+                                
                                     <DisputOpened />
                                     <Invoice /> 
                               */}

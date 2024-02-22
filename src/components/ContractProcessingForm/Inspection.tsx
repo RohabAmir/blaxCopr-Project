@@ -8,9 +8,43 @@ import { Button } from "../Shared";
 import { ButtonType, IconType } from "@/types";
 import { Grid } from "antd";
 import { useAppContext } from "@/contexts/App";
+import {
+  useFetchContractDetailsQuery,
+  useTransitionContractMutation,
+} from "@/Store/services/contractApi";
+import { getLocalData } from "@/utils";
+import Dispute from "@/app/(dashboard)/dispute/page";
+import { useRouter } from "next/navigation";
 
-const Inspection: FC = () => {
+interface InspectionProps {
+  onNext: () => void;
+}
+
+const Inspection: FC<InspectionProps> = ({ onNext }) => {
   const { isMobile } = useAppContext();
+  const contractId = getLocalData("contract_id");
+  const router = useRouter();
+
+  const [transitionContract, { isLoading, isError, error }] =
+    useTransitionContractMutation();
+
+  //
+  const reportIssue = async () => {
+    const payload = {
+      contract: {
+        status: "RECEIVED",
+      },
+    };
+
+    try {
+      console.log("report issue");
+
+      await transitionContract({ id: contractId, ...payload });
+      router.push("/dispute");
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   return (
     <>
@@ -37,7 +71,7 @@ const Inspection: FC = () => {
             </div>
           </div>
           <div className={styles.flexButtons}>
-            <button className={styles.btnReport}>
+            <button className={styles.btnReport} onClick={reportIssue}>
               <span className={styles.btnReportText}>Report an issue</span>
             </button>
             <button className={styles.btnSent}>

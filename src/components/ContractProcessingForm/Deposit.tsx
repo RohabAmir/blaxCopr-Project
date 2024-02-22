@@ -6,10 +6,19 @@ import { Button } from "../Shared";
 import { ButtonType, IconType } from "@/types";
 import { Grid } from "antd";
 import { useAppContext } from "@/contexts/App";
+import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
+import { getLocalData } from "@/utils";
+
 interface DepositProps {
   onNext: () => void;
 }
 const Deposit: FC<DepositProps> = ({ onNext }) => {
+  const contractId = getLocalData("contract_id");
+  const { data: contractDetails } = useFetchContractDetailsQuery(contractId);
+  console.log(
+    "contract----------------",
+    contractDetails?.contractPayments?.totlaAmountToDeposit
+  );
   const { isMobile } = useAppContext();
   const handleDeposit = () => {
     console.log("handle deposit---");
@@ -29,7 +38,9 @@ const Deposit: FC<DepositProps> = ({ onNext }) => {
             />
             <div className={styles.flexTextDeposit}>
               <p className={styles.headingDeposit}>Deposit funds in escrow</p>
-              <p className={styles.subHeadingDeposit}>Amount: $10.030.00</p>
+              <p className={styles.subHeadingDeposit}>
+                {contractDetails?.contractPayments?.totlaAmountToDeposit}{" "}
+              </p>
             </div>
           </div>
           <Button

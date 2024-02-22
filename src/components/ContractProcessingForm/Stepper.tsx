@@ -99,9 +99,12 @@ const customDot: React.FC<CustomDotProps> = ({ currentStep, status }) => {
     </Popover>
   );
 };
+interface StepperProps {
+  currentStep: number;
+}
 
-const Stepper: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+const Stepper: React.FC<StepperProps> = ({ currentStep }) => {
+  // const [currentStep, setCurrentStep] = useState(1);
 
   const steps = [
     {
@@ -124,9 +127,9 @@ const Stepper: React.FC = () => {
     },
   ];
 
-  const handleStepClick = (step: number) => {
-    setCurrentStep(step);
-  };
+  // const handleStepClick = (step: number) => {
+  //   setCurrentStep(step);
+  // };
 
   return (
     <Steps
