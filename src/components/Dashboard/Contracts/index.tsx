@@ -40,8 +40,6 @@ const CardContainer: FC<CardContainerProps> = ({
       refetchAllContractDetails,
 }) => {
       const[loading,setLoading]=useState(false);
-      console.log("allContractDetails>>", allContractDetails);
-      const [CardList, setCardList] = useState<Array<CardDetails>>([]);
       const [deleteContract] = useDeleteContractMutation();
 
       const handleDeleteContract = async (id: number) => {

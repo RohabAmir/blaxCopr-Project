@@ -26,6 +26,16 @@ export const paymentApi = createApi({
         };
       },
     }),
+    addAccount: builder.mutation<any, any>({
+      query: (accountData) => {
+        return {
+          url: `/payment/add-account/`,
+          method: "POST",
+          body: accountData,
+        };
+      },
+    }),
+
   }),
 });
-export const { useGetPaymentDataQuery, useDepositDataMutation } = paymentApi;
+export const { useGetPaymentDataQuery, useDepositDataMutation, useAddAccountMutation } = paymentApi;

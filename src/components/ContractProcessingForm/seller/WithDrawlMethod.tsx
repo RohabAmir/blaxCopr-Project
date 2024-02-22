@@ -11,7 +11,12 @@ import { Button } from "../../Shared";
 import { ButtonType, IconType } from "@/types";
 import { Grid } from "antd";
 
-const WithDrawlMethod: FC = () => {
+interface addWithDrawlProps {
+  onNext: () => void;
+  onBack: () => void;
+}
+
+const WithDrawlMethod: FC<addWithDrawlProps> = ({onNext,onBack}) => {
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
   return (

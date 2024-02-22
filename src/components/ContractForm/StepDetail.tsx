@@ -165,6 +165,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
       } = useFetchContractDetailsQuery(contractId, {
             skip: !contractId, // Skip querying if no ID
       });
+      console.log("contractData>>" , contractDetails);
       const { isMobile } = useAppContext();
       const dispatch = useDispatch();
       const methods = useForm<FormValues>({
@@ -193,8 +194,9 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
             name: "transactions",
       });
 
+      console.log("fields",fields)
+
       const { handleSubmit, reset, formState, watch, control } = methods;
-      // const { watch } = useFormContext<FormValues>();
       const { isDirty } = formState;
 
       // Watch for changes in the relevant fields
@@ -224,7 +226,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
             let totalTransactionAmount = 0;
             let totalCategoryFee = 0;
             let percentageFee = 0;
-            let wirefee = 25;
+            let wirefeeTransfer = 25;
 
             // Calculate total amount and category fees
             watchedTransactions.forEach(
@@ -265,7 +267,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
             const serviceUpgradeCost =
                   (watchedCollectionServiceUpgrade ? 60 : 0) +
                   (watchedLienHolderUpgrade ? 60 : 0);
-            const dynamicEscrowFee = baseFee + percentageFee + totalCategoryFee + wirefee;
+            const dynamicEscrowFee = baseFee + percentageFee + totalCategoryFee + wirefeeTransfer;
             let dynamicSubTotal =
                   totalTransactionAmount + shippingCost + serviceUpgradeCost;
             let dynamicBuyerPrice =
@@ -332,9 +334,11 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
             if (step >= 0) handleStepChange(step - 1);
       };
 
-      const handleRemoveTransaction = async (index: number, transactionId?: number) => {
+      const handleRemoveTransaction = async ( event: any, index: number, transactionId?: number) => {
+            event.preventDefault();
             if (transactionId) {
                 try {
+                  console.log("transactionId",transactionId)
                     // Call the deleteTransaction mutation with the transaction ID
                     await deleteTransaction(transactionId).unwrap();
     
@@ -349,6 +353,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                 remove(index);
             }
       };
+
 
       // Function to handle form submission
       const onSubmit = async (data: any) => {
@@ -456,6 +461,8 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
             }
       };
 
+     
+
       return (
             <form
                   className={styles.detailsMain}
@@ -476,7 +483,10 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                                     key={field.id}
                                     title="Transaction Details"
                                     buttonTitle="Remove"
-                                    buttonClickHandler={() => remove(index)}
+                                    buttonClickHandler={() => {
+                                          const transactionId = contractDetails?.transactions[index]?.id;
+                                          return (event: any) => handleRemoveTransaction(event, index, transactionId);
+                                      }}
                               >
                                     <Flex
                                           style={{ width: "100%" }}
@@ -538,7 +548,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                                                       price: "",
                                                       category: "",
                                                       description: "",
-                                                }); // Append new item with default values
+                                                }); 
                                           }}
                                           size={isMobile ? "middle" : "large"}
                                     />

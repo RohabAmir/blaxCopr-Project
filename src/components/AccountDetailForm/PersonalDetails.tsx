@@ -17,16 +17,22 @@ interface UserDetails {
 interface PersonalDetailsProps {
       userDetails: UserDetails;
 }
-interface updateUserDetailsProps {
+
+interface UpdateUserResponse {
+     
+      id: number;
       email: string;
       firstName: string;
       lastName: string;
       phone: string;
-}
+      
+  }
+  
 const PersonalDetails: FC<PersonalDetailsProps> = ({ userDetails }) => {
-
-      const [updateUserDetails] = useUpdateUserDetailsMutation();
+      const [updateUserDetails, { isLoading, isError, error }] =
+            useUpdateUserDetailsMutation();
       const [changedFields, setChangedFields] = useState({});
+      const [successMessage, setSuccessMessage] = useState("");
 
       const [userFormData, setUserFormData] = useState<UserDetails>({
             firstName: userDetails?.firstName || "",
@@ -46,7 +52,7 @@ const PersonalDetails: FC<PersonalDetailsProps> = ({ userDetails }) => {
       useEffect(() => {
             if (userDetails) {
                   methods.reset({
-                        firstName: userDetails?.firstName ,
+                        firstName: userDetails?.firstName,
                         lastName: userDetails?.lastName,
                         email: userDetails?.email,
                         phone: userDetails?.phone,
@@ -58,26 +64,33 @@ const PersonalDetails: FC<PersonalDetailsProps> = ({ userDetails }) => {
       const [isDirty, setIsDirty] = useState(false);
       const router = useRouter();
 
-      const handleInputChange = (name: keyof UserDetails, value: string | number) => {
+      const handleInputChange = (
+            name: keyof UserDetails,
+            value: string | number
+      ) => {
             setUserFormData((prev) => ({ ...prev, [name]: value }));
             setIsDirty(true);
             setChangedFields((prev) => ({ ...prev, [name]: value }));
-        };
-        
+      };
 
       const onSubmit = async () => {
             if (Object.keys(changedFields).length > 0) {
-                await updateUserDetails(changedFields as updateUserDetailsProps);
-            //     router.push('/dashboard');
+                const response: any  = await updateUserDetails(changedFields as UpdateUserResponse);
+                setSuccessMessage(response?.data?.updatedUser?.message );
+        
             }
         };
         
+
+      function isErrorWithMessage(error: any): error is { message: string } {
+            return error && typeof error.message === "string";
+      }
 
       const { useBreakpoint } = Grid;
       const screens = useBreakpoint();
 
       return (
-            <form 
+            <form
                   className={styles.personalDetails}
                   onSubmit={handleSubmit(onSubmit)}
             >
@@ -91,6 +104,7 @@ const PersonalDetails: FC<PersonalDetailsProps> = ({ userDetails }) => {
                                     }
                               >
                                     <TextInput
+                                          type="text"
                                           name="firstName"
                                           label="First Name"
                                           onChange={(value) =>
@@ -102,6 +116,7 @@ const PersonalDetails: FC<PersonalDetailsProps> = ({ userDetails }) => {
                                           required
                                     />
                                     <TextInput
+                                          type="text"
                                           name="lastName"
                                           label="Last Name"
                                           onChange={(value) =>
@@ -155,6 +170,22 @@ const PersonalDetails: FC<PersonalDetailsProps> = ({ userDetails }) => {
                                     customDisabled={!isDirty}
                               />
                         </div>
+                        {/* Dynamically handling success and error messages from api  */}
+                        {successMessage ? (
+                              <div style={{ color: "green" }}>
+                                    {successMessage}
+                              </div>
+                        ) : (
+                              isError &&
+                              error && (
+                                    <div style={{ color: "red" }}>
+                                          {"status" in error &&
+                                          isErrorWithMessage(error.data)
+                                                ? error.data.message
+                                                : "An error occurred. Please try again later."}
+                                    </div>
+                              )
+                        )}
                   </FormProvider>
             </form>
       );

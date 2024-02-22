@@ -97,6 +97,7 @@ export const contractApi = createApi({
             }),
             deleteTransaction: builder.mutation<any, any>({
                   query: (id) => {
+                        console.log("id",id)
                         return {
                              url: `/contracts/delete-transaction/${id}`,
                               method: "DELETE",

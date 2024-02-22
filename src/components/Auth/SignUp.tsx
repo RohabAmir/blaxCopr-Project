@@ -36,7 +36,6 @@ const SignUp: FC = () => {
 
       const onSubmit: SubmitHandler<RegisterUserProps> = async (data) => {
             await registerUser(data).unwrap();
-            toast.success("Registration successful!");
             handleActivePage(AUTH_TABS.SIGN_IN);
       };
 
@@ -109,69 +108,7 @@ const SignUp: FC = () => {
                                           showRules={true}
                                           required
                                     />
-                                    {/* <Flex
-                                          vertical
-                                          align="flex-start"
-                                          justify="center"
-                                    >
-                                          <div className={styles.flexIcon}>
-                                                <Image
-                                                      className={
-                                                            styles.checkIcon
-                                                      }
-                                                      src={CheckIcon}
-                                                      alt="check"
-                                                />
-                                                <span
-                                                      color="#163300"
-                                                      style={{
-                                                            marginLeft: "10px",
-                                                      }}
-                                                >
-                                                      6 or more characters{" "}
-                                                </span>
-                                          </div>
-                                          <div>
-                                                <h1
-                                                      style={{
-                                                            color: "red",
-                                                            fontWeight: "900",
-                                                            display: "inline",
-                                                      }}
-                                                >
-                                                      .
-                                                </h1>
-                                                <span
-                                                      style={{
-                                                            color: "red",
-                                                            padding: "0",
-                                                            marginLeft: "10px",
-                                                      }}
-                                                >
-                                                      Upper and lower case{" "}
-                                                </span>
-                                          </div>
-                                          <div>
-                                                <h1
-                                                      style={{
-                                                            color: "red",
-                                                            fontWeight: "900",
-                                                            display: "inline",
-                                                      }}
-                                                >
-                                                      .
-                                                </h1>
-                                                <span
-                                                      style={{
-                                                            color: "red",
-                                                            padding: "0",
-                                                            marginLeft: "10px",
-                                                      }}
-                                                >
-                                                      Special character
-                                                </span>
-                                          </div>
-                                    </Flex> */}
+                                  
                                     {/* Displaying backend error message dynamically */}
                                     {isError && error && (
                                           <div style={{ color: "red" }}>

@@ -38,9 +38,7 @@ const InviteSeller: FC<ModalProps> = ({ closeModal, userDetails, contractDetails
                   ...payload,
             }).unwrap();
             setSuccessMessage(response.response.message);
-            // if (response?.response?.statusCode === 200) {
-            //       closeModal(); // Only close modal on success
-            // }
+            
       };
 
       // A utility function to handle the Api error message
