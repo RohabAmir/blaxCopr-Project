@@ -6,7 +6,37 @@ import CheckIcon from "../../../../public/icons/Check.svg";
 import { Button } from "..";
 import { ButtonType } from "@/types";
 import Image from "next/image";
-const ConfirmApproval: FC = () => {
+import { useRouter } from "next/navigation";
+import { getLocalData } from "@/utils";
+import { useTransitionMutation } from "@/Store/services/contractApi";
+interface ModalProps {
+  onClose: () => void;
+}
+const ConfirmApproval: FC<ModalProps> = ({ onClose }) => {
+  const router = useRouter();
+  const contractId = getLocalData("contract_id");
+
+  const [transitionContract, { isLoading, isError, error }] =
+    useTransitionMutation();
+
+  //
+  const handleDashboard = async () => {
+    const payload = {
+      contract: {
+        status: "APPROVE",
+      },
+    };
+
+    try {
+      console.log("mark as approve");
+
+      await transitionContract({ id: contractId, ...payload });
+      router.push("/dashboard");
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
   return (
     <>
       <div className={styles.modalMain}>
@@ -18,8 +48,12 @@ const ConfirmApproval: FC = () => {
             released to the Seller. Are you sure you want to proceed?
           </p>
 
-          <button className={styles.btnOpen}>Confirm</button>
-          <button className={styles.cross}>&times;</button>
+          <button className={styles.btnOpen} onClick={handleDashboard}>
+            Confirm
+          </button>
+          <button className={styles.cross} onClick={onClose}>
+            &times;
+          </button>
         </div>
       </div>
     </>

@@ -32,7 +32,11 @@ export const store = configureStore({
   },
   preloadedState,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware, contractApi.middleware),
+    getDefaultMiddleware().concat(
+      authApi.middleware,
+      contractApi.middleware,
+      paymentApi.middleware
+    ),
 });
 
 // You might want to add a listener to save the state to local storage whenever it changes

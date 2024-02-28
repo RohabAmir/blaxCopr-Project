@@ -51,9 +51,14 @@ const ContractProcessingForm: FC = () => {
   );
 
   const contractId = getLocalData("contract_id");
-  const { data: contractDetails } = useFetchContractDetailsQuery(contractId, {
-    skip: !contractId,
+  const {
+    data: contractDetails,
+    refetch: refetchContractDetails,
+    isFetching: isFetchingContractDetails,
+  } = useFetchContractDetailsQuery(contractId, {
+    skip: !contractId, // Skip querying if no ID
   });
+
   const { data: userDetails } = useGetUserDetailsQuery();
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
@@ -65,7 +70,7 @@ const ContractProcessingForm: FC = () => {
   }
   const [isModalOpen, setIsModalOpen] = useState(false);
   const roleType = userDetails?.id === contractDetails?.buyerId;
-  console.log(roleType);
+  // console.log(roleType);
 
   const handleCopyText = (event: any) => {
     const textToCopy = event.target.previousSibling.textContent.trim();
@@ -97,8 +102,30 @@ const ContractProcessingForm: FC = () => {
   })}, ${date.getFullYear()}`;
 
   const isBuyer = userDetails?.id === contractDetails?.buyerId;
-  const isContractCompleted = contractDetails?.status === "COMPLETED";
-  let currentStep = 0;
+  const isContractCompleted =
+    contractDetails?.status === "COMPLETED" ||
+    contractDetails?.status === "DELIVERED" ||
+    contractDetails?.status === "RECEIVED" ||
+    contractDetails?.status === "DISPUTE" ||
+    contractDetails?.status === "APPROVE";
+
+  let currentStep;
+  switch (currentComponent) {
+    case 1:
+      currentStep = 0;
+      break;
+    case 2:
+      currentStep = 1;
+      break;
+    case 3:
+      currentStep = 2;
+      break;
+    case 4:
+      currentStep = 3;
+    case 5:
+      currentStep = 4;
+      break;
+  }
   if (isBuyer && isContractCompleted) {
     currentStep = 2;
   }
@@ -112,6 +139,11 @@ const ContractProcessingForm: FC = () => {
       );
     }
   };
+  const [newContractDetails, setContractDetails] = useState(null);
+
+  const handleStatusChange = (newDetails: any) => {
+    setContractDetails(newDetails); // Update the state with new details
+  };
 
   const handleNextComponent = () => {
     setPreviousComponent(currentComponent);
@@ -120,56 +152,130 @@ const ContractProcessingForm: FC = () => {
   const handleResponse = (responseData: any) => {
     setResponse(responseData);
   };
+
   const handleReceived = () => {
-    if (isDepositSuccessful) {
-      setCurrentComponent(6);
-    }
+    console.log("Before updating inspection:", inspection);
+    setinspection(true);
+    console.log("After updating inspection:", inspection);
   };
+
+  const [inspection, setinspection] = useState(false);
+  const [goInvoice, setGoInvoice] = useState(false);
+  const [openMessage, setOpenMessage] = useState(false);
+
+  useEffect(() => {
+    if (contractId) {
+      refetchContractDetails();
+    }
+  }, [contractId, refetchContractDetails]);
+
   useEffect(() => {
     if (
-      contractDetails?.status === "COMPLETED" &&
+      contractDetails?.status === "DELIVERED" &&
       contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
     ) {
       setIsDepositSuccessful(true);
-    } else {
-      setIsDepositSuccessful(false);
+    }
+    if (
+      contractDetails?.status === "RECEIVED" &&
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+    ) {
+      setinspection(true);
+    }
+    if (
+      contractDetails?.status === "DISPUTE" &&
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+    ) {
+      setOpenMessage(true);
+    }
+    if (
+      contractDetails?.status === "APPROVE" &&
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+    ) {
+      setGoInvoice(true);
     }
   }, [contractDetails]);
 
-  const renderComponent = () => {
-    if (isDepositSuccessful && currentComponent !== 6) {
-      return <SuccessfulDeposit onNext={handleReceived} />;
-    } else if (currentComponent === 6) {
-      return <Inspection onNext={handleNextComponent} />;
+  const renderComponentsBuyer = () => {
+    if (isDepositSuccessful) {
+      return (
+        <>
+          <Stepper currentStep={3} />
+          <SuccessfulDeposit onNext={handleReceived} />;
+        </>
+      );
+    } else if (inspection) {
+      return (
+        <>
+          <Stepper currentStep={4} />
+          <Inspection onNext={handleNextComponent} />
+        </>
+      );
+    } else if (goInvoice) {
+      return (
+        <>
+          {!isMobile && <Stepper currentStep={5} />}
+          <Invoice />
+        </>
+      );
+    } else if (openMessage) {
+      return (
+        <>
+          <Stepper currentStep={4} />
+          <DisputOpened />
+        </>
+      );
     } else {
       switch (currentComponent) {
         case 1:
-          return <Deposit onNext={handleNextComponent} />;
+          return (
+            <>
+              <Stepper currentStep={2} />
+              <Deposit onNext={handleNextComponent} />
+            </>
+          );
         case 2:
           return (
-            <TransferAmount
-              onNext={handleNextComponent}
-              onBack={handlePreviousComponent}
-            />
+            <>
+              <Stepper currentStep={2} />
+
+              <TransferAmount
+                onNext={handleNextComponent}
+                onBack={handlePreviousComponent}
+              />
+            </>
           );
         case 3:
           return (
-            <BankLocation
-              onNext={handleNextComponent}
-              onBack={handlePreviousComponent}
-              onResponse={handleResponse}
-            />
+            <>
+              {!isMobile && <Stepper currentStep={2} />}
+
+              <BankLocation
+                onNext={handleNextComponent}
+                onBack={handlePreviousComponent}
+                onResponse={handleResponse}
+              />
+            </>
           );
         case 4:
           return (
-            <BankDetails
-              onNext={handleNextComponent}
-              onBack={handlePreviousComponent}
-              responseGet={response}
-            />
+            <>
+              <Stepper currentStep={2} />
+
+              <BankDetails
+                onNext={handleNextComponent}
+                onBack={handlePreviousComponent}
+                responseGet={response}
+              />
+            </>
           );
         case 5:
-          return <PendingDeposit />;
+          return (
+            <>
+              <Stepper currentStep={2} />
+              <PendingDeposit />
+            </>
+          );
 
         default:
           return null;
@@ -177,7 +283,6 @@ const ContractProcessingForm: FC = () => {
     }
   };
 
-  // console.log("-----contract details----------", contractDetails?.paymentStatus);
   return (
     <Flex vertical className="w-full">
       <VerifyProfileBar />
@@ -256,7 +361,8 @@ const ContractProcessingForm: FC = () => {
         <Flex
           vertical
           align="center"
-          style={{ width: "100%", padding: "0 24px" }}
+          style={{ width: "100%" }}
+          // style={{ width: "100%", padding: "0 24px" }}
         >
           {isMobile && (
             <>
@@ -275,12 +381,9 @@ const ContractProcessingForm: FC = () => {
             </>
           )}
 
-          {/* agrrement buyer components */}
-          {/* ------------------------------------ */}
           {isBuyer && isContractCompleted ? (
             <>
-              <Stepper currentStep={3} />
-              {renderComponent()}
+              {renderComponentsBuyer()}
               {currentComponent !== 2 && (
                 <StepAgreement contractDetails={contractDetails} />
               )}
@@ -288,30 +391,9 @@ const ContractProcessingForm: FC = () => {
           ) : (
             <>
               <Stepper currentStep={1} />
-
               <StepAgreement contractDetails={contractDetails} />
             </>
           )}
-          {/*    
-                                   
-                                
-                                    <DisputOpened />
-                                    <Invoice /> 
-                              */}
-          {/* --------------------------------------- */}
-          {/* -----------------SELLER FLOW -------------------------- */}
-          {/* <SetupWithDrawl /> */}
-          {/* <AddWithDrawl /> */}
-          {/* <AddWithDrawlDisbursement /> */}
-          {/*  <WithDrawlMethod />
-                                          <WithDrawlBuyerWaiting />
-                                          <InspectedPeriod />
-                                          <DisputOpened />
-                                          <Invoice />
-                                          <FundsReleased />  */}
-
-          {/* ---Agreement form--- */}
-          {/* <ConfirmContractCancellation closeModal={closeModal} /> */}
         </Flex>
       </Flex>
     </Flex>

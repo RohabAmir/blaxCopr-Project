@@ -26,7 +26,9 @@ const PendingDeposit: FC = () => {
               <p className={styles.headingDeposit}>Pending escrow deposit:</p>
               <p className={styles.subHeadingDeposit}>
                 {" "}
-                {contractDetails?.contractPayments?.totlaAmountToDeposit}{" "}
+                {contractDetails.currency === "USD"
+                  ? `$${contractDetails.contractPayments.totlaAmountToDeposit}`
+                  : `€${contractDetails.contractPayments.totlaAmountToDeposit}`}{" "}
               </p>
             </div>
           </div>

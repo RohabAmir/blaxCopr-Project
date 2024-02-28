@@ -39,7 +39,9 @@ const Deposit: FC<DepositProps> = ({ onNext }) => {
             <div className={styles.flexTextDeposit}>
               <p className={styles.headingDeposit}>Deposit funds in escrow</p>
               <p className={styles.subHeadingDeposit}>
-                {contractDetails?.contractPayments?.totlaAmountToDeposit}{" "}
+                {contractDetails.currency === "USD"
+                  ? `$${contractDetails.contractPayments.totlaAmountToDeposit}`
+                  : `€${contractDetails.contractPayments.totlaAmountToDeposit}`}{" "}
               </p>
             </div>
           </div>

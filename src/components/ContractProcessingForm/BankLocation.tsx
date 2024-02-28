@@ -42,18 +42,20 @@ const BankLocation: FC<BankLocationProps> = ({
   const { handleSubmit, formState, reset } = methods;
 
   const onSubmit = async (data: any, event: any) => {
-    event.preventDefault();
+    // event.preventDefault();
     const payload = {
+      id: contractId,
       currency: data.currency,
       bankLocation: data.bankLocation,
     };
     try {
-      const response = await depositData({
-        id: contractId,
-        ...payload,
-      });
+      const response: any = await depositData({ ...payload });
+      console.log("response", response?.data);
+      if (response?.data?.responseData) {
+        console.log("response inside if", response?.data);
+        onNext();
+      }
       onResponse(response);
-      onNext();
     } catch (error) {
       console.error("FAILED TO SUBMIT DATA", error);
     }
@@ -118,6 +120,7 @@ const BankLocation: FC<BankLocationProps> = ({
                 type={ButtonType.Primary}
                 size={!isMobile ? "large" : "middle"}
                 isLoading={isLoading}
+                isSubmit
               />
             </div>
           </div>

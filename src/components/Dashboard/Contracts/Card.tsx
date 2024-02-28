@@ -28,6 +28,7 @@ interface CardDetails {
   contractName: string;
   buyerId: number;
   createdAt: string;
+  contractPayments: any;
 }
 
 interface TransactionId {
@@ -47,7 +48,7 @@ interface ICard {
 const Card: FC<ICard> = ({ data, userDetails, onDelete }) => {
   const [loading, setLoading] = useState(false);
 
-  console.log("data>>>", data);
+  console.log("data>>>", data?.contractPayments?.totlaAmount);
 
   const router = useRouter();
   const [activeType, setActiveType] = useState(false);
@@ -55,6 +56,7 @@ const Card: FC<ICard> = ({ data, userDetails, onDelete }) => {
   function handleActiveType() {
     setActiveType((active) => !active);
   }
+  const cardPrice = data?.contractPayments?.totlaAmount;
 
   const roleType = userDetails?.id === data?.buyerId ? "Buyer" : "Seller";
   const createdAtISO = data?.createdAt || "";
@@ -99,93 +101,103 @@ const Card: FC<ICard> = ({ data, userDetails, onDelete }) => {
 
     if (data?.status === "INCOMPLETE") {
       router.push("/contract-form");
-    } else if (data?.status === "PENDING" || data?.status === "COMPLETED") {
+    } else if (
+      data?.status === "PENDING" ||
+      data?.status === "COMPLETED" ||
+      data?.status === "DELIVERED" ||
+      data?.status === "RECEIVED" ||
+      data?.status === "DISPUTE" ||
+      data?.status === "APPROVE"
+    ) {
       router.push("/contract-processing-form");
+    } else if (data?.status === "RECEIVED") {
+      router.push("/dashboard");
     }
   };
 
   return (
     <>
-      {loading && <Spinner />}
-      <div
-        className={
-          status === "Closed" ? styles.closed : styles.cardContainerMain
-        }
-        style={{ cursor: "pointer" }}
-        onClick={handleClick}
-      >
-        <div className={styles.flexContainerRow}>
-          <div className={styles.flexRow}>
-            {data?.status === "INCOMPLETE" && (
-              <Image src={DashIcon} alt="dash icon" />
-            )}
-            {data?.status === "PENDING" && (
-              <Image src={DashIcon} alt="dash icon" />
-            )}
-            {data?.status === "Closed" && (
-              <Image
-                className={styles.icon}
-                src={CheckIcon}
-                alt="check icon"
-                style={closedstyles}
-              />
-            )}
-            {data?.status === "Open" && (
-              <Image src={LockIcon} alt="lock icon" />
-            )}
-            <p className={styles.thirdHeading} style={closedstyles}>
-              {data?.status}
-            </p>
-          </div>
-          <div
-            className={styles.flexRow}
-            onMouseOver={() => mouseOverHandler(true, status)}
-            onMouseLeave={() => mouseOverHandler(false, status)}
-          >
-            {isMouseOver ? (
-              <button className={styles.cancel} onClick={handleDelete}>
-                Cancel
-              </button>
-            ) : (
-              <>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div
+          className={
+            status === "Closed" ? styles.closed : styles.cardContainerMain
+          }
+          style={{ cursor: "pointer" }}
+          onClick={handleClick}
+        >
+          <div className={styles.flexContainerRow}>
+            <div className={styles.flexRow}>
+              {data?.status === "INCOMPLETE" && (
+                <Image src={DashIcon} alt="dash icon" />
+              )}
+              {data?.status === "PENDING" && (
+                <Image src={DashIcon} alt="dash icon" />
+              )}
+              {data?.status === "Closed" && (
                 <Image
-                  onClick={handleActiveType}
-                  className={styles.btnIcon}
+                  className={styles.icon}
+                  src={CheckIcon}
+                  alt="check icon"
                   style={closedstyles}
-                  src={activeType ? SecondaryButton : UserIcon}
-                  alt="dash icon"
                 />
-                {status === "Closed" ? (
-                  <span className={styles.close}>
-                    {/* {type} */}
-                    {roleType}
-                  </span>
-                ) : (
-                  <span className={styles.span}>
-                    {/* {type} */}
-                    {roleType}
-                  </span>
-                )}
-              </>
-            )}
+              )}
+              {data?.status === "Open" && (
+                <Image src={LockIcon} alt="lock icon" />
+              )}
+              <p className={styles.thirdHeading} style={closedstyles}>
+                {data?.status}
+              </p>
+            </div>
+            <div
+              className={styles.flexRow}
+              onMouseOver={() => mouseOverHandler(true, status)}
+              onMouseLeave={() => mouseOverHandler(false, status)}
+            >
+              {isMouseOver ? (
+                <button className={styles.cancel} onClick={handleDelete}>
+                  Cancel
+                </button>
+              ) : (
+                <>
+                  <Image
+                    onClick={handleActiveType}
+                    className={styles.btnIcon}
+                    style={closedstyles}
+                    src={activeType ? SecondaryButton : UserIcon}
+                    alt="dash icon"
+                  />
+                  {status === "Closed" ? (
+                    <span className={styles.close}>
+                      {/* {type} */}
+                      {roleType}
+                    </span>
+                  ) : (
+                    <span className={styles.span}>
+                      {/* {type} */}
+                      {roleType}
+                    </span>
+                  )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
-        <h1 className={styles.heading} style={closedstyles}>
-          {/* {data?.price : "--" }  */}
-          {"$--"}
-          {/* {` $ ${subTotal}`} */}
-        </h1>
-        <div className={styles.flexContainerRow}>
-          <div className={styles.flexRow}>
-            <p className={styles.secondHeading} style={closedstyles}>
-              {data?.contractName}
+          <h1 className={styles.heading} style={closedstyles}>
+            {cardPrice ? `$${cardPrice}` : "$--"}
+          </h1>
+          <div className={styles.flexContainerRow}>
+            <div className={styles.flexRow}>
+              <p className={styles.secondHeading} style={closedstyles}>
+                {data?.contractName}
+              </p>
+            </div>
+            <p className={styles.thirdHeading} style={closedstyles}>
+              Created {formattedDate}
             </p>
           </div>
-          <p className={styles.thirdHeading} style={closedstyles}>
-            Created {formattedDate}
-          </p>
         </div>
-      </div>
+      )}
     </>
   );
 };

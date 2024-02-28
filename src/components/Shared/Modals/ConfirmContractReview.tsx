@@ -13,6 +13,10 @@ interface SignatureState {
   firstPartySigned: boolean;
   secondPartySigned: boolean;
 }
+interface UpdateData {
+  buyerSign?: string | null;
+  sellerSign?: string | null;
+}
 interface ModalProps {
   closeModal: () => void;
   contractDetails: any;
@@ -57,7 +61,7 @@ const ConfirmContractReview: FC<ModalProps> = ({
   const clearSignature = () => {
     sigCanvasRef.current?.clear();
   };
-  const saveSignature = async () => {
+  const saveSignature = async (): Promise<void> => {
     if (sigCanvasRef.current) {
       const signatureImage = sigCanvasRef.current
         .getTrimmedCanvas()
@@ -65,18 +69,20 @@ const ConfirmContractReview: FC<ModalProps> = ({
       try {
         const signatureUrl = await uploadToAzureAndGetUrl(signatureImage);
         const isBuyer = userDetails.id === contractDetails.buyerId;
-        let updateData: {
-          buyerSign?: string | null;
-          sellerSign?: string | null;
-        };
+        const isSeller = userDetails.id === contractDetails.sellerId;
+        let updateData: UpdateData = {};
         if (isBuyer) {
-          // First party (buyer) signs
-          updateData = { buyerSign: signatureUrl };
-        } else {
-          // Second party (seller) signs
-          updateData = { sellerSign: signatureUrl };
-          // Remove first party's signature if the contract was edited after their signing
-          if (isEditedBeforeSign) {
+          // Buyer is signing
+          updateData.buyerSign = signatureUrl;
+          // If the contract was edited after the seller signed, nullify the seller's sign
+          if (isEditedBeforeSign && contractDetails.sellerSign) {
+            updateData.sellerSign = null;
+          }
+        } else if (isSeller) {
+          // Seller is signing
+          updateData.sellerSign = signatureUrl;
+          // If the contract was edited after the buyer signed, nullify the buyer's sign
+          if (isEditedBeforeSign && contractDetails.buyerSign) {
             updateData.buyerSign = null;
           }
         }

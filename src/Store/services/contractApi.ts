@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getAccessToken } from "@/utils/jwtTokens";
 import api from "@/utils/api";
-
 interface sendInviteProps {
   email: string;
   message: string;
@@ -35,6 +34,15 @@ export const contractApi = createApi({
       query: ({ id, ...contractData }) => {
         return {
           url: `/contracts/update/${id}`,
+          method: "PATCH",
+          body: contractData,
+        };
+      },
+    }),
+    Transition: builder.mutation<any, any>({
+      query: ({ id, ...contractData }) => {
+        return {
+          url: `/contracts/transition/${id}`,
           method: "PATCH",
           body: contractData,
         };
@@ -82,18 +90,24 @@ export const contractApi = createApi({
         };
       },
     }),
-    transitionContract: builder.mutation<any, any>({
-      query: ({ id, ...contractData }) => {
+    deleteDocument: builder.mutation<any, any>({
+      query: (id) => {
         return {
-          url: `/contracts/transition/${id}`,
-          method: "PATCH",
-          body: contractData,
+          url: `/contracts/delete-document/${id}`,
+          method: "DELETE",
+        };
+      },
+    }),
+    deleteTransaction: builder.mutation<any, any>({
+      query: (id) => {
+        return {
+          url: `/contracts/delete-transaction/${id}`,
+          method: "DELETE",
         };
       },
     }),
   }),
 });
-
 export const {
   usePostContractDetailsMutation,
   useUpdateContractDetailsMutation,
@@ -101,6 +115,8 @@ export const {
   useSendInviteMutation,
   useGetAllContractDetailsQuery,
   useDeleteContractMutation,
+  useDeleteTransactionMutation,
+  useDeleteDocumentMutation,
   useCompleteContractDetailsMutation,
-  useTransitionContractMutation,
+  useTransitionMutation,
 } = contractApi;

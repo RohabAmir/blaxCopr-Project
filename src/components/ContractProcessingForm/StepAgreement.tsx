@@ -36,7 +36,7 @@ interface ContractDetails {
 const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
   const contractId = getLocalData("contract_id");
   const { data: userDetails } = useGetUserDetailsQuery();
-  console.log("contractDetails>>>", contractDetails);
+  // console.log("contractDetails>>>", contractDetails);
   const [updateContractDetails, { isLoading }] =
     useUpdateContractDetailsMutation();
   const [completeContractDetails, { isLoading: isCompleting }] =
@@ -78,6 +78,10 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
     userDetails?.id !== contractDetails?.buyerId ||
     contractDetails?.status !== "COMPLETED";
 
+  // Determine if both parties are involved in the contract
+  const bothPartiesInvolved =
+    contractDetails?.buyerId && contractDetails?.sellerId;
+
   const handleNextButtonClick = async () => {
     try {
       const payload = {
@@ -89,12 +93,11 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
         id: contractId,
         ...payload,
       }).unwrap();
-      toast.success(
-        "Now both parties have signed the contract, moving to the payment form."
-      );
-      // Add any additional navigation or state updates here
+      toast.success("Moving to Payment flow");
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 1000);
     } catch (error) {
-      // Handle error here, perhaps with a toast notification
       toast.error("Error completing contract.");
     }
   };
@@ -115,9 +118,9 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
   useEffect(() => {
     // Check if buyerSign or sellerSign exist in the contractDetails
     const firstPartySigned = !!contractDetails?.buyerSign;
-    console.log("firstPartySign>>>", firstPartySigned);
+    // console.log("firstPartySign>>>", firstPartySigned);
     const secondPartySigned = !!contractDetails?.sellerSign;
-    console.log("secondPartySign>>>", secondPartySigned);
+    // console.log("secondPartySign>>>", secondPartySigned);
     setFirstPartySigned(firstPartySigned);
     setSecondPartySigned(secondPartySigned);
 
@@ -129,11 +132,6 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
       (currentUserRoleType === "seller" && secondPartySigned);
     setIsEditedAfterSign(editDisabled);
   }, [contractDetails, searchParams, userDetails]);
-
-  // const isUserFirstParty = userDetails?.id === contractDetails?.buyerId; // assuming buyer to be first party here
-  // console.log('firtsParty>>' , isUserFirstParty);
-  // const canInviteSecondParty = isUserFirstParty && firstPartySigned;
-  // console.log('secondPartyinvitation>>' , canInviteSecondParty);
 
   const openModal = (modalType: string) => {
     setModalState({ ...modalState, [modalType]: true });
@@ -212,33 +210,39 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
                 </div>
               </FormSection>
             </Flex>
-            <Flex vertical className="w-full" style={{ marginBottom: "24px" }}>
-              <FormSection>
-                <div className={styles.main}>
-                  <div
-                    className={styles.flexText}
-                    onClick={() => openModal("seller")}
-                  >
-                    <p className={styles.textHeading}>
-                      {roleType ? "Seller signs here " : "Buyer signs here"}
-                    </p>
+            {!bothPartiesInvolved && (
+              <Flex
+                vertical
+                className="w-full"
+                style={{ marginBottom: "24px" }}
+              >
+                <FormSection>
+                  <div className={styles.main}>
+                    <div
+                      className={styles.flexText}
+                      onClick={() => openModal("seller")}
+                    >
+                      <p className={styles.textHeading}>
+                        {roleType ? "Seller signs here " : "Buyer signs here"}
+                      </p>
 
-                    <Button
-                      // customDisabled={!canInviteSecondParty}
-                      name={roleType ? "Invite Seller " : "Invite Buyer"}
-                      type={ButtonType.Secondary}
-                      size={isMobile ? "small" : "large"}
-                    />
+                      <Button
+                        name={roleType ? "Invite Seller " : "Invite Buyer"}
+                        type={ButtonType.Secondary}
+                        size={isMobile ? "small" : "large"}
+                      />
+                    </div>
+                    {modalState.seller && (
+                      <InviteSeller
+                        userDetails={userDetails}
+                        contractDetails={contractDetails}
+                        closeModal={() => closeModal("seller")}
+                      />
+                    )}
                   </div>
-                  {modalState.seller && (
-                    <InviteSeller
-                      contractDetails={contractDetails}
-                      closeModal={() => closeModal("seller")}
-                    />
-                  )}
-                </div>
-              </FormSection>
-            </Flex>
+                </FormSection>
+              </Flex>
+            )}
           </>
         )}
 

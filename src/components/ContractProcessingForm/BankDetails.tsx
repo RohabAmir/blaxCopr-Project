@@ -56,8 +56,9 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
                   Send money from your bank with information below
                 </p>
                 <p className={styles.subHeadingDeposit}>
-                  {" "}
-                  {responseGet?.data?.responseData?.totalAmountToDeposit}
+                  {responseGet?.data?.responseData?.currency === "USD"
+                    ? `$${responseGet?.data?.responseData?.totalAmountToDeposit}`
+                    : `€${responseGet?.data?.responseData?.totalAmountToDeposit}`}
                 </p>
               </div>
             </div>
@@ -80,7 +81,9 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
 
                   <span className={styles.bankInlineText}>
                     <span className={styles.bankDHeading}>
-                      {responseGet?.data?.responseData?.totalAmountToDeposit}
+                      {responseGet?.data?.responseData?.currency === "USD"
+                        ? `$${responseGet?.data?.responseData?.totalAmountToDeposit}`
+                        : `€${responseGet?.data?.responseData?.totalAmountToDeposit}`}{" "}
                     </span>
                     <Image
                       className={styles.copyIcon}
@@ -167,7 +170,7 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
 
                   <span className={styles.bankInlineText}>
                     <span className={styles.currencyHeading}>
-                      {responseGet.data.responseData.routingNumber}
+                      {responseGet?.data?.responseData?.routingNumber}
                     </span>
                     <Image
                       className={styles.copyIcon}
@@ -185,7 +188,7 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
 
                   <span className={styles.bankInlineText}>
                     <span className={styles.currencyHeading}>
-                      {responseGet.data.responseData.accountName}
+                      {responseGet?.data?.responseData?.accountName}
                     </span>
                     <Image
                       className={styles.copyIcon}
@@ -203,7 +206,7 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
 
                   <span className={styles.bankInlineText}>
                     <span className={styles.currencyHeading}>
-                      {responseGet.data.responseData.swift}
+                      {responseGet?.data?.responseData?.swift}
                     </span>
                     <Image
                       className={styles.copyIcon}
@@ -221,7 +224,7 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
 
                   <span className={styles.bankInlineText}>
                     <span className={styles.currencyHeading}>
-                      {responseGet.data.responseData.accountNumber}
+                      {responseGet?.data?.responseData?.accountNumber}
                     </span>
                     <Image
                       className={styles.copyIcon}
@@ -242,7 +245,7 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
                   <span className={styles.bankInlineTextLast}>
                     <div className={styles.flexColumnBank}>
                       <span className={styles.currencyHeadingLast}>
-                        {responseGet.data.responseData.bankAddress}
+                        {responseGet?.data?.responseData?.bankAddress}
                       </span>
                     </div>
                     <Image

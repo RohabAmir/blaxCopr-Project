@@ -75,31 +75,34 @@ const CardContainer: FC<CardContainerProps> = ({
 
   return (
     <>
-      <div className={styles.grid}>
-        <div className={styles.cardContainerMainPlus}>
-          {loading && <Spinner />}
-          <Link href={ROUTES.CONTRACT_FORM}>
-            <button className={styles.button}>
-              <Image
-                src={PlusIcon}
-                alt="plus icon"
-                onClick={createOnClickHandler}
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div className={styles.grid}>
+          <div className={styles.cardContainerMainPlus}>
+            <Link href={ROUTES.CONTRACT_FORM}>
+              <button className={styles.button}>
+                <Image
+                  src={PlusIcon}
+                  alt="plus icon"
+                  onClick={createOnClickHandler}
+                />
+              </button>
+            </Link>
+            <p className={styles.titleScreen}>Create</p>
+          </div>
+          {filteredCardList?.map((data: any, idx: any) => {
+            return (
+              <Card
+                key={idx}
+                data={data}
+                onDelete={handleDeleteContract}
+                userDetails={userDetails}
               />
-            </button>
-          </Link>
-          <p className={styles.titleScreen}>Create</p>
+            );
+          })}
         </div>
-        {filteredCardList?.map((data: any, idx: any) => {
-          return (
-            <Card
-              key={idx}
-              data={data}
-              onDelete={handleDeleteContract}
-              userDetails={userDetails}
-            />
-          );
-        })}
-      </div>
+      )}
     </>
   );
 };

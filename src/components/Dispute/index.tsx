@@ -1,5 +1,11 @@
 "use client";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   Channel,
   Chat,
@@ -72,11 +78,15 @@ export default function App() {
     useGetUserDetailsQuery();
   console.log("user detials0---------------------------", userDetails);
 
-  const pubnub = new Pubnub({
-    publishKey: "pub-c-d55d262c-357a-44c3-9365-bf9086788fc3",
-    subscribeKey: "sub-c-e7c4cb17-38b5-4dd3-89ee-4b04d84d254a",
-    userId: userData[0].id,
-  });
+  const pubnub = useMemo(
+    () =>
+      new Pubnub({
+        publishKey: "pub-c-d55d262c-357a-44c3-9365-bf9086788fc3",
+        subscribeKey: "sub-c-e7c4cb17-38b5-4dd3-89ee-4b04d84d254a",
+        userId: userData[0].id,
+      }),
+    []
+  );
 
   async function handleFileShare() {
     if (!selectedFile || !channel) return;
@@ -140,6 +150,8 @@ export default function App() {
   }
 
   useEffect(() => {
+    let mounted = true;
+
     async function initializeChat() {
       const chat = await Chat.init({
         publishKey: "pub-c-d55d262c-357a-44c3-9365-bf9086788fc3",
@@ -176,8 +188,16 @@ export default function App() {
         await handleMessage(historicalMessage);
       });
     }
+    if (mounted) {
+      initializeChat();
+    }
 
-    initializeChat();
+    return () => {
+      mounted = false;
+      // Cleanup logic
+    };
+
+    // initializeChat();
   }, []);
 
   useEffect(() => {

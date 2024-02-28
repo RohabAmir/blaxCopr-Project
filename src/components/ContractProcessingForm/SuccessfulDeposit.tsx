@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react";
+import { FC, useCallback, useState } from "react";
 import styles from "./style.module.scss";
 import ClockIcon from "../../../public/icons/Clock.svg";
 import OkIcon from ".././../../public/icons/Ok.svg";
@@ -7,21 +7,36 @@ import { Button } from "../Shared";
 import { ButtonType, IconType } from "@/types";
 import { Grid } from "antd";
 import { getLocalData } from "@/utils";
-import { useTransitionContractMutation } from "@/Store/services/contractApi";
+import {
+  useFetchContractDetailsQuery,
+  useTransitionMutation,
+} from "@/Store/services/contractApi";
+import { useRouter } from "next/navigation";
 
 interface depositSuccessProps {
   onNext: () => void;
 }
 const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
+  const router = useRouter();
+  const contractId = getLocalData("contract_id");
+  const { data: contractDetails } = useFetchContractDetailsQuery(contractId);
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
-  const contractId = getLocalData("contract_id");
-
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
+  console.log(
+    "contractDetails-----=-=-==-",
+    contractDetails.contractPayments.totlaAmountToDeposit
+  );
   const [transitionContract, { isLoading, isError, error }] =
-    useTransitionContractMutation();
-
+    useTransitionMutation();
+  const isMarkAsReceivedDisabled =
+    !(
+      contractDetails?.status === "DELIVERED" &&
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+    ) || isButtonLoading;
   //
   const markAsReceived = async () => {
+    setIsButtonLoading(true);
     const payload = {
       contract: {
         status: "RECEIVED",
@@ -29,12 +44,13 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
     };
 
     try {
-      console.log("mark as receievd");
-
-      await transitionContract({ id: contractId, ...payload });
+      const response = await transitionContract({ id: contractId, ...payload });
+      console.log("Transition Contract response:", response);
+      router.push("/dashboard");
       onNext();
     } catch (error) {
-      console.log("error", error);
+      console.log("Error in Transition Contract:", error);
+      setIsButtonLoading(false);
     }
   };
   return (
@@ -53,7 +69,11 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
               <p className={styles.headingDeposit}>
                 Funds succesfully deposited in escrow
               </p>
-              <p className={styles.subHeadingDeposit}>Amount: $10,030.00</p>
+              <p className={styles.subHeadingDeposit}>
+                {contractDetails.currency === "USD"
+                  ? `$${contractDetails.contractPayments.totlaAmountToDeposit}`
+                  : `€${contractDetails.contractPayments.totlaAmountToDeposit}`}{" "}
+              </p>
             </div>
           </div>
         </div>
@@ -72,7 +92,11 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
               <p className={styles.headingDeposit}>
                 Funds succesfully deposited in escrow from seller
               </p>
-              <p className={styles.subHeadingDeposit}>Amount: $4,030.00</p>
+              <p className={styles.subHeadingDeposit}>
+                {contractDetails.currency === "USD"
+                  ? `${contractDetails.contractPayments.totlaAmountToDeposit}$`
+                  : `${contractDetails.contractPayments.totlaAmountToDeposit}€`}
+              </p>
             </div>
           </div>
         </div>
@@ -98,6 +122,7 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
             type={ButtonType.Primary}
             fullWidth={!screens["sm"]}
             onClickHandler={markAsReceived}
+            customDisabled={isMarkAsReceivedDisabled}
           />
         </div>
         {/* ----------- */}
@@ -113,6 +138,12 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
             <div className={styles.flexTextDepositSuccess}>
               <p className={styles.headingDeposit}>
                 Escrow fee deposit pending from seller
+              </p>
+              <p>
+                {" "}
+                {contractDetails.currency === "USD"
+                  ? `$${contractDetails.contractPayments.escrowFee}`
+                  : `€${contractDetails.contractPayments.escrowFee}`}{" "}
               </p>
             </div>
           </div>

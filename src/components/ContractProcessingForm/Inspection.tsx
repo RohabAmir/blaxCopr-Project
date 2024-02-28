@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import styles from "./style.module.scss";
 import ClockIcon from "../../../public/icons/Clock.svg";
 import OkIcon from "../../../public/icons/Ok.svg";
@@ -15,6 +15,8 @@ import {
 import { getLocalData } from "@/utils";
 import Dispute from "@/app/(dashboard)/dispute/page";
 import { useRouter } from "next/navigation";
+import ConfirmDisputeOpening from "../Shared/Modals/ConfirmDisputeOpening";
+import ConfirmApproval from "../Shared/Modals/ConfirmApproval";
 
 interface InspectionProps {
   onNext: () => void;
@@ -22,34 +24,26 @@ interface InspectionProps {
 
 const Inspection: FC<InspectionProps> = ({ onNext }) => {
   const { isMobile } = useAppContext();
-  const contractId = getLocalData("contract_id");
-  const router = useRouter();
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showApproveModal, setApproveModal] = useState(false);
 
-  const [transitionContract, { isLoading, isError, error }] =
-    useTransitionContractMutation();
+  const reportIssue = () => {
+    setShowConfirmModal(true);
+  };
 
-  //
-  const reportIssue = async () => {
-    const payload = {
-      contract: {
-        status: "RECEIVED",
-      },
-    };
-
-    try {
-      console.log("report issue");
-
-      await transitionContract({ id: contractId, ...payload });
-      router.push("/dispute");
-    } catch (error) {
-      console.log("error", error);
-    }
+  const closeModal = () => {
+    setShowConfirmModal(false);
+  };
+  const handleApprove = () => {
+    setApproveModal(true);
+  };
+  const closeApprove = () => {
+    setApproveModal(false);
   };
 
   return (
     <>
       {/* ---------------- */}
-
       <div className={styles.agreementMain}>
         <div className={styles.inspectionMain}>
           <div className={styles.depositMainInspect}>
@@ -74,15 +68,23 @@ const Inspection: FC<InspectionProps> = ({ onNext }) => {
             <button className={styles.btnReport} onClick={reportIssue}>
               <span className={styles.btnReportText}>Report an issue</span>
             </button>
-            <button className={styles.btnSent}>
+            <button className={styles.btnSent} onClick={handleApprove}>
               <Image className={styles.iconOk} src={OkIcon} alt="ok icon" />
               <span className={styles.inlineSubText}>Approve</span>
             </button>
-            {/* <Button name="Report an Issue" type={ButtonType.Primary} />
-          <Button name="Approve" type={ButtonType.Primary} /> */}
           </div>
         </div>
       </div>
+      {showConfirmModal && (
+        <div className={styles.modalBackdrop}>
+          <ConfirmDisputeOpening onClose={closeModal} />
+        </div>
+      )}{" "}
+      {showApproveModal && (
+        <div className={styles.modalBackdrop}>
+          <ConfirmApproval onClose={closeApprove} />
+        </div>
+      )}
     </>
   );
 };
