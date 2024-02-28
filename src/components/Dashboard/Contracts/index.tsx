@@ -77,10 +77,12 @@ const CardContainer: FC<CardContainerProps> = ({
 
       return (
             <>
-                  <div className={styles.grid}>
+                  { loading ? (
+                        <Spinner />
+                  ):(
+                        <div className={styles.grid}>
                         <div className={styles.cardContainerMainPlus}>
                               <Link href={ROUTES.CONTRACT_FORM}>
-                                    {loading&& <Spinner/>}
                                     <button className={styles.button}>
                                           <Image
                                                 src={PlusIcon}
@@ -102,6 +104,9 @@ const CardContainer: FC<CardContainerProps> = ({
                               );
                         })}
                   </div>
+
+                  )}
+                  
             </>
       );
 };

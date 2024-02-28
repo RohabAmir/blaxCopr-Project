@@ -11,9 +11,10 @@ import { useAppContext } from "@/contexts/App";
 
 interface setupWithDrawlProps {
   onNext: () => void;
+  contractDetails: any;
 }
 
-const SetupWithDrawl: FC<setupWithDrawlProps> = ({onNext}) => {
+const SetupWithDrawl: FC<setupWithDrawlProps> = ({onNext, contractDetails}) => {
   const { isMobile } = useAppContext();
   return (
     <div className={styles.sellerMain} style={{ marginTop: "12px" }}>
@@ -25,7 +26,7 @@ const SetupWithDrawl: FC<setupWithDrawlProps> = ({onNext}) => {
               <p className={styles.headingDeposit}>
                 Waiting for the Buyer to deposit funds in escrow
               </p>
-              <p className={styles.subHeadingDeposit}>Amount: $10.030.00</p>
+              <p className={styles.subHeadingDeposit}>Amount: {`$${contractDetails?.contractPayments?.escrowFee}`}</p>
             </div>
           </div>
         </div>

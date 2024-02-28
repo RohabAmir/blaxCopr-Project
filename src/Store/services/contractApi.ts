@@ -43,6 +43,16 @@ export const contractApi = createApi({
                       };
                   },
             }),
+            Transition: builder.mutation<any, any>({
+                  query: ({ id,...contractData }) => {
+
+                      return {
+                          url: `/contracts/transition/${id}`,
+                          method: "PATCH",
+                          body: contractData,
+                      };
+                  },
+            }),
             FetchContractDetails: builder.query<any, any>({
                   query: (id) => {
                         return {
@@ -97,13 +107,13 @@ export const contractApi = createApi({
             }),
             deleteTransaction: builder.mutation<any, any>({
                   query: (id) => {
-                        console.log("id",id)
                         return {
                              url: `/contracts/delete-transaction/${id}`,
                               method: "DELETE",
                         };
                   },
             }),
+
       }),
 });
 
@@ -116,5 +126,6 @@ export const {
       useDeleteContractMutation,
       useDeleteTransactionMutation,
       useDeleteDocumentMutation,
-      useCompleteContractDetailsMutation
+      useCompleteContractDetailsMutation,
+      useTransitionMutation
 } = contractApi;

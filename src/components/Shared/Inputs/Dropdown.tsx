@@ -1,14 +1,17 @@
 import React, { FC } from "react";
 import { Flex, Select, Typography } from "antd";
 import { Controller, useFormContext } from "react-hook-form";
-type optionType =
-      | { value: string; label: string; disabled?: undefined }
-      | { value: string; label: string; disabled: boolean };
+
+interface OptionType {
+      value: string;
+      label: string;
+      disabled?: boolean;
+}
 interface ITextInput {
-      key?:string,
+      key?: string;
       name: string;
       label?: string;
-      options: any;
+      options: OptionType[];
       onChange?: (e: any) => void;
       required?: boolean;
       defaultValue?: string;
@@ -23,7 +26,7 @@ const TextInput: FC<ITextInput> = ({
       onChange,
       required = false,
       defaultValue,
-      disabled = false
+      disabled = false,
 }) => {
       const { Text } = Typography;
       const {
@@ -56,6 +59,7 @@ const TextInput: FC<ITextInput> = ({
                                           options={options}
                                           onChange={(value) => {
                                                 field.onChange(value);
+                                                if (onChange) onChange(value);
                                           }}
                                           defaultValue={defaultValue}
                                           style={{
@@ -64,8 +68,6 @@ const TextInput: FC<ITextInput> = ({
                                                 borderRadius: "12px",
                                           }}
                                           disabled={disabled}
-                                          
-                                          
                                     />
                                     {fieldState.error && (
                                           <Text

@@ -14,9 +14,11 @@ export const paymentApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+
     getPaymentData: builder.query<any, any>({
       query: (id) => `/payment/payment-data/${id}`,
     }),
+
     depositData: builder.mutation<any, any>({
       query: ({ id, ...data }) => {
         return {
@@ -26,6 +28,7 @@ export const paymentApi = createApi({
         };
       },
     }),
+    
     addAccount: builder.mutation<any, any>({
       query: (accountData) => {
         return {

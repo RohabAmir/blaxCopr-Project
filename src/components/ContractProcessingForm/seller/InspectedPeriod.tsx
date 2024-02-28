@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import styles from "./styles.module.scss";
 import ClockIcon from "../../../../public/icons/Clock.svg";
 import WithDrawlIcon from "../../../../public/icons/WithDrawl.svg";
@@ -9,9 +9,28 @@ import { Button } from "../../Shared";
 import { ButtonType } from "@/types";
 import { Grid } from "antd";
 import { useAppContext } from "@/contexts/App";
+import ConfirmDisputeOpening from "@/components/Shared/Modals/ConfirmDisputeOpening";
 
-const InspectedPeriod: FC = () => {
+
+interface addWithDrawlMethodProps {
+  onNext: () => void;
+  contractDetails : any;
+}
+
+const InspectedPeriod: FC<addWithDrawlMethodProps> = ({onNext,contractDetails}) => {
   const { isMobile } = useAppContext();
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const reportIssue = () => {
+    setShowConfirmModal(true);
+  };
+  const closeModal = () => {
+    setShowConfirmModal(false);
+  };
+  
+
+  
+  
 
   return (
     <>
@@ -48,7 +67,7 @@ const InspectedPeriod: FC = () => {
             </div>
           </div>
           <div className={styles.btnReportBg}>
-            <button className={styles.btnReport}>
+            <button className={styles.btnReport} onClick={reportIssue}>
               <span className={styles.btnReportText}>Report an issue</span>
             </button>
           </div>
@@ -68,7 +87,7 @@ const InspectedPeriod: FC = () => {
                 <p className={styles.headingDeposit}>
                   Funds succesfully deposited in escrow
                 </p>
-                <p className={styles.subHeadingDeposit}>Amount: $10,030.00</p>
+                <p className={styles.subHeadingDeposit}>Amount: {`$${contractDetails?.contractPayments?.escrowFee}`}</p>
               </div>
             </div>
           </div>
@@ -95,7 +114,12 @@ const InspectedPeriod: FC = () => {
           </div>
         </div>
       </div>
-      {/* </div> */}
+      {showConfirmModal && (
+        <div className={styles.modalBackdrop}>
+          <ConfirmDisputeOpening onClose={closeModal} />
+        </div>
+      )}{" "}
+      
     </>
   );
 };

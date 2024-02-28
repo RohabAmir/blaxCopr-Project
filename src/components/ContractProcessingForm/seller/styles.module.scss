@@ -257,6 +257,21 @@
   @extend .methodMain;
   position: relative;
 }
+
+.modalBackdrop {
+  position: fixed;
+  backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 998; /* Ensure this is below the modal z-index */
+}
+
 .subHeadingInspectedAbsolute {
   position: absolute;
   position: absolute;

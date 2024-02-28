@@ -17,6 +17,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useUpdateContractDetailsMutation } from "@/Store/services/contractApi";
 import { useCompleteContractDetailsMutation } from "@/Store/services/contractApi";
 import { toast } from "react-toastify";
+import Stepper from "./Stepper";
+import SetupWithDrawl from "./seller/SetupWithdrawl";
 
 interface stepAgreementProps {
       contractDetails: any;
@@ -79,6 +81,10 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
             userDetails?.id !== contractDetails?.sellerId ||
             contractDetails?.status !== "COMPLETED";
 
+      // Determine if both parties are involved in the contract
+      const bothPartiesInvolved =
+            contractDetails?.buyerId && contractDetails?.sellerId;
+
       const handleNextButtonClick = async () => {
             try {
                   const payload = {
@@ -90,10 +96,11 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
                         id: contractId,
                         ...payload,
                   }).unwrap();
-                  toast.success(
-                        "Moving To PAYMENT Flow"
-                  );
-                  // Add any additional navigation or state updates here
+                  toast.success("Moving To Payment Flow");
+                  // Delay before navigating to dashboard
+                  setTimeout(() => {
+                        router.push('/dashboard');
+                  }, 1000);
             } catch (error) {
                   // Handle error here, perhaps with a toast notification
                   toast.error("Error completing contract.");
@@ -116,9 +123,7 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
       useEffect(() => {
             // Check if buyerSign or sellerSign exist in the contractDetails
             const firstPartySigned = !!contractDetails?.buyerSign;
-            console.log("firstPartySign>>>", firstPartySigned);
             const secondPartySigned = !!contractDetails?.sellerSign;
-            console.log("secondPartySign>>>", secondPartySigned);
             setFirstPartySigned(firstPartySigned);
             setSecondPartySigned(secondPartySigned);
 
@@ -244,68 +249,73 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
                                                 </div>
                                           </FormSection>
                                     </Flex>
-                                    <Flex
-                                          vertical
-                                          className="w-full"
-                                          style={{ marginBottom: "24px" }}
-                                    >
-                                          <FormSection>
-                                                <div className={styles.main}>
+                                    {!bothPartiesInvolved && (
+                                          <Flex
+                                                vertical
+                                                className="w-full"
+                                                style={{ marginBottom: "24px" }}
+                                          >
+                                                <FormSection>
                                                       <div
                                                             className={
-                                                                  styles.flexText
-                                                            }
-                                                            onClick={() =>
-                                                                  openModal(
-                                                                        "seller"
-                                                                  )
+                                                                  styles.main
                                                             }
                                                       >
-                                                            <p
+                                                            <div
                                                                   className={
-                                                                        styles.textHeading
+                                                                        styles.flexText
                                                                   }
-                                                            >
-                                                                  {roleType
-                                                                        ? "Seller signs here "
-                                                                        : "Buyer signs here"}
-                                                            </p>
-
-                                                            <Button
-                                                                  // customDisabled={!canInviteSecondParty}
-                                                                  name={
-                                                                        roleType
-                                                                              ? "Invite Seller "
-                                                                              : "Invite Buyer"
-                                                                  }
-                                                                  type={
-                                                                        ButtonType.Secondary
-                                                                  }
-                                                                  size={
-                                                                        isMobile
-                                                                              ? "small"
-                                                                              : "large"
-                                                                  }
-                                                            />
-                                                      </div>
-                                                      {modalState.seller && (
-                                                            <InviteSeller
-                                                                  contractDetails={
-                                                                        contractDetails
-                                                                  }
-                                                                  userDetails={
-                                                                        userDetails
-                                                                  }
-                                                                  closeModal={() =>
-                                                                        closeModal(
+                                                                  onClick={() =>
+                                                                        openModal(
                                                                               "seller"
                                                                         )
                                                                   }
-                                                            />
-                                                      )}
-                                                </div>
-                                          </FormSection>
-                                    </Flex>
+                                                            >
+                                                                  <p
+                                                                        className={
+                                                                              styles.textHeading
+                                                                        }
+                                                                  >
+                                                                        {roleType
+                                                                              ? "Seller signs here "
+                                                                              : "Buyer signs here"}
+                                                                  </p>
+
+                                                                  <Button
+                                                                        name={
+                                                                              roleType
+                                                                                    ? "Invite Seller "
+                                                                                    : "Invite Buyer"
+                                                                        }
+                                                                        type={
+                                                                              ButtonType.Secondary
+                                                                        }
+                                                                        size={
+                                                                              isMobile
+                                                                                    ? "small"
+                                                                                    : "large"
+                                                                        }
+                                                                  />
+                                                            </div>
+                                                            {modalState.seller && (
+                                                                  <InviteSeller
+                                                                        contractDetails={
+                                                                              contractDetails
+                                                                        }
+                                                                        userDetails={
+                                                                              userDetails
+                                                                        }
+                                                                        closeModal={() =>
+                                                                              closeModal(
+                                                                                    "seller"
+                                                                              )
+                                                                        }
+                                                                  />
+                                                            )}
+                                                      </div>
+                                                </FormSection>
+                                          </Flex>
+                                    )}
                               </>
                         )}
 

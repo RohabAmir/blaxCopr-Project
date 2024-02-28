@@ -6,7 +6,31 @@ import CheckIcon from "../../../../public/icons/Check.svg";
 import { Button } from "..";
 import { ButtonType } from "@/types";
 import Image from "next/image";
-const ConfirmDisputeOpening: FC = () => {
+import { getLocalData } from "@/utils";
+import { useRouter } from "next/navigation";
+import { useTransitionMutation } from "@/Store/services/contractApi";
+interface ModalProps {
+  onClose: () => void;
+}
+const ConfirmDisputeOpening: FC<ModalProps> = ({ onClose }) => {
+  const contractId = getLocalData("contract_id");
+  const router = useRouter();
+  const [transitionContract, { isLoading, isError, error }] =
+    useTransitionMutation();
+
+  const OpenDispute = async () => {
+    const payload = {
+      contract: {
+        status: "DISPUTE",
+      },
+    };
+    try {
+      await transitionContract({ id: contractId, ...payload });
+      router.push("/dispute");
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   return (
     <>
       <div className={styles.modalMain}>
@@ -22,12 +46,28 @@ const ConfirmDisputeOpening: FC = () => {
             confirming, you'll start the process to address your issues with the
             seller.
           </p>
-
-          <button className={styles.btnOpen}>Open Dispute</button>
-          <button className={styles.cross}>&times;</button>
+          <button className={styles.btnOpen} onClick={OpenDispute}>
+            Open Dispute
+          </button>
+          <button className={styles.cross} onClick={onClose}>
+            &times;
+          </button>
         </div>
       </div>
     </>
   );
 };
 export default ConfirmDisputeOpening;
+
+
+
+
+
+
+
+
+
+
+
+
+

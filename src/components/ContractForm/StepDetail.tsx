@@ -485,7 +485,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                                     buttonTitle="Remove"
                                     buttonClickHandler={() => {
                                           const transactionId = contractDetails?.transactions[index]?.id;
-                                          return (event: any) => handleRemoveTransaction(event, index, transactionId);
+                                          handleRemoveTransaction(event, index, transactionId);
                                       }}
                               >
                                     <Flex

@@ -40,7 +40,7 @@ const customDot: React.FC<CustomDotProps> = ({ currentStep, status }) => {
 };
 
 interface StepperProps {
-  currentStep: number;
+  currentStep: any;
 }
 
 // const Stepper: React.FC = () => {

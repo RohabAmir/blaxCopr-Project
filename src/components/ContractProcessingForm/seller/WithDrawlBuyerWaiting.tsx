@@ -11,7 +11,12 @@ import { Button } from "../../Shared";
 import { ButtonType, IconType } from "@/types";
 import { Grid } from "antd";
 
-const WithDrawlBuyerWaiting: FC = () => {
+interface addWithDrawlMethodProps {
+  onNext: () => void;
+  contractDetails : any;
+}
+
+const WithDrawlBuyerWaiting: FC<addWithDrawlMethodProps> = ({onNext,contractDetails}) => {
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
   return (
@@ -55,7 +60,7 @@ const WithDrawlBuyerWaiting: FC = () => {
                 <p className={styles.headingDeposit}>
                   Funds succesfully deposited in escrow
                 </p>
-                <p className={styles.subHeadingDeposit}>Amount: $10.030.00</p>
+                <p className={styles.subHeadingDeposit}>Amount: {`$${contractDetails?.contractPayments?.escrowFee}`}</p>
               </div>
             </div>
           </div>

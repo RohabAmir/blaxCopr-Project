@@ -21,6 +21,8 @@ import { storeLocalData, getLocalData } from "@/utils";
 import Link from "next/link";
 import { useAppContext } from "@/contexts/App";
 
+
+
 const Create: FC<any> = ({ handleStepChange, step }) => {
       const contractId = getLocalData("contract_id");
       const { data: userDetails } = useGetUserDetailsQuery();
@@ -35,11 +37,13 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
             skip: !contractId, // Skip querying if no ID
       });
 
-      const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
+      const [selectedCurrency, setSelectedCurrency] = useState<string | null>(
+            null
+      );
       const [selectedRole, setSelectedRole] = useState<string | null>(null);
       const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null);
       const { isMobile } = useAppContext();
-      
+
       const methods = useForm({
             defaultValues: {
                   contractName: "",
@@ -54,7 +58,7 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
       useEffect(() => {
             if (isSuccess && contractDetails) {
                   methods.reset({
-                        contractName: contractDetails.contractName ,
+                        contractName: contractDetails.contractName,
                         role: contractDetails.createrRole,
                         currency: contractDetails.currency,
                         InspectionPeriod: contractDetails.inspectionPeriod,
@@ -62,7 +66,6 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
                   setSelectedRole(contractDetails.createrRole);
             }
       }, [contractDetails, isSuccess, methods]);
-
 
       // Determine if the role dropdown should be disabled
       const isRoleSelected = !!selectedRole; // This checks if a role has already been selected
@@ -91,18 +94,17 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
 
       // Function to handle form submission
       const onSubmit = async (data: any) => {
-            const roleKey = data.role === "BUYER" ? "buyerId" : "sellerId";
             const contractId = getLocalData("contract_id");
-            const payload = {
+            let payload = {
                   contract: {
-                        [roleKey]: userDetails?.id,
-                        contractName: data.contractName,
-                        inspectionPeriod: data.InspectionPeriod,
-                        createrRole: data.role,
-                        currency: data.currency,
-                        status: "INCOMPLETE",
+                      contractName: data.contractName,
+                      inspectionPeriod: data.InspectionPeriod,
+                      createrRole: data.role,
+                      currency: data.currency,
+                      // Add status as "INCOMPLETE" only for new contracts (POST requests)
+                      ...(contractId == null ? { status: "INCOMPLETE" } : {})
                   },
-            };
+              };
 
             if (contractId && isDirty) {
                   // Update existing contract

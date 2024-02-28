@@ -2,6 +2,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authApi } from "./services/authApi";
 import { contractApi } from "./services/contractApi";
+import { paymentApi } from "./services/paymentApi";
 import  authReducer  from './services/authSlice';
 import contractReducer from "./services/contractSlice"
 import { getLocalData, storeLocalData } from "@/utils";
@@ -27,9 +28,11 @@ export const store = configureStore({
             contract: contractReducer,
             [authApi.reducerPath]: authApi.reducer,
             [contractApi.reducerPath]: contractApi.reducer,
+            [paymentApi.reducerPath]: paymentApi.reducer,
+
       },
       preloadedState,
-      middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware,contractApi.middleware),
+      middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware,contractApi.middleware,paymentApi.middleware),
 });
 
 

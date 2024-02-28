@@ -86,8 +86,8 @@ const ConfirmContractReview: FC<ModalProps> = ({
                     .toDataURL("image/png");
               try {
                 const signatureUrl = await uploadToAzureAndGetUrl(signatureImage);
-                const isBuyer = userDetails.id === contractDetails.buyerId; // buyer as fisrt party
-                const isSeller = userDetails.id === contractDetails.sellerId; // seller as fisrt party
+                const isBuyer = userDetails.id === contractDetails.buyerId; 
+                const isSeller = userDetails.id === contractDetails.sellerId; 
           
                 let updateData: UpdateData = {};
           

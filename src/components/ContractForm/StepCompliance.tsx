@@ -292,9 +292,6 @@ const StepCompliance: FC<StepComplianceProps> = ({
             >
                   <FormProvider {...methods}>
                         <Flex
-                              // align="center"
-                              // justify="space-between"
-                              // style={{ width: "100%", margin: "auto" }}
                               className={styles.compilanceBox}
                         >
                               <Button
