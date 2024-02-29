@@ -6,14 +6,13 @@
   margin-bottom: 24px;
   width: 100%;
   /* height: 104px; */
-  padding-right: 12px;
   margin-top: 12px;
   border-radius: 16px;
   top: 120px;
   left: 100px;
   overflow: hidden;
   max-width: 1190px;
-  margin: 0 auto;
+  margin: 0 auto 20px auto;
 }
 .iconVector {
   margin-left: 3px;
@@ -47,6 +46,8 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  color: #0e0f0c;
+  margin-right: 12px;
 }
 .btn:hover {
   background-color: rgb(162, 243, 124);

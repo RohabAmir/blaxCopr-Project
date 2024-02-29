@@ -14,8 +14,6 @@
     "@ant-design/icons": "^5.2.6",
     "@azure/storage-blob": "^12.17.0",
     "@pubnub/chat": "^0.5.2",
-    "@azure/storage-blob": "^12.17.0",
-    "@pubnub/chat": "^0.5.2",
     "@reduxjs/toolkit": "^2.1.0",
     "@types/antd": "^1.0.0",
     "antd": "^5.12.5",

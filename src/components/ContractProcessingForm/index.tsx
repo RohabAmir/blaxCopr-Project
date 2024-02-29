@@ -108,7 +108,13 @@ const ContractProcessingForm: FC = () => {
   const formattedDate = `${date.getDate()} ${date.toLocaleString("default", {
     month: "short",
   })}, ${date.getFullYear()}`;
-
+  const handleCopyText = (event: any) => {
+    const textToCopy = event.target.previousSibling.textContent.trim();
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => alert("Copied to clipboard"))
+      .catch((error) => console.error("Failed to copy:", error));
+  };
   const handlePreviousComponent = () => {
     if (previousComponent !== null) {
       setCurrentComponent(previousComponent);
@@ -220,7 +226,7 @@ const ContractProcessingForm: FC = () => {
     if (withDrawlMethod) {
       return (
         <>
-          <Stepper currentStep={3} />
+          {!isMobile && <Stepper currentStep={3} />}
           <WithDrawlBuyerWaiting
             onNext={handleNextComponent}
             contractDetails={contractDetails}
@@ -230,7 +236,7 @@ const ContractProcessingForm: FC = () => {
     } else if (inspectionPeriod) {
       return (
         <>
-          <Stepper currentStep={4} />
+          {!isMobile && <Stepper currentStep={4} />}
           <InspectedPeriod
             onNext={handleNextComponent}
             contractDetails={contractDetails}
@@ -240,14 +246,14 @@ const ContractProcessingForm: FC = () => {
     } else if (dispute) {
       return (
         <>
-          <Stepper currentStep={4} />
+          {!isMobile && <Stepper currentStep={4} />}
           <DisputOpened />
         </>
       );
     } else if (invoice) {
       return (
         <>
-          <Stepper currentStep={5} />
+          {!isMobile && <Stepper currentStep={5} />}
           <Invoice />
         </>
       );
@@ -256,7 +262,7 @@ const ContractProcessingForm: FC = () => {
         case 1:
           return (
             <>
-              <Stepper currentStep={2} />
+              {!isMobile && <Stepper currentStep={2} />}
               <SetupWithDrawl
                 onNext={handleNextComponent}
                 contractDetails={contractDetails}
@@ -266,7 +272,7 @@ const ContractProcessingForm: FC = () => {
         case 2:
           return (
             <>
-              <Stepper currentStep={2} />
+              {!isMobile && <Stepper currentStep={2} />}
               <AddWithDrawlDisbursement
                 onNext={handleNextComponent}
                 onBack={handlePreviousComponent}
@@ -276,7 +282,7 @@ const ContractProcessingForm: FC = () => {
         case 3:
           return (
             <>
-              <Stepper currentStep={3} />
+              {!isMobile && <Stepper currentStep={3} />}
               <WithDrawlMethod
                 onNext={handleNextComponent}
                 contractDetails={contractDetails}
@@ -286,7 +292,7 @@ const ContractProcessingForm: FC = () => {
         case 4:
           return (
             <>
-              <Stepper currentStep={3} />
+              {!isMobile && <Stepper currentStep={3} />}
               <WithDrawlBuyerWaiting
                 onNext={handleNextComponent}
                 contractDetails={contractDetails}
@@ -296,7 +302,7 @@ const ContractProcessingForm: FC = () => {
         case 5:
           return (
             <>
-              <Stepper currentStep={4} />
+              {!isMobile && <Stepper currentStep={4} />}
               <InspectedPeriod
                 onNext={handleNextComponent}
                 contractDetails={contractDetails}
@@ -306,14 +312,14 @@ const ContractProcessingForm: FC = () => {
         case 6:
           return (
             <>
-              <Stepper currentStep={4} />
+              {!isMobile && <Stepper currentStep={4} />}
               <DisputOpened />
             </>
           );
         case 7:
           return (
             <>
-              <Stepper currentStep={5} />
+              {!isMobile && <Stepper currentStep={5} />}
               <Invoice />
             </>
           );
@@ -327,14 +333,14 @@ const ContractProcessingForm: FC = () => {
     if (isDepositSuccessful) {
       return (
         <>
-          <Stepper currentStep={3} />
+          {!isMobile && <Stepper currentStep={3} />}
           <SuccessfulDeposit onNext={handleNextComponent} />;
         </>
       );
     } else if (inspection) {
       return (
         <>
-          <Stepper currentStep={4} />
+          {!isMobile && <Stepper currentStep={4} />}
           <Inspection onNext={handleNextComponent} />
         </>
       );
@@ -348,7 +354,7 @@ const ContractProcessingForm: FC = () => {
     } else if (openMessage) {
       return (
         <>
-          <Stepper currentStep={4} />
+          {!isMobile && <Stepper currentStep={4} />}
           <DisputOpened />
         </>
       );
@@ -357,14 +363,14 @@ const ContractProcessingForm: FC = () => {
         case 1:
           return (
             <>
-              <Stepper currentStep={2} />
+              {!isMobile && <Stepper currentStep={2} />}
               <Deposit onNext={handleNextComponent} />
             </>
           );
         case 2:
           return (
             <>
-              <Stepper currentStep={2} />
+              {!isMobile && <Stepper currentStep={2} />}
               <TransferAmount
                 onNext={handleNextComponent}
                 onBack={handlePreviousComponent}
@@ -374,7 +380,7 @@ const ContractProcessingForm: FC = () => {
         case 3:
           return (
             <>
-              {!isMobile && <Stepper currentStep={2} />}
+              {isMobile && <Stepper currentStep={2} />}
               <BankLocation
                 onNext={handleNextComponent}
                 onBack={handlePreviousComponent}
@@ -385,7 +391,7 @@ const ContractProcessingForm: FC = () => {
         case 4:
           return (
             <>
-              <Stepper currentStep={2} />
+              {!isMobile && <Stepper currentStep={2} />}
               <BankDetails
                 onNext={handleNextComponent}
                 onBack={handlePreviousComponent}
@@ -396,7 +402,7 @@ const ContractProcessingForm: FC = () => {
         case 5:
           return (
             <>
-              <Stepper currentStep={2} />
+              {!isMobile && <Stepper currentStep={2} />}
               <PendingDeposit />
             </>
           );
@@ -433,7 +439,7 @@ const ContractProcessingForm: FC = () => {
       // Default rendering for the StepAgreement component
       return (
         <>
-          <Stepper currentStep={1} />
+          {!isMobile && <Stepper currentStep={1} />}
           <StepAgreement contractDetails={contractDetails} />
         </>
       );
@@ -462,6 +468,7 @@ const ContractProcessingForm: FC = () => {
                     className={styles.copyIcon}
                     src={CopyIcon}
                     alt="copy icon"
+                    onClick={handleCopyText}
                   />
                 </span>
               </div>
@@ -540,5 +547,6 @@ const ContractProcessingForm: FC = () => {
       </Flex>
     </Flex>
   );
+  //useFetchContractDetailsQueryuseFetchContractDetailsQuery #1076ED
 };
 export default ContractProcessingForm;

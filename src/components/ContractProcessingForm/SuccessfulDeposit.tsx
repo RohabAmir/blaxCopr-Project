@@ -23,10 +23,7 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
   const [isButtonLoading, setIsButtonLoading] = useState(false);
-  console.log(
-    "contractDetails-----=-=-==-",
-    contractDetails.contractPayments.totlaAmountToDeposit
-  );
+  console.log("contractDetails-----=-=-==-", contractDetails);
   const [transitionContract, { isLoading, isError, error }] =
     useTransitionMutation();
   const isMarkAsReceivedDisabled =
@@ -70,9 +67,9 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
                 Funds succesfully deposited in escrow
               </p>
               <p className={styles.subHeadingDeposit}>
-                {contractDetails.currency === "USD"
-                  ? `$${contractDetails.contractPayments.totlaAmountToDeposit}`
-                  : `€${contractDetails.contractPayments.totlaAmountToDeposit}`}{" "}
+                {contractDetails?.currency === "USD"
+                  ? `$${contractDetails?.contractPayments?.totlaAmountToDeposit}`
+                  : `€${contractDetails?.contractPayments?.totlaAmountToDeposit}`}{" "}
               </p>
             </div>
           </div>
@@ -93,9 +90,9 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
                 Funds succesfully deposited in escrow from seller
               </p>
               <p className={styles.subHeadingDeposit}>
-                {contractDetails.currency === "USD"
-                  ? `${contractDetails.contractPayments.totlaAmountToDeposit}$`
-                  : `${contractDetails.contractPayments.totlaAmountToDeposit}€`}
+                {contractDetails?.currency === "USD"
+                  ? `$${contractDetails?.contractPayments?.totlaAmountToDeposit}`
+                  : `€${contractDetails?.contractPayments?.totlaAmountToDeposit}`}
               </p>
             </div>
           </div>
@@ -140,10 +137,9 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
                 Escrow fee deposit pending from seller
               </p>
               <p>
-                {" "}
-                {contractDetails.currency === "USD"
-                  ? `$${contractDetails.contractPayments.escrowFee}`
-                  : `€${contractDetails.contractPayments.escrowFee}`}{" "}
+                {contractDetails?.currency === "USD"
+                  ? `$${contractDetails?.contractPayments?.totlaAmountToDeposit}`
+                  : `€${contractDetails?.contractPayments?.totlaAmountToDeposit}`}
               </p>
             </div>
           </div>

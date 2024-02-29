@@ -342,7 +342,8 @@ export default function App() {
                     background: String(chat.currentUser.custom?.avatar),
                   }}
                 >
-                  {chat.currentUser.custom?.initials}
+                  generateAvatar(userDetails?.firstName)
+                  {/* {chat.currentUser.custom?.initials} */}
                 </aside>
                 <h3>
                   {userDetails?.firstName || userDetails?.email.split("@")[0]}

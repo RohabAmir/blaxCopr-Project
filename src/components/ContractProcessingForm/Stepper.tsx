@@ -55,6 +55,7 @@ const Stepper: FC<StepperProps> = ({ currentStep }) => {
     <Steps
       current={currentStep}
       progressDot={(_, status) => customDot({ currentStep, status })}
+      style={{ overflow: "hidden" }}
       className={"customSteps"}
     >
       {steps.map((step, index) => (
