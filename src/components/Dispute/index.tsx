@@ -14,7 +14,6 @@ import {
   TimetokenUtils,
   User,
 } from "@pubnub/chat";
-import { receiveFiles } from "./pubnubConfig";
 import styles from "./style.module.scss";
 import Image from "next/image";
 import UploadIcon from "../../../public/icons/Upload.svg";
@@ -83,7 +82,18 @@ export default function App() {
     subscribeKey: "sub-c-e7c4cb17-38b5-4dd3-89ee-4b04d84d254a",
     userId: userData[0].id,
   });
-
+  const generateAvatar = (name: any) => {
+    const initials = name ? name.charAt(0).toUpperCase() : "";
+    const avatarColor = "#" + Math.floor(Math.random() * 16777215).toString(16); // Generate a random color
+    return { initials, avatar: avatarColor };
+  };
+  useEffect(() => {
+    if (userDetails) {
+      const avatarDetails = generateAvatar(
+        userDetails.firstName || userDetails.email
+      );
+    }
+  }, [userDetails]);
   async function handleFileShare() {
     if (!selectedFile || !channel) return;
     if (selectedFileName) setSelectedFileName("");
@@ -200,7 +210,7 @@ export default function App() {
 
   useEffect(() => {
     pubnub.addListener({
-      file: function (event:any) {
+      file: function (event: any) {
         const isMessagePresent = messages.some(
           (msg) =>
             msg.timetoken === event.timetoken && msg.userId === event.publisher
@@ -335,8 +345,9 @@ export default function App() {
                   {chat.currentUser.custom?.initials}
                 </aside>
                 <h3>
-                  {/* {userDetails?.firstName ? userDetails?.firstName : "user"} */}
-                  {userDetails?.email}
+                  {userDetails?.firstName || userDetails?.email.split("@")[0]}
+
+                  {/* {userDetails?.firstName} */}
                 </h3>
               </span>
               <div className={styles.typers}>{typers}</div>
@@ -456,4 +467,3 @@ export default function App() {
     </>
   );
 }
-

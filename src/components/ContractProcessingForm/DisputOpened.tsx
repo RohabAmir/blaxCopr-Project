@@ -11,7 +11,6 @@ import { getLocalData } from "@/utils";
 import { useTransitionMutation } from "@/Store/services/contractApi";
 
 const DisputOpened: FC = () => {
-  const router = useRouter();
   const { isMobile } = useAppContext();
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
@@ -52,7 +51,7 @@ const DisputOpened: FC = () => {
               alt="warning icon"
             />
             <div className={styles.flexTextDeposit}>
-              <p className={styles.headingDeposit} >Disput opened</p>
+              <p className={styles.headingDeposit}>Disput opened</p>
               {/* <p className={styles.subHeadingDeposit}>Amount: $10.030.00</p> */}
             </div>
           </div>

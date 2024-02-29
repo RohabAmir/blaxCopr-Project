@@ -41,55 +41,6 @@ interface StepperProps {
   currentStep: number;
 }
 
-const Stepper: React.FC<StepperProps> = ({ currentStep }) => {
-  // const [currentStep, setCurrentStep] = useState(1);
-
-//   const steps = [
-//     {
-//       title: "Create",
-//     },
-//     {
-//       title: "Agreement",
-//     },
-//     {
-//       title: "Payment",
-//     },
-//     {
-//       title: "Transfer",
-//     },
-//     {
-//       title: "Inspection",
-//     },
-//     {
-//       title: "Closed",
-//     },
-//   ];
-
-//   const handleStepClick = (step: number) => {
-//     setCurrentStep(step);
-//   };
-
-//   return (
-//     <Steps
-//       current={currentStep}
-//       progressDot={(_, status) => customDot({ currentStep, status })}
-//       className={"customSteps"}
-//     >
-//       {steps.map((step, index) => (
-//         <Steps.Step
-//           // icon={<LoadingOutlined />}
-//           key={index}
-//           title={step.title}
-//           className={styles.stepper}
-//           // onClick={() => handleStepClick(index)}
-//         />
-//       ))}
-//     </Steps>
-//   );
-// };
-
-// export default Stepper;
-
 const Stepper: FC<StepperProps> = ({ currentStep }) => {
   const steps = [
     { title: "Create" },
@@ -107,11 +58,7 @@ const Stepper: FC<StepperProps> = ({ currentStep }) => {
       className={"customSteps"}
     >
       {steps.map((step, index) => (
-        <Steps.Step
-          key={index}
-          title={step.title}
-          className={styles.stepper}
-        />
+        <Steps.Step key={index} title={step.title} className={styles.stepper} />
       ))}
     </Steps>
   );

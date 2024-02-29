@@ -1,7 +1,6 @@
 "use client";
 import { Flex, Grid } from "antd";
 import React, { FC, ReactNode, useEffect } from "react";
-import React, { FC, ReactNode, useEffect } from "react";
 import styles from "./style.module.scss";
 import { ButtonType, IconType } from "@/types";
 import { Button, VerifyProfileBar } from "../Shared";
@@ -43,623 +42,485 @@ import { useRouter } from "next/navigation";
 import { useAppContext } from "@/contexts/App";
 import Dispute from "../../app/(dashboard)/dispute/page";
 
-const ContractProcessingForm:FC = () => {
-      const router = useRouter();
-      const { isMobile } = useAppContext();
-      const contractId = getLocalData("contract_id");
-      const { data: userDetails } = useGetUserDetailsQuery();
-      const { useBreakpoint } = Grid;
-      const screens: any = useBreakpoint();
+const ContractProcessingForm: FC = () => {
+  const router = useRouter();
+  const { isMobile } = useAppContext();
+  const contractId = getLocalData("contract_id");
+  const { data: userDetails } = useGetUserDetailsQuery();
+  const { useBreakpoint } = Grid;
+  const screens: any = useBreakpoint();
 
-      const path = usePathname();
-      const dashboard = path.includes("dashboard");
-      function handleClick() {
-            return dashboard;
-      }
-      const [isModalOpen, setIsModalOpen] = useState(false);
-      const [currentComponent, setCurrentComponent] = useState(1);
-      const [previousComponent, setPreviousComponent] = useState<number | null>(
-            null
+  const path = usePathname();
+  const dashboard = path.includes("dashboard");
+  function handleClick() {
+    return dashboard;
+  }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentComponent, setCurrentComponent] = useState(1);
+  const [previousComponent, setPreviousComponent] = useState<number | null>(
+    null
+  );
+  const [response, setResponse] = useState(null);
+  const [withDrawlMethod, setWithDrawlMethod] = useState(false);
+  const [inspectionPeriod, setinspectionPeriod] = useState(false);
+  const [dispute, setDispute] = useState(false);
+  const [invoice, setInvoice] = useState(false);
+  const [isDepositSuccessful, setIsDepositSuccessful] = useState(false);
+  const [goInvoice, setGoInvoice] = useState(false);
+  const [openMessage, setOpenMessage] = useState(false);
+  const [inspection, setInspection] = useState(false);
+
+  const {
+    data: contractDetails,
+    refetch: refetchContractDetails,
+    isFetching: isFetchingContractDetails,
+  } = useFetchContractDetailsQuery(contractId, {
+    skip: !contractId, // Skip querying if no ID
+  });
+
+  const roleType = userDetails?.id === contractDetails?.buyerId;
+
+  useEffect(() => {
+    // Refetch contract details when contractId changes
+    if (contractId) {
+      refetchContractDetails();
+    }
+  }, [contractId, refetchContractDetails]);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+    document.body.style.overflow = "hidden";
+    document.body.style.zIndex = "-1";
+    document.body.style.background = "rgba(0, 0, 0, 0.30";
+    document.body.style.pointerEvents = "none";
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    document.body.style.background = "#fff";
+    document.body.style.pointerEvents = "auto";
+    document.body.style.overflow = "auto";
+  };
+
+  // Parsing the ISO date string into a Date object
+  const createdAtISO = contractDetails?.createdAt || "";
+  const date = new Date(createdAtISO);
+  const formattedDate = `${date.getDate()} ${date.toLocaleString("default", {
+    month: "short",
+  })}, ${date.getFullYear()}`;
+
+  const handlePreviousComponent = () => {
+    if (previousComponent !== null) {
+      setCurrentComponent(previousComponent);
+      setPreviousComponent(null);
+    }
+  };
+  const handleNextComponent = () => {
+    setPreviousComponent(currentComponent);
+    setCurrentComponent(currentComponent + 1);
+  };
+
+  const handleResponse = (responseData: any) => {
+    setResponse(responseData);
+  };
+
+  // Determine the current step for the stepper based on `currentComponent`
+  const DetermineCurrentStep = () => {
+    let currentStep;
+    switch (currentComponent) {
+      case 1:
+        currentStep = 0; // Corresponds to 'Create'
+        break;
+      case 2:
+        currentStep = 1; // Corresponds to 'Agreement'
+        break;
+      case 3:
+        currentStep = 2; // Corresponds to 'Payment'
+        break;
+      case 4:
+        currentStep = 3; // Corresponds to 'Transfer'
+        break;
+      case 5:
+        currentStep = 4; // Corresponds to 'Inspection'
+        break;
+      case 6:
+        currentStep = 4; // Corresponds to 'Inspection'
+        break;
+      case 7:
+        currentStep = 5; // Corresponds to 'closed'
+        break;
+    }
+  };
+
+  const isSeller = userDetails?.id === contractDetails?.sellerId;
+  const isBuyer = userDetails?.id === contractDetails?.buyerId;
+  const isContractCompleted =
+    contractDetails?.status === "COMPLETED" ||
+    contractDetails?.status === "DELIVERED" ||
+    contractDetails?.status === "RECEIVED" ||
+    contractDetails?.status === "DISPUTE" ||
+    contractDetails?.status === "APPROVE";
+
+  useEffect(() => {
+    // Combined effects for both buyer and seller
+    if (
+      contractDetails?.status === "DELIVERED" &&
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+    ) {
+      setWithDrawlMethod(true);
+    }
+    if (
+      contractDetails?.status === "RECEIVED" &&
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+    ) {
+      setinspectionPeriod(true);
+    }
+    if (
+      contractDetails?.status === "DISPUTE" &&
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+    ) {
+      setDispute(true);
+    }
+    if (
+      contractDetails?.status === "APPROVE" &&
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+    ) {
+      setInvoice(true);
+    }
+    if (
+      contractDetails?.status === "DELIVERED" &&
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+    ) {
+      setIsDepositSuccessful(true);
+    }
+    if (
+      contractDetails?.status === "RECEIVED" &&
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+    ) {
+      setInspection(true);
+    }
+    if (
+      contractDetails?.status === "DISPUTE" &&
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+    ) {
+      setOpenMessage(true);
+    }
+    if (
+      contractDetails?.status === "APPROVE" &&
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+    ) {
+      setGoInvoice(true);
+    }
+  }, [
+    contractDetails?.contractPayments?.paymentStatus,
+    contractDetails?.status,
+  ]);
+
+  const renderSellerComponents = () => {
+    if (withDrawlMethod) {
+      return (
+        <>
+          <Stepper currentStep={3} />
+          <WithDrawlBuyerWaiting
+            onNext={handleNextComponent}
+            contractDetails={contractDetails}
+          />
+        </>
       );
-      const [response, setResponse] = useState(null);
-      const [withDrawlMethod, setWithDrawlMethod] = useState(false);
-      const [inspectionPeriod, setinspectionPeriod] = useState(false);
-      const [dispute, setDispute] = useState(false);
-      const [invoice, setInvoice] = useState(false);
-      const [isDepositSuccessful, setIsDepositSuccessful] = useState(false);
-      const [goInvoice, setGoInvoice] = useState(false);
-      const [openMessage, setOpenMessage] = useState(false);
-      const [inspection, setInspection] = useState(false);
-
-
-     
-      const {
-            data: contractDetails,
-            refetch: refetchContractDetails,
-            isFetching: isFetchingContractDetails,
-      } = useFetchContractDetailsQuery(contractId, {
-            skip: !contractId, // Skip querying if no ID
-      });
-
-      const roleType = userDetails?.id === contractDetails?.buyerId;
-
-      useEffect(() => {
-            // Refetch contract details when contractId changes
-            if (contractId) {
-                  refetchContractDetails();
-            }
-      }, [contractId, refetchContractDetails]);
-
-      const openModal = () => {
-            setIsModalOpen(true);
-            document.body.style.overflow = "hidden";
-            document.body.style.zIndex = "-1";
-            document.body.style.background = "rgba(0, 0, 0, 0.30";
-            document.body.style.pointerEvents = "none";
-      };
-
-      const closeModal = () => {
-            setIsModalOpen(false);
-            document.body.style.background = "#fff";
-            document.body.style.pointerEvents = "auto";
-            document.body.style.overflow = "auto";
-      };
-
-      // Parsing the ISO date string into a Date object
-      const createdAtISO = contractDetails?.createdAt || "";
-      const date = new Date(createdAtISO);
-      const formattedDate = `${date.getDate()} ${date.toLocaleString(
-            "default",
-            { month: "short" }
-      )}, ${date.getFullYear()}`;
-
-      const handlePreviousComponent = () => {
-            if (previousComponent !== null) {
-                  setCurrentComponent(previousComponent);
-                  setPreviousComponent(null);
-            }
-      };
-      const handleNextComponent = () => {
-            setPreviousComponent(currentComponent);
-            setCurrentComponent(currentComponent + 1);
-      };
-
-      const handleResponse = (responseData: any) => {
-            setResponse(responseData);
-      };
-
-      // Determine the current step for the stepper based on `currentComponent`
-      const DetermineCurrentStep = () => {
-            let currentStep;
-            switch (currentComponent) {
-                  case 1:
-                        currentStep = 0; // Corresponds to 'Create'
-                        break;
-                  case 2:
-                        currentStep = 1; // Corresponds to 'Agreement'
-                        break;
-                  case 3:
-                        currentStep = 2; // Corresponds to 'Payment'
-                        break;
-                  case 4:
-                        currentStep = 3; // Corresponds to 'Transfer'
-                        break;
-                  case 5:
-                        currentStep = 4; // Corresponds to 'Inspection'
-                        break;
-                  case 6:
-                        currentStep = 4; // Corresponds to 'Inspection'
-                        break;
-                  case 7:
-                        currentStep = 5; // Corresponds to 'closed'
-                        break;
-            }
+    } else if (inspectionPeriod) {
+      return (
+        <>
+          <Stepper currentStep={4} />
+          <InspectedPeriod
+            onNext={handleNextComponent}
+            contractDetails={contractDetails}
+          />
+        </>
+      );
+    } else if (dispute) {
+      return (
+        <>
+          <Stepper currentStep={4} />
+          <DisputOpened />
+        </>
+      );
+    } else if (invoice) {
+      return (
+        <>
+          <Stepper currentStep={5} />
+          <Invoice />
+        </>
+      );
+    } else {
+      switch (currentComponent) {
+        case 1:
+          return (
+            <>
+              <Stepper currentStep={2} />
+              <SetupWithDrawl
+                onNext={handleNextComponent}
+                contractDetails={contractDetails}
+              />
+            </>
+          );
+        case 2:
+          return (
+            <>
+              <Stepper currentStep={2} />
+              <AddWithDrawlDisbursement
+                onNext={handleNextComponent}
+                onBack={handlePreviousComponent}
+              />
+            </>
+          );
+        case 3:
+          return (
+            <>
+              <Stepper currentStep={3} />
+              <WithDrawlMethod
+                onNext={handleNextComponent}
+                contractDetails={contractDetails}
+              />
+            </>
+          );
+        case 4:
+          return (
+            <>
+              <Stepper currentStep={3} />
+              <WithDrawlBuyerWaiting
+                onNext={handleNextComponent}
+                contractDetails={contractDetails}
+              />
+            </>
+          );
+        case 5:
+          return (
+            <>
+              <Stepper currentStep={4} />
+              <InspectedPeriod
+                onNext={handleNextComponent}
+                contractDetails={contractDetails}
+              />
+            </>
+          );
+        case 6:
+          return (
+            <>
+              <Stepper currentStep={4} />
+              <DisputOpened />
+            </>
+          );
+        case 7:
+          return (
+            <>
+              <Stepper currentStep={5} />
+              <Invoice />
+            </>
+          );
+        default:
+          return null;
       }
+    }
+  };
 
-            const isSeller = userDetails?.id === contractDetails?.sellerId;
-            const isBuyer = userDetails?.id === contractDetails?.buyerId;
-            const isContractCompleted =
-                  contractDetails?.status === "COMPLETED" ||
-                  contractDetails?.status === "DELIVERED" ||
-                  contractDetails?.status === "RECEIVED" ||
-                  contractDetails?.status === "DISPUTE" ||
-                  contractDetails?.status === "APPROVE";
+  const renderBuyerComponents = () => {
+    if (isDepositSuccessful) {
+      return (
+        <>
+          <Stepper currentStep={3} />
+          <SuccessfulDeposit onNext={handleNextComponent} />;
+        </>
+      );
+    } else if (inspection) {
+      return (
+        <>
+          <Stepper currentStep={4} />
+          <Inspection onNext={handleNextComponent} />
+        </>
+      );
+    } else if (goInvoice) {
+      return (
+        <>
+          {!isMobile && <Stepper currentStep={5} />}
+          <Invoice />
+        </>
+      );
+    } else if (openMessage) {
+      return (
+        <>
+          <Stepper currentStep={4} />
+          <DisputOpened />
+        </>
+      );
+    } else {
+      switch (currentComponent) {
+        case 1:
+          return (
+            <>
+              <Stepper currentStep={2} />
+              <Deposit onNext={handleNextComponent} />
+            </>
+          );
+        case 2:
+          return (
+            <>
+              <Stepper currentStep={2} />
+              <TransferAmount
+                onNext={handleNextComponent}
+                onBack={handlePreviousComponent}
+              />
+            </>
+          );
+        case 3:
+          return (
+            <>
+              {!isMobile && <Stepper currentStep={2} />}
+              <BankLocation
+                onNext={handleNextComponent}
+                onBack={handlePreviousComponent}
+                onResponse={handleResponse}
+              />
+            </>
+          );
+        case 4:
+          return (
+            <>
+              <Stepper currentStep={2} />
+              <BankDetails
+                onNext={handleNextComponent}
+                onBack={handlePreviousComponent}
+                responseGet={response}
+              />
+            </>
+          );
+        case 5:
+          return (
+            <>
+              <Stepper currentStep={2} />
+              <PendingDeposit />
+            </>
+          );
+        default:
+          return null;
+      }
+    }
+  };
 
-            useEffect(() => {
-                  // Combined effects for both buyer and seller
-                  if (
-                        contractDetails?.status === "DELIVERED" &&
-                        contractDetails?.contractPayments?.paymentStatus ===
-                              "DEPOSITED"
-                  ) {
-                        setWithDrawlMethod(true);
-                  }
-                  if (
-                        contractDetails?.status === "RECEIVED" &&
-                        contractDetails?.contractPayments?.paymentStatus ===
-                              "DEPOSITED"
-                  ) {
-                        setinspectionPeriod(true);
-                  }
-                  if (
-                        contractDetails?.status === "DISPUTE" &&
-                        contractDetails?.contractPayments?.paymentStatus ===
-                              "DEPOSITED"
-                  ) {
-                        setDispute(true);
-                  }
-                  if (
-                        contractDetails?.status === "APPROVE" &&
-                        contractDetails?.contractPayments?.paymentStatus ===
-                              "DEPOSITED"
-                  ) {
-                        setInvoice(true);
-                  }
-                  if (
-                        contractDetails?.status === "DELIVERED" &&
-                        contractDetails?.contractPayments?.paymentStatus ===
-                              "DEPOSITED"
-                  ) {
-                        setIsDepositSuccessful(true);
-                  }
-                  if (
-                        contractDetails?.status === "RECEIVED" &&
-                        contractDetails?.contractPayments?.paymentStatus ===
-                              "DEPOSITED"
-                  ) {
-                        setInspection(true);
-                  }
-                  if (
-                        contractDetails?.status === "DISPUTE" &&
-                        contractDetails?.contractPayments?.paymentStatus ===
-                              "DEPOSITED"
-                  ) {
-                        setOpenMessage(true);
-                  }
-                  if (
-                        contractDetails?.status === "APPROVE" &&
-                        contractDetails?.contractPayments?.paymentStatus ===
-                              "DEPOSITED"
-                  ) {
-                        setGoInvoice(true);
-                  }
-            }, [contractDetails?.contractPayments?.paymentStatus, contractDetails?.status]);
+  const renderComponents = (): React.ReactNode => {
+    const currentStep = DetermineCurrentStep();
 
-            const renderSellerComponents = () => {
-                  if (withDrawlMethod) {
-                        return (
-                              <>
-                                    <Stepper currentStep={3} />
-                                    <WithDrawlBuyerWaiting
-                                          onNext={handleNextComponent}
-                                          contractDetails={contractDetails}
-                                    />
-                              </>
-                        );
-                  } else if (inspectionPeriod) {
-                        return (
-                              <>
-                                    <Stepper currentStep={4} />
-                                    <InspectedPeriod
-                                          onNext={handleNextComponent}
-                                          contractDetails={contractDetails}
-                                    />
-                              </>
-                        );
-                  } else if (dispute) {
-                        return (
-                              <>
-                                    <Stepper currentStep={4} />
-                                    <DisputOpened />
-                              </>
-                        );
-                  } else if (invoice) {
-                        return (
-                              <>
-                                    <Stepper currentStep={5} />
-                                    <Invoice />
-                              </>
-                        );
-                  } else {
-                        switch (currentComponent) {
-                              case 1:
-                                    return (
-                                          <>
-                                                <Stepper currentStep={2} />
-                                                <SetupWithDrawl
-                                                      onNext={
-                                                            handleNextComponent
-                                                      }
-                                                      contractDetails={
-                                                            contractDetails
-                                                      }
-                                                />
-                                          </>
-                                    );
-                              case 2:
-                                    return (
-                                          <>
-                                                <Stepper currentStep={2} />
-                                                <AddWithDrawlDisbursement
-                                                      onNext={
-                                                            handleNextComponent
-                                                      }
-                                                      onBack={
-                                                            handlePreviousComponent
-                                                      }
-                                                />
-                                          </>
-                                    );
-                              case 3:
-                                    return (
-                                          <>
-                                                <Stepper currentStep={3} />
-                                                <WithDrawlMethod
-                                                      onNext={
-                                                            handleNextComponent
-                                                      }
-                                                      contractDetails={
-                                                            contractDetails
-                                                      }
-                                                />
-                                          </>
-                                    );
-                              case 4:
-                                    return (
-                                          <>
-                                                <Stepper currentStep={3} />
-                                                <WithDrawlBuyerWaiting
-                                                      onNext={
-                                                            handleNextComponent
-                                                      }
-                                                      contractDetails={
-                                                            contractDetails
-                                                      }
-                                                />
-                                          </>
-                                    );
-                              case 5:
-                                    return (
-                                          <>
-                                                <Stepper currentStep={4} />
-                                                <InspectedPeriod
-                                                      onNext={
-                                                            handleNextComponent
-                                                      }
-                                                      contractDetails={
-                                                            contractDetails
-                                                      }
-                                                />
-                                          </>
-                                    );
-                              case 6:
-                                    return (
-                                          <>
-                                                <Stepper currentStep={4} />
-                                                <DisputOpened />
-                                          </>
-                                    );
-                              case 7:
-                                    return (
-                                          <>
-                                                <Stepper currentStep={5} />
-                                                <Invoice />
-                                          </>
-                                    );
-                              default:
-                                    return null;
-                        }
-                  }
-            };
+    if (isSeller && isContractCompleted) {
+      // Render components specific to the seller's flow when the contract is completed
+      return (
+        <>
+          {renderSellerComponents()}
+          {currentComponent !== 2 && (
+            <StepAgreement contractDetails={contractDetails} />
+          )}
+        </>
+      );
+    } else if (isBuyer && isContractCompleted) {
+      // Render components specific to the buyer's flow when the contract is completed
+      return (
+        <>
+          {renderBuyerComponents()}
+          {currentComponent !== 2 && (
+            <StepAgreement contractDetails={contractDetails} />
+          )}
+        </>
+      );
+    } else {
+      // Default rendering for the StepAgreement component
+      return (
+        <>
+          <Stepper currentStep={1} />
+          <StepAgreement contractDetails={contractDetails} />
+        </>
+      );
+    }
+  };
 
-            const renderBuyerComponents = () => {
-                  if (isDepositSuccessful) {
-                    return (
-                      <>
-                        <Stepper currentStep={3} />
-                        <SuccessfulDeposit onNext={handleReceived} />;
-                      </>
-                    );
-                  } else if (inspection) {
-                    return (
-                      <>
-                        <Stepper currentStep={4} />
-                        <Inspection onNext={handleNextComponent} />
-                      </>
-                    );
-                  } else if (goInvoice) {
-                    return (
-                      <>
-                        {!isMobile && <Stepper currentStep={5} />}
-                        <Invoice />
-                      </>
-                    );
-                  } else if (openMessage) {
-                    return (
-                      <>
-                        <Stepper currentStep={4} />
-                        <DisputOpened />
-                      </>
-                    );
-                  } else {
-                    switch (currentComponent) {
-                      case 1:
-                        return (
-                          <>
-                            <Stepper currentStep={2} />
-                            <Deposit onNext={handleNextComponent} />
-                          </>
-                        );
-                      case 2:
-                        return (
-                          <>
-                            <Stepper currentStep={2} />
-                            <TransferAmount
-                              onNext={handleNextComponent}
-                              onBack={handlePreviousComponent}
-                            />
-                          </>
-                        );
-                      case 3:
-                        return (
-                          <>
-                            {!isMobile && <Stepper currentStep={2} />}
-                            <BankLocation
-                              onNext={handleNextComponent}
-                              onBack={handlePreviousComponent}
-                              onResponse={handleResponse}
-                            />
-                          </>
-                        );
-                      case 4:
-                        return (
-                          <>
-                            <Stepper currentStep={2} />
-                            <BankDetails
-                              onNext={handleNextComponent}
-                              onBack={handlePreviousComponent}
-                              responseGet={response}
-                            />
-                          </>
-                        );
-                      case 5:
-                        return (
-                          <>
-                            <Stepper currentStep={2} />
-                            <PendingDeposit />
-                          </>
-                        );
-                      default:
-                        return null;
-                    }
-                  }
-            };
+  return (
+    <Flex vertical className="w-full">
+      <VerifyProfileBar />
 
+      {/* -------------------------Useful Code---------------------------------- */}
 
-            const renderComponents = (): React.ReactNode => {
-                  const currentStep = DetermineCurrentStep();
+      <Flex className="w-full">
+        <div className={styles.agreementContainer}>
+          <>
+            <Flex vertical style={{ width: "100%" }}>
+              <Title level={screens["sm"] ? 2 : 3}>
+                {contractDetails?.contractName || ""}
+              </Title>
+              <div className={styles.flexTransaction}>
+                <span className={styles.transactionText}>
+                  Transaction #10942007
+                </span>
+                <span>
+                  <Image
+                    className={styles.copyIcon}
+                    src={CopyIcon}
+                    alt="copy icon"
+                  />
+                </span>
+              </div>
+            </Flex>
 
-                  if (isSeller && isContractCompleted) {
-                        // Render components specific to the seller's flow when the contract is completed
-                        return (
-                              <>
-                                    {renderSellerComponents()}
-                                    {currentComponent !== 2 && (
-                                          <StepAgreement
-                                                contractDetails={
-                                                      contractDetails
-                                                }
-                                          />
-                                    )}
-                              </>
-                        );
-                  } else if (isBuyer && isContractCompleted) {
-                        // Render components specific to the buyer's flow when the contract is completed
-                        return (
-                              <>
-                                    {renderBuyerComponents()}
-                                    {currentComponent !== 2 && (
-                                          <StepAgreement
-                                                contractDetails={
-                                                      contractDetails
-                                                }
-                                          />
-                                    )}
-                              </>
-                        );
-                  } else {
-                        // Default rendering for the StepAgreement component
-                        return (
-                              <>
-                                    <Stepper currentStep={1} />
-                                    <StepAgreement
-                                          contractDetails={contractDetails}
-                                    />
-                              </>
-                        );
-                  }
-            };
+            <Flex style={{ width: "100%" }}>
+              <div className={styles.boxesAgreement}>
+                <div className={styles.detailBox}>
+                  <div>
+                    <Image src={UserIcon} alt="user icon" />
+                  </div>
+                  <div className={styles.center}>
+                    {roleType ? "Buyer" : "Seller"}
+                  </div>
+                </div>
+                <div className={styles.detailBox}>
+                  <div>
+                    <Image src={CalenderIcon} alt="calendar icon" />
+                  </div>
+                  <div className={styles.center}>Created {formattedDate}</div>
+                </div>
 
-            return (
-                  <Flex vertical className="w-full">
-                        <VerifyProfileBar />
+                <div className={styles.detailBox} onClick={openModal}>
+                  <div className={styles.crossBox}>
+                    <Image className={styles.xIcon} src={XIcon} alt="X icon" />
+                  </div>
+                  <div className={styles.center}>Cancel contract </div>
+                </div>
+                {isModalOpen && (
+                  <ConfirmContractCancellation closeModal={closeModal} />
+                )}
+              </div>
+            </Flex>
+          </>
+        </div>
+      </Flex>
 
-                        {/* -------------------------Useful Code---------------------------------- */}
+      <div>
+        <div className={styles.transactionDetails}>
+          <span style={{ color: "#006ACC" }}>example@gmail.com</span> is buying
+          a <span style={{ fontWeight: "600" }}>domain name</span> from
+          <span style={{ color: "#006ACC" }}> name@gmail.com.</span>
+          <br /> The{" "}
+          <span style={{ fontWeight: "600" }}>inspection period</span> for this
+          transaction is{" "}
+          <span style={{ fontWeight: "600" }}>3 calendar days.</span>
+        </div>
+      </div>
 
-                        <Flex className="w-full">
-                              <div className={styles.agreementContainer}>
-                                    <>
-                                          <Flex
-                                                vertical
-                                                style={{ width: "100%" }}
-                                          >
-                                                <Title
-                                                      level={
-                                                            screens["sm"]
-                                                                  ? 2
-                                                                  : 3
-                                                      }
-                                                >
-                                                      {contractDetails?.contractName ||
-                                                            ""}
-                                                </Title>
-                                                <div
-                                                      className={
-                                                            styles.flexTransaction
-                                                      }
-                                                >
-                                                      <span
-                                                            className={
-                                                                  styles.transactionText
-                                                            }
-                                                      >
-                                                            Transaction
-                                                            #10942007
-                                                      </span>
-                                                      <span>
-                                                            <Image
-                                                                  className={
-                                                                        styles.copyIcon
-                                                                  }
-                                                                  src={CopyIcon}
-                                                                  alt="copy icon"
-                                                            />
-                                                      </span>
-                                                </div>
-                                          </Flex>
-
-                                          <Flex style={{ width: "100%" }}>
-                                                <div
-                                                      className={
-                                                            styles.boxesAgreement
-                                                      }
-                                                >
-                                                      <div
-                                                            className={
-                                                                  styles.detailBox
-                                                            }
-                                                      >
-                                                            <div>
-                                                                  <Image
-                                                                        src={
-                                                                              UserIcon
-                                                                        }
-                                                                        alt="user icon"
-                                                                  />
-                                                            </div>
-                                                            <div
-                                                                  className={
-                                                                        styles.center
-                                                                  }
-                                                            >
-                                                                  {roleType
-                                                                        ? "Buyer"
-                                                                        : "Seller"}
-                                                            </div>
-                                                      </div>
-                                                      <div
-                                                            className={
-                                                                  styles.detailBox
-                                                            }
-                                                      >
-                                                            <div>
-                                                                  <Image
-                                                                        src={
-                                                                              CalenderIcon
-                                                                        }
-                                                                        alt="calendar icon"
-                                                                  />
-                                                            </div>
-                                                            <div
-                                                                  className={
-                                                                        styles.center
-                                                                  }
-                                                            >
-                                                                  Created{" "}
-                                                                  {
-                                                                        formattedDate
-                                                                  }
-                                                            </div>
-                                                      </div>
-
-                                                      <div
-                                                            className={
-                                                                  styles.detailBox
-                                                            }
-                                                            onClick={openModal}
-                                                      >
-                                                            <div
-                                                                  className={
-                                                                        styles.crossBox
-                                                                  }
-                                                            >
-                                                                  <Image
-                                                                        className={
-                                                                              styles.xIcon
-                                                                        }
-                                                                        src={
-                                                                              XIcon
-                                                                        }
-                                                                        alt="X icon"
-                                                                  />
-                                                            </div>
-                                                            <div
-                                                                  className={
-                                                                        styles.center
-                                                                  }
-                                                            >
-                                                                  Cancel
-                                                                  contract{" "}
-                                                            </div>
-                                                      </div>
-                                                      {isModalOpen && (
-                                                            <ConfirmContractCancellation
-                                                                  closeModal={
-                                                                        closeModal
-                                                                  }
-                                                            />
-                                                      )}
-                                                </div>
-                                          </Flex>
-                                    </>
-                              </div>
-                        </Flex>
-
-                        <div>
-                              <div className={styles.transactionDetails}>
-                                    <span style={{ color: "#006ACC" }}>
-                                          example@gmail.com
-                                    </span>{" "}
-                                    is buying a{" "}
-                                    <span style={{ fontWeight: "600" }}>
-                                          domain name
-                                    </span>{" "}
-                                    from
-                                    <span style={{ color: "#006ACC" }}>
-                                          {" "}
-                                          name@gmail.com.
-                                    </span>
-                                    <br /> The{" "}
-                                    <span style={{ fontWeight: "600" }}>
-                                          inspection period
-                                    </span>{" "}
-                                    for this transaction is{" "}
-                                    <span style={{ fontWeight: "600" }}>
-                                          3 calendar days.
-                                    </span>
-                              </div>
-                        </div>
-
-                        {/* stepper added */}
-                        <Flex vertical align="center">
-                              <Flex
-                                    vertical
-                                    align="center"
-                                    style={{ width: "100%", padding: "0 24px" }}
-                              >
-                                    {isMobile && (
-                                          <>
-                                                {/* <div className={styles.flexBtnResp}>
+      {/* stepper added */}
+      <Flex vertical align="center">
+        <Flex
+          vertical
+          align="center"
+          style={{ width: "100%", padding: "0 24px" }}
+        >
+          {isMobile && (
+            <>
+              {/* <div className={styles.flexBtnResp}>
                                           <Button
                                                 name="Action"
                                                 type={ButtonType.Tertioary}
@@ -671,15 +532,13 @@ const ContractProcessingForm:FC = () => {
                                                 fullWidth={!screens["md"]}
                                           />
                                           </div> */}
-                                          </>
-                                    )}
+            </>
+          )}
 
-                                    {renderComponents()}
-                              </Flex>
-                        </Flex>
-                  </Flex>
-            );
-
-      
+          {renderComponents()}
+        </Flex>
+      </Flex>
+    </Flex>
+  );
 };
 export default ContractProcessingForm;
