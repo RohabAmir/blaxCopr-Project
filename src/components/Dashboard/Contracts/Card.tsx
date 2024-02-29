@@ -1,5 +1,5 @@
 "use client";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "../style.module.scss";
 import PlusIcon from "../../../../public/icons/Plus.svg";

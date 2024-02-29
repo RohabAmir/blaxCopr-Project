@@ -70,27 +70,27 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
       // Determine if the role dropdown should be disabled
       const isRoleSelected = !!selectedRole; // This checks if a role has already been selected
 
-      const handlechange = (value: string) => {
-            setSelectedCurrency(value);
-            setSelectedPeriod(value);
-            setSelectedRole(value);
-      };
+  const handlechange = (value: string) => {
+    setSelectedCurrency(value);
+    setSelectedPeriod(value);
+    setSelectedRole(value);
+  };
 
-      const roleOptions = [
-            { value: "BUYER", label: "BUYER" },
-            { value: "SELLER", label: "SELLER" },
-      ];
-      const currencyOptions = [
-            { value: "USD", label: "USD" },
-            { value: "GBP", label: "GBP" },
-            { value: "EUR", label: "EUR" },
-            { value: "GEL", label: "GEL" },
-      ];
+  const roleOptions = [
+    { value: "BUYER", label: "BUYER" },
+    { value: "SELLER", label: "SELLER" },
+  ];
+  const currencyOptions = [
+    { value: "USD", label: "USD" },
+    { value: "GBP", label: "GBP" },
+    { value: "EUR", label: "EUR" },
+    { value: "GEL", label: "GEL" },
+  ];
 
-      const inspectionOptions = Array.from({ length: 180 }, (_, index) => ({
-            value: (index + 1).toString(),
-            label: (index + 1).toString(),
-      }));
+  const inspectionOptions = Array.from({ length: 180 }, (_, index) => ({
+    value: (index + 1).toString(),
+    label: (index + 1).toString(),
+  }));
 
       // Function to handle form submission
       const onSubmit = async (data: any) => {
@@ -106,57 +106,46 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
                   },
               };
 
-            if (contractId && isDirty) {
-                  // Update existing contract
-                  try {
-                        await updateContractDetails({
-                              id: contractId,
-                              ...payload,
-                        });
-                        // Refetch contract details after successful update
-                        refetch();
-                        handleStepChange(1); // Proceed to the next step
-                  } catch (error) {
-                        console.error(
-                              "Failed to update contract details:",
-                              error
-                        );
-                  }
-            } else if (!contractId) {
-                  // Post new contract details
-                  try {
-                        const result: any = await postContractDetails(payload);
-                        if (result.data && result.data.id) {
-                              storeLocalData("contract_id", result.data.id);
-                              handleStepChange(1); // Proceed to the next step
-                        }
-                  } catch (error) {
-                        console.error(
-                              "Failed to post contract details:",
-                              error
-                        );
-                  }
-            } else {
-                  // No changes made, simply navigate to the next step
-                  handleStepChange(1);
-            }
-      };
+    if (contractId && isDirty) {
+      try {
+        await updateContractDetails({
+          id: contractId,
+          ...payload,
+        });
+        refetch();
+        handleStepChange(1); // Proceed to the next step
+      } catch (error) {
+        console.error("Failed to update contract details:", error);
+      }
+    } else if (!contractId) {
+      // Post new contract details
+      try {
+        const result: any = await postContractDetails(payload);
+        if (result.data && result.data.id) {
+          storeLocalData("contract_id", result.data.id);
+          handleStepChange(1); // Proceed to the next step
+        }
+      } catch (error) {
+        console.error("Failed to post contract details:", error);
+      }
+    } else {
+      // No changes made, simply navigate to the next step
+      handleStepChange(1);
+    }
+  };
 
-      return (
-            <form
-                  className={styles.createMain}
-                  onSubmit={handleSubmit(onSubmit)}
-            >
-                  <FormProvider {...methods}>
-                        <Flex className={styles.createFlex}>
-                              <Link href="/dashboard">
-                                    <Button
-                                          name="Back"
-                                          leftIcon={IconType.BackArrow}
-                                          type={ButtonType.Secondary}
-                                          size={isMobile ? "middle" : "large"}
-                                    />
-                              </Link>
+  return (
+    <form className={styles.createMain} onSubmit={handleSubmit(onSubmit)}>
+      <FormProvider {...methods}>
+        <Flex className={styles.createFlex}>
+          <Link href="/dashboard">
+            <Button
+              name="Back"
+              leftIcon={IconType.BackArrow}
+              type={ButtonType.Secondary}
+              size={isMobile ? "middle" : "large"}
+            />
+          </Link>
 
                               {isMobile && (
                                     <div className={styles.stepperFlexMain}>
@@ -272,46 +261,35 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
                                     </Flex>
                               </Flex>
 
-                              <Flex className={styles.createInput}>
-                                    <Flex vertical>
-                                          <div className={styles.text}>
-                                                <Image
-                                                      className={styles.img}
-                                                      src={ShieldIcon}
-                                                      alt="shield icon"
-                                                />
-                                                <h2 className={styles.heading}>
-                                                      AES-256 encryption
-                                                </h2>
-                                                <p
-                                                      className={
-                                                            styles.description
-                                                      }
-                                                >
-                                                      Every contract is secured
-                                                      using SHA-256 hashing,
-                                                      AES-256 encryption, and
-                                                      TLS 1.3 protocol to ensure
-                                                      the highest level of data
-                                                      integrity,
-                                                      confidentiality, and
-                                                      security.
-                                                </p>
-                                          </div>
-                                    </Flex>
-                              </Flex>
-                        </Flex>
-                        <div className={styles.nextBtn}>
-                              <Button
-                                    name="Next"
-                                    fullWidth={isMobile}
-                                    isSubmit
-                                    isLoading={isLoading}
-                              />
-                        </div>
-                  </FormProvider>
-            </form>
-      );
+          <Flex className={styles.createInput}>
+            <Flex vertical>
+              <div className={styles.text}>
+                <Image
+                  className={styles.img}
+                  src={ShieldIcon}
+                  alt="shield icon"
+                />
+                <h2 className={styles.heading}>AES-256 encryption</h2>
+                <p className={styles.description}>
+                  Every contract is secured using SHA-256 hashing, AES-256
+                  encryption, and TLS 1.3 protocol to ensure the highest level
+                  of data integrity, confidentiality, and security.
+                </p>
+              </div>
+            </Flex>
+          </Flex>
+        </Flex>
+        <div className={styles.nextBtn}>
+          <Button
+            name="Next"
+            fullWidth={isMobile}
+            isSubmit
+            isLoading={isLoading}
+          />
+        </div>
+      </FormProvider>
+    </form>
+  );
 };
 
 export default Create;

@@ -1,4 +1,5 @@
 import React, { FC, ReactNode, useState, useCallback, useEffect } from "react";
+import React, { FC, ReactNode, useState, useCallback, useEffect } from "react";
 import styles from "./style.module.scss";
 import { FormSection } from "../Shared";
 import { Flex, Row, Col, Grid } from "antd";
@@ -6,6 +7,9 @@ import { Button } from "../Shared";
 import { ButtonType, IconType } from "@/types";
 import Image from "next/image";
 import DownloadIcon from "../../../public/icons/Download.svg";
+import ConfirmContractReview from "../Shared/Modals/ConfirmContractReview";
+import InviteSeller from "../Shared/Modals/InviteSeller";
+import { useGetUserDetailsQuery } from "@/Store/services/authApi";
 import ConfirmContractReview from "../Shared/Modals/ConfirmContractReview";
 import InviteSeller from "../Shared/Modals/InviteSeller";
 import { useGetUserDetailsQuery } from "@/Store/services/authApi";

@@ -116,7 +116,6 @@ export const contractApi = createApi({
 
       }),
 });
-
 export const {
       usePostContractDetailsMutation,
       useUpdateContractDetailsMutation,

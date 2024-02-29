@@ -8,10 +8,10 @@ import ShieldIcon from "../../../public/icons/shield.svg";
 import ChevronIcon from "../../../public/icons/TagChevron.svg";
 import Image from "next/image";
 import {
-      useForm,
-      FormProvider,
-      useFieldArray,
-      Controller,
+  useForm,
+  FormProvider,
+  useFieldArray,
+  Controller,
 } from "react-hook-form";
 import { useUpdateContractDetailsMutation } from "@/Store/services/contractApi";
 import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
@@ -389,10 +389,10 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                   lienHolderUpgrade: data.lienHolderUpgrade,
             };
 
-            const payload = {
-                  transactions: transactionsPayload,
-                  shipping: shippingPayload,
-            };
+    const payload = {
+      transactions: transactionsPayload,
+      shipping: shippingPayload,
+    };
 
             dispatch(updateSubTotal(subTotal));
             dispatch(updateBuyerPrice(buyerPrice));

@@ -63,6 +63,7 @@ const PersonalDetails: FC<PersonalDetailsProps> = ({ userDetails }) => {
       const { handleSubmit, formState, reset } = methods;
       const [isDirty, setIsDirty] = useState(false);
       const router = useRouter();
+      const router = useRouter();
 
       const handleInputChange = (
             name: keyof UserDetails,

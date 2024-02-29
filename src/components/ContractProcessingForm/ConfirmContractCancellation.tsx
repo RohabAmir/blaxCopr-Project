@@ -9,9 +9,13 @@ import ChevronIcon from "../../../public/icons/TagChevron.svg";
 import { useDeleteContractMutation } from "@/Store/services/contractApi";
 import { toast } from "react-toastify";
 import { getLocalData } from "@/utils";
+import { useDeleteContractMutation } from "@/Store/services/contractApi";
+import { toast } from "react-toastify";
+import { getLocalData } from "@/utils";
 import { Button } from "../Shared";
 import { ButtonType } from "@/types";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useRouter } from "next/navigation";
 interface ModalProps {
   closeModal: () => void;

@@ -1,4 +1,3 @@
-
 import React, { FC, useState } from "react";
 import { Steps, Popover } from "antd";
 import type { StepsProps } from "antd";
@@ -38,13 +37,12 @@ const customDot: React.FC<CustomDotProps> = ({ currentStep, status }) => {
     </Popover>
   );
 };
-
 interface StepperProps {
-  currentStep: any;
+  currentStep: number;
 }
 
-// const Stepper: React.FC = () => {
-//   const [currentStep, setCurrentStep] = useState(1);
+const Stepper: React.FC<StepperProps> = ({ currentStep }) => {
+  // const [currentStep, setCurrentStep] = useState(1);
 
 //   const steps = [
 //     {

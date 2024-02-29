@@ -1,6 +1,7 @@
 "use client";
 import { Flex, Grid } from "antd";
 import React, { FC, ReactNode, useEffect } from "react";
+import React, { FC, ReactNode, useEffect } from "react";
 import styles from "./style.module.scss";
 import { ButtonType, IconType } from "@/types";
 import { Button, VerifyProfileBar } from "../Shared";

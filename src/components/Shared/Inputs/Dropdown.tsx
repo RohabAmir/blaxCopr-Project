@@ -28,11 +28,11 @@ const TextInput: FC<ITextInput> = ({
       defaultValue,
       disabled = false,
 }) => {
-      const { Text } = Typography;
-      const {
-            control,
-            formState: { errors },
-      } = useFormContext();
+  const { Text } = Typography;
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
       return (
             <Flex vertical align="flex-start" className="w-full">

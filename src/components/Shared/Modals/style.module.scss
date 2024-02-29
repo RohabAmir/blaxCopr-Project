@@ -1,5 +1,7 @@
 .modalMain {
   padding: 12px 16px;
+  position: absolute;
+  top: 35%;
 }
 .modal {
   display: flex;
@@ -18,6 +20,17 @@
   position: relative;
   z-index: 999;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.overlay {
+  position: fixed;
+  top: 17%;
+  left: 36%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 999;
+  pointer-events: auto;
 }
 .overlay {
   position: fixed;
@@ -101,7 +114,7 @@
 }
 .btnOpen1 {
   border: none;
-  background: #EDEFEB;
+  background: #edefeb;
   color: #163300;
   text-align: center;
   border-radius: 100px;
@@ -121,20 +134,20 @@
 .btnOpen1:hover {
   background: #d6dad4;
 }
-.modalBtn{
+.modalBtn {
   display: flex;
   margin-top: 20px;
   gap: 60px;
 }
 .sigCanvas {
-  background-color: #ECEFEB; 
-  border: 1px solid #ECEFEB;
-  border-radius: 8px; 
+  background-color: #ecefeb;
+  border: 1px solid #ecefeb;
+  border-radius: 8px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   touch-action: none; /* Prevent scrolling on touch devices while drawing */
 
-  
-  &:after { /* Styling for the signature line */
+  &:after {
+    /* Styling for the signature line */
     content: "";
     display: block;
     position: fixed;

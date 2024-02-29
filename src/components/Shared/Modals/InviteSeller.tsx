@@ -1,5 +1,6 @@
 "use client";
 import { FC, useState } from "react";
+import { FC, useState } from "react";
 import styles from "./style.module.scss";
 import { getLocalData } from "@/utils";
 import { useSendInviteMutation } from "@/Store/services/contractApi";

@@ -23,16 +23,20 @@ const loadInitialState = () => {
 };
 
 export const store = configureStore({
-      reducer: {
-            auth: authReducer,
-            contract: contractReducer,
-            [authApi.reducerPath]: authApi.reducer,
-            [contractApi.reducerPath]: contractApi.reducer,
-            [paymentApi.reducerPath]: paymentApi.reducer,
-
-      },
-      preloadedState,
-      middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware,contractApi.middleware,paymentApi.middleware),
+  reducer: {
+    auth: authReducer,
+    contract: contractReducer,
+    [authApi.reducerPath]: authApi.reducer,
+    [contractApi.reducerPath]: contractApi.reducer,
+    [paymentApi.reducerPath]: paymentApi.reducer,
+  },
+  preloadedState,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(
+      authApi.middleware,
+      contractApi.middleware,
+      paymentApi.middleware
+    ),
 });
 
 

@@ -7,17 +7,40 @@ import { ButtonType, IconType } from "@/types";
 import { Grid } from "antd";
 import { useAppContext } from "@/contexts/App";
 import { useRouter } from "next/navigation";
-
+import { getLocalData } from "@/utils";
+import { useTransitionMutation } from "@/Store/services/contractApi";
 
 const DisputOpened: FC = () => {
   const router = useRouter();
   const { isMobile } = useAppContext();
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
+  const router = useRouter();
+  const handleDisputeOpened = () => {
+    router.push("/dispute");
+  };
+  const contractId = getLocalData("contract_id");
 
-  const openDispute = () =>{
-    router.push('/dispute');
-  }
+  const [transitionContract, { isLoading, isError, error }] =
+    useTransitionMutation();
+
+  //
+  const handleApprove = async () => {
+    const payload = {
+      contract: {
+        status: "APPROVE",
+      },
+    };
+
+    try {
+      console.log("mark as approve");
+
+      await transitionContract({ id: contractId, ...payload });
+      router.push("/dashboard");
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   return (
     <>
       <div className={styles.agreementMain}>
@@ -33,11 +56,18 @@ const DisputOpened: FC = () => {
               {/* <p className={styles.subHeadingDeposit}>Amount: $10.030.00</p> */}
             </div>
           </div>
+
           <Button
             name="Go to messages"
             fullWidth={!screens["sm"]}
             type={ButtonType.Primary}
-            onClickHandler={openDispute}
+            onClickHandler={handleDisputeOpened}
+          />
+          <Button
+            name="Approve"
+            fullWidth={!screens["sm"]}
+            type={ButtonType.Secondary}
+            onClickHandler={handleApprove}
           />
         </div>
       </div>

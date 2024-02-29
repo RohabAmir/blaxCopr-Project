@@ -6,17 +6,20 @@ import Text from "antd/es/typography/Text";
 import { ButtonType, IconType } from "@/types";
 import ShieldIcon from "../../../public/icons/shield.svg";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useUpdateContractDetailsMutation } from "@/Store/services/contractApi";
 import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
 import { storeLocalData, getLocalData } from "@/utils";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { BlobServiceClient } from "@azure/storage-blob";
 import { useDeleteDocumentMutation } from "@/Store/services/contractApi";
+import { BlobServiceClient } from "@azure/storage-blob";
+import { useDeleteDocumentMutation } from "@/Store/services/contractApi";
 
 import {
-      CheckCircleOutlined,
-      CloseCircleOutlined,
-      DownloadOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  DownloadOutlined,
 } from "@ant-design/icons";
 import { useDropzone } from "react-dropzone";
 import styles from "./style.module.scss";
@@ -31,8 +34,8 @@ interface Document {
 }
 
 interface StepComplianceProps {
-      handleStepChange: (step: number) => void;
-      step: number;
+  handleStepChange: (step: number) => void;
+  step: number;
 }
 
 interface documentId {
@@ -40,8 +43,8 @@ interface documentId {
 }
 
 const StepCompliance: FC<StepComplianceProps> = ({
-      handleStepChange,
-      step,
+  handleStepChange,
+  step,
 }) => {
       const [deleteDocument] = useDeleteDocumentMutation();
       const searchParams = useSearchParams();
