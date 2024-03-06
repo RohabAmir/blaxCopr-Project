@@ -380,7 +380,7 @@ const ContractProcessingForm: FC = () => {
         case 3:
           return (
             <>
-              {isMobile && <Stepper currentStep={2} />}
+              {!isMobile && <Stepper currentStep={2} />}
               <BankLocation
                 onNext={handleNextComponent}
                 onBack={handlePreviousComponent}
@@ -421,7 +421,7 @@ const ContractProcessingForm: FC = () => {
         <>
           {renderSellerComponents()}
           {currentComponent !== 2 && (
-            <StepAgreement contractDetails={contractDetails} />
+            <StepAgreement contractDetails={contractDetails} refetchContractDetails={refetchContractDetails} />
           )}
         </>
       );
@@ -430,9 +430,10 @@ const ContractProcessingForm: FC = () => {
       return (
         <>
           {renderBuyerComponents()}
-          {currentComponent !== 2 && (
-            <StepAgreement contractDetails={contractDetails} />
+          {currentComponent !== 2 && currentComponent !== 3 && currentComponent!==4 && (
+            <StepAgreement contractDetails={contractDetails} refetchContractDetails={refetchContractDetails} />
           )}
+
         </>
       );
     } else {
@@ -440,7 +441,7 @@ const ContractProcessingForm: FC = () => {
       return (
         <>
           {!isMobile && <Stepper currentStep={1} />}
-          <StepAgreement contractDetails={contractDetails} />
+          <StepAgreement contractDetails={contractDetails} refetchContractDetails={refetchContractDetails} />
         </>
       );
     }
@@ -547,6 +548,5 @@ const ContractProcessingForm: FC = () => {
       </Flex>
     </Flex>
   );
-  //useFetchContractDetailsQueryuseFetchContractDetailsQuery #1076ED
 };
 export default ContractProcessingForm;

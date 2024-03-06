@@ -5,7 +5,7 @@ import { contractApi } from "./services/contractApi";
 import { paymentApi } from "./services/paymentApi";
 import  authReducer  from './services/authSlice';
 import contractReducer from "./services/contractSlice"
-import { getLocalData, storeLocalData } from "@/utils";
+import { getLocalData, storeLocalData, removeLocalData } from "@/utils";
 
 // Attempt to load the initial state for 'contract' from local storage
 const loadInitialState = () => {
@@ -22,6 +22,7 @@ const loadInitialState = () => {
       contract: loadInitialState()
 };
 
+
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -35,7 +36,7 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       authApi.middleware,
       contractApi.middleware,
-      paymentApi.middleware
+      paymentApi.middleware,
     ),
 });
 

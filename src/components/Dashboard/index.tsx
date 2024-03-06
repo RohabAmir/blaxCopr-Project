@@ -13,7 +13,11 @@ const Dashboard: FC = () => {
       const NavList: Array<Nav> = [
             { title: "All", link: ["all"] },
             { title: "Action required", link: ["INCOMPLETE", "PENDING"] },
-            { title: "Open", link: ["open"] },
+            { title: "Compeleted", link: ["COMPLETED"] },
+            { title: "Delivered", link: ["DELIVERED"] },
+            { title: "Received", link: ["RECEIVED"] },
+            { title: "Dispute", link: ["DISPUTE"] },
+            { title: "Approve", link: ["APPROVE"] },
             { title: "Closed", link: ["closed"] },
       ];
       const [activeNav, setActiveNav] = useState<string[]>(NavList[0].link);

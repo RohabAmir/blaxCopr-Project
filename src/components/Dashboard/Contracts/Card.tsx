@@ -7,6 +7,7 @@ import DashIcon from "../../../../public/icons/Dash.svg";
 import TagIcon from "../../../../public/icons/Tag.svg";
 import LockIcon from "../../../../public/icons/Lock.svg";
 import CheckIcon from "../../../../public/icons/Check.svg";
+import clockIcon from "../../../../public/icons/Clock.svg"
 import SecondaryButton from "../../../../public/icons/Secondary Button.svg";
 import UserIcon from "../../../../public/icons/User.svg";
 import Router, { useRouter } from "next/navigation";
@@ -142,9 +143,14 @@ const Card: FC<ICard> = ({ data, userDetails, onDelete }) => {
                         style={closedstyles}
                       />
                     )}
-                    {data?.status === "Open" && (
+                    { data.status === "COMPLETED" && (
                       <Image src={LockIcon} alt="lock icon" />
                     )}
+
+                    {["APPROVE", "DELIVERED", "RECEIVED","DISPUTE"].includes(data?.status) && (
+                      <Image src={clockIcon} alt="clock" width={24} />
+                    )}
+
                     <p className={styles.thirdHeading} style={closedstyles}>
                       {data?.status}
                     </p>
@@ -169,12 +175,10 @@ const Card: FC<ICard> = ({ data, userDetails, onDelete }) => {
                         />
                         {status === "Closed" ? (
                           <span className={styles.close}>
-                            {/* {type} */}
                             {roleType}
                           </span>
                         ) : (
                           <span className={styles.span}>
-                            {/* {type} */}
                             {roleType}
                           </span>
                         )}

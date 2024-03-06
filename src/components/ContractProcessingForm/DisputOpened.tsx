@@ -62,12 +62,6 @@ const DisputOpened: FC = () => {
             type={ButtonType.Primary}
             onClickHandler={handleDisputeOpened}
           />
-          <Button
-            name="Approve"
-            fullWidth={!screens["sm"]}
-            type={ButtonType.Secondary}
-            onClickHandler={handleApprove}
-          />
         </div>
       </div>
     </>

@@ -24,8 +24,9 @@ import Pubnub from "pubnub";
 import { ButtonType } from "@/types";
 import { fileURLToPath } from "url";
 import { useGetUserDetailsQuery } from "@/Store/services/authApi";
-
 import Spinner from "@/utils/Spinner";
+import { getLocalData } from "@/utils";
+import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
 interface TextMessage {
   userId: string;
   timetoken: string;
@@ -38,26 +39,9 @@ interface FileMessage {
   fileUrl: string;
 }
 
-const userData = [
-  {
-    id: "1",
-    data: {
-      name: "Hamid Rafiq",
-      custom: { initials: "HR", avatar: "#9fa7df" },
-    },
-  },
-  {
-    id: "2",
-    data: {
-      name: "Saad Waheed",
-      custom: { initials: "SW", avatar: "#ffab91" },
-    },
-  },
-];
-
-const randomizedUsers = document.location.search.includes("agent")
-  ? userData
-  : userData.reverse();
+// const randomizedUsers = document.location.search.includes("agent")
+//   ? userData
+//   : userData.reverse();
 
 export default function App() {
   const { useBreakpoint } = Grid;
@@ -73,27 +57,67 @@ export default function App() {
   const [uploadedMessage, setUploadedMessage] = useState<any>(null);
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const messageListRef = useRef<HTMLElement>(null);
-  const { data: userDetails, refetch: refetchUserDetails } =
-    useGetUserDetailsQuery();
-  console.log("user detials0---------------------------", userDetails);
+  const contractId = getLocalData("contract_id");
+  const { data: contractDetails } = useFetchContractDetailsQuery(contractId);
+  const { data: userDetails } = useGetUserDetailsQuery();
+
+  const userData = [
+    {
+      id: JSON.stringify(contractDetails?.seller?.id),
+      data: {
+        name: contractDetails?.seller?.firstName,
+        custom: { avatar: "#FFAB91" },
+      },
+    },
+    {
+      id: JSON.stringify(contractDetails?.buyer?.id),
+      data: {
+        name: contractDetails?.buyer?.firstName,
+        // ...generateAvatarData(contractDetails?.buyer?.firstName),
+        custom: { avatar: "#9fa7df" },
+
+      },
+    },
+  ];
+  const senderColor = "#FFAB91";
+  const receiverColor = "#9FA7DF";
+
+  function generateAvatarData(name: any) {
+    const initials = name ? name.charAt(0).toUpperCase() : "";
+    const colors = ["#9fa7df", "#ffab91", "#a1eafb", "#fdffa5", "#c8f7c5"];
+    const colorIndex = initials.charCodeAt(0) % colors.length; // Simple hash to pick color
+    return {
+      initials: initials,
+      avatar: colors[colorIndex],
+    };
+  }
+
+  const randomizedUsers = document.location.search.includes("agent")
+  ? userData.reverse()
+    : userData
 
   const pubnub = new Pubnub({
     publishKey: "pub-c-d55d262c-357a-44c3-9365-bf9086788fc3",
     subscribeKey: "sub-c-e7c4cb17-38b5-4dd3-89ee-4b04d84d254a",
-    userId: userData[0].id,
+    userId: `${localStorage.getItem("user_id")}`,
   });
   const generateAvatar = (name: any) => {
     const initials = name ? name.charAt(0).toUpperCase() : "";
-    const avatarColor = "#" + Math.floor(Math.random() * 16777215).toString(16); // Generate a random color
-    return { initials, avatar: avatarColor };
+    const colors = [ "#ffab91", "#9fa7df"];
+    const colorIndex = initials.charCodeAt(0) % colors.length;
+    const backgroundColor = colors[colorIndex];
+    return {
+      backgroundColor: backgroundColor,
+      color: "white",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "40px",
+      height: "40px",
+      borderRadius: "50%",
+      fontSize: "20px",
+    };
   };
-  useEffect(() => {
-    if (userDetails) {
-      const avatarDetails = generateAvatar(
-        userDetails.firstName || userDetails.email
-      );
-    }
-  }, [userDetails]);
   async function handleFileShare() {
     if (!selectedFile || !channel) return;
     if (selectedFileName) setSelectedFileName("");
@@ -111,6 +135,7 @@ export default function App() {
         },
         storeInHistory: true,
       });
+
       console.log("File sent successfully:", result);
       const res = pubnub.getFileUrl({
         channel: "SupportChannel",
@@ -132,18 +157,27 @@ export default function App() {
   }
 
   async function handleMessage(message: any) {
+    console.log("Received message:", message);
+
     if (chat && !users.find((user) => user.id === message.userId)) {
       const user = await chat.getUser(message.userId);
       if (user) setUsers((users) => [...users, user]);
     }
+    console.log("message content:", message.content);
+
     let newMessage: TextMessage | FileMessage;
     if (message.text) {
+      console.log("message text-------------", message.text);
       newMessage = {
         userId: message.userId,
         timetoken: message.timetoken,
         text: message.text,
       };
-    } else if (message.fileUrl) {
+    } else if (message.fileUrl || message.file) {
+      // Adjusted condition to check for file
+      const fileUrl =
+        message.fileUrl || "Extract file URL here based on actual structure"; // Adjust accordingly
+      console.log("message file-------------", fileUrl);
       newMessage = {
         userId: message.userId,
         timetoken: message.timetoken,
@@ -154,6 +188,16 @@ export default function App() {
     }
     setMessages((messages: any) => [...messages, newMessage]);
   }
+  //
+  useEffect(() => {
+    // Retrieve stored messages from localStorage
+    const storedMessages = JSON.parse(
+      localStorage.getItem("chatMessages") || "[]"
+    );
+    setMessages(storedMessages);
+  }, []);
+
+  //
 
   useEffect(() => {
     async function initializeChat() {
@@ -193,8 +237,10 @@ export default function App() {
       });
     }
 
-    initializeChat();
-  }, []);
+    if (contractDetails) {
+      initializeChat();
+    }
+  }, [contractDetails]);
 
   useEffect(() => {
     if (!messageListRef.current) return;
@@ -216,7 +262,8 @@ export default function App() {
             msg.timetoken === event.timetoken && msg.userId === event.publisher
         );
         if (!isMessagePresent) {
-          const fileUrl = pubnub.getFileUrl({
+          console.log("file messages are here--");
+          const fileUrl: any = pubnub.getFileUrl({
             channel: event.channel,
             id: event.file.id,
             name: event.file.name,
@@ -226,6 +273,7 @@ export default function App() {
             userId: event.publisher,
             timetoken: event.timetoken,
             fileUrl,
+            text: null,
           };
 
           setMessages((messages: any) => [...messages, fileMessage]);
@@ -240,7 +288,7 @@ export default function App() {
     return () => {
       pubnub.unsubscribeAll();
     };
-  }, [messages]); // Ensure to include messages in the dependency array
+  }, [messages]);
 
   const renderMessagePart = useCallback(
     (messagePart: MixedTextTypedElement) => {
@@ -308,13 +356,18 @@ export default function App() {
       console.error("Error fetching history:", error);
     }
   };
+
   const handleTextChange = (e: any) => {
     const newText = e.target.value;
-    setText(newText);
-    if (newText.length % 5 === 0) {
-      channel.startTyping();
+    if (newText !== text) {
+      setText(newText);
     }
   };
+  const sellerFirstName = userDetails?.firstName?.toUpperCase();
+  const avatarStyle = generateAvatar(sellerFirstName);
+  const buyerFirstName = contractDetails?.buyer?.firstName?.toUpperCase();
+  const avatarCurrentUser = userDetails?.firstName?.toUpperCase();
+  const avatar = generateAvatar(avatarCurrentUser);
 
   if (!chat || !channel) return <Spinner />;
 
@@ -325,7 +378,7 @@ export default function App() {
           <p className={styles.disputeHeading}>Open dispute</p>
         </div>
         <div className={styles.chatBox}>
-          {/* empty div to contain some fkae text*/}
+          {/* empty div to contain some fake text*/}
           <div> </div>
           <main className={styles.main}>
             <header className={styles.header}>
@@ -336,19 +389,12 @@ export default function App() {
                   alignItems: "center",
                 }}
               >
-                <aside
-                  className={styles.aside}
-                  style={{
-                    background: String(chat.currentUser.custom?.avatar),
-                  }}
-                >
-                  generateAvatar(userDetails?.firstName)
-                  {/* {chat.currentUser.custom?.initials} */}
+                <aside className={styles.aside} style={avatarStyle}>
+                  {avatarCurrentUser?.charAt(0).toUpperCase()}
                 </aside>
-                <h3>
-                  {userDetails?.firstName || userDetails?.email.split("@")[0]}
 
-                  {/* {userDetails?.firstName} */}
+                <h3>
+                  {userDetails?.firstName?.toUpperCase() || userDetails?.email.split("@")[0]}
                 </h3>
               </span>
               <div className={styles.typers}>{typers}</div>
@@ -357,7 +403,9 @@ export default function App() {
             <section className={styles.section} ref={messageListRef}>
               <ol className={styles.ol}>
                 {messages.map((message, index) => {
-                  const user = users.find((user) => user.id === message.userId);
+                  const user: any = users.find(
+                    (user) => user.id === message.userId
+                  );
                   const isCurrentUser = user?.id === chat?.currentUser?.id;
 
                   return (
@@ -367,20 +415,23 @@ export default function App() {
                           ? styles.sentMessage
                           : styles.receivedMessage
                       }`}
-                      key={message.timetoken}
+                      key={`${message.timetoken}-${index}`}
                     >
-                      <aside
+                     <aside
                         className={styles.aside}
-                        style={{ background: String(user?.custom?.avatar) }}
+                        style={{
+                          backgroundColor: isCurrentUser
+                            ? senderColor
+                            : receiverColor,
+                        }}
                       >
-                        {user?.custom?.initials}
+                        {user?.data?.name
+                          ? user.data.name.charAt(0).toUpperCase()
+                          : user?.name?.charAt(0).toUpperCase()} 
                       </aside>
                       <article className={styles.article}>
                         <h3 className={styles.h3}>
-                          {/* {userDetails?.firstName
-                            ? userDetails?.firstName
-                            : "user1"} */}
-                          {user?.name}
+                          {user?.name?.toUpperCase()}
                           <time className={styles.time}>
                             {TimetokenUtils.timetokenToDate(
                               message.timetoken
@@ -390,12 +441,10 @@ export default function App() {
                           </time>
                         </h3>
                         <p className={styles.p}>
-                          {/* Render text message */}
                           {!message.fileUrl && (
                             <span className={styles.span}>{message.text}</span>
                           )}
 
-                          {/* Render file link */}
                           {message.fileUrl && renderFileLink(message)}
                         </p>
                       </article>

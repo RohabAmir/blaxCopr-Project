@@ -5,12 +5,6 @@ import TargetIcon from "../../../../public/icons/Target.svg";
 import VectorIcon from "../../../../public/icons/Vector.svg";
 
 const Header: FC = () => {
-  // const [verify, setVerify] = useState(false);
-  // useEffect(() => {
-  //   if (window.innerWidth <= 550) {
-  //     setVerify(true);
-  //   }
-  // }, []);
   return (
     <div className={styles.header}>
       <div className={styles.flexRow}>

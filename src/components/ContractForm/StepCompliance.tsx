@@ -148,6 +148,14 @@ const StepCompliance: FC<StepComplianceProps> = ({
         // Handle any errors here (e.g., show an error message to the user)
         console.error("Error deleting the document:", error);
       }
+    }else {
+      // If the transaction doesn't have an ID yet (e.g., it hasn't been saved to the server), just remove it from the form
+
+       // Update the state only after successful deletion
+       setUploadedFiles((currentFiles) =>
+         currentFiles.filter((_, i) => i !== index)
+       );
+       setFilesChanged(true);
     }
   };
 
@@ -322,7 +330,7 @@ const StepCompliance: FC<StepComplianceProps> = ({
                   </div>
                 ))}
               </div>
-              {error && <Text type="danger">{error}</Text>}
+              {error && <div style={{color:"red" , marginBlock:"12px"}}>{error}</div>}
             </Flex>
             <Flex align="center" style={{ marginBottom: "24px" }}>
               <Image className={styles.shield} src={ShieldIcon} alt="shield" />

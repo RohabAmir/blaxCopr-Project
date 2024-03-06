@@ -6,6 +6,7 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useAppContext } from "@/contexts/App";
 import { useUpdatePasswordMutation } from "@/Store/services/authApi";
 
+
 interface UpdatePasswordProps {
       oldPassword: string;
       newPassword: string;
@@ -16,6 +17,7 @@ const Password: FC = () => {
             useUpdatePasswordMutation();
       const [successMessage, setSuccessMessage] = useState("");
       const { isMobile } = useAppContext();
+
       const methods = useForm<UpdatePasswordProps>({
             mode: "onChange",
             criteriaMode: "all",
@@ -28,7 +30,13 @@ const Password: FC = () => {
                   oldPassword: data.oldPassword,
                   newPassword: data.newPassword,
                 }).unwrap();
+                 // Reset form fields after successful password update
+                  methods.reset({
+                        oldPassword: '',
+                        newPassword: '',
+                  });
                   setSuccessMessage(result.message);
+                  
       };
 
       function isErrorWithMessage(error: any): error is { message: string } {
