@@ -20,6 +20,7 @@ import PendingDeposit from "./PendingDeposit";
 import SuccessfulDeposit from "./SuccessfulDeposit";
 import Inspection from "./Inspection";
 import DisputOpened from "./DisputOpened";
+import DisputOpenedSeller from "./seller/DisputOpenedSeller";
 import Invoice from "./Invoice";
 import InvoiceMerchandise from "./InvoiceMerchandise";
 import SetupWithDrawl from "./seller/SetupWithdrawl";
@@ -247,7 +248,7 @@ const ContractProcessingForm: FC = () => {
       return (
         <>
           {!isMobile && <Stepper currentStep={4} />}
-          <DisputOpened />
+          <DisputOpenedSeller />
         </>
       );
     } else if (invoice) {

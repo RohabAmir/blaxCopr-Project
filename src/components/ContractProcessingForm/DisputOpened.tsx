@@ -1,4 +1,4 @@
-import { FC } from "react";
+//import { FC } from "react";
 import styles from "./style.module.scss";
 import ClockIcon from "../../../public/icons/Clock.svg";
 import Image from "next/image";
@@ -19,10 +19,8 @@ const DisputOpened: FC = () => {
     router.push("/dispute");
   };
   const contractId = getLocalData("contract_id");
-
   const [transitionContract, { isLoading, isError, error }] =
     useTransitionMutation();
-
   //
   const handleApprove = async () => {
     const payload = {
@@ -30,10 +28,8 @@ const DisputOpened: FC = () => {
         status: "APPROVE",
       },
     };
-
     try {
       console.log("mark as approve");
-
       await transitionContract({ id: contractId, ...payload });
       router.push("/dashboard");
     } catch (error) {
@@ -55,12 +51,17 @@ const DisputOpened: FC = () => {
               {/* <p className={styles.subHeadingDeposit}>Amount: $10.030.00</p> */}
             </div>
           </div>
-
           <Button
             name="Go to messages"
             fullWidth={!screens["sm"]}
             type={ButtonType.Primary}
             onClickHandler={handleDisputeOpened}
+          />
+          <Button
+            name="Approve"
+            fullWidth={!screens["sm"]}
+            type={ButtonType.Secondary}
+            onClickHandler={handleApprove}
           />
         </div>
       </div>

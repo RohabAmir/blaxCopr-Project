@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import { Flex, Typography } from "antd";
 import Link from "next/link";
@@ -24,6 +24,11 @@ const AppBar: FC = () => {
       const { data: userDetails } = useGetUserDetailsQuery();
       console.log("userDetails>>>", userDetails);
 
+      useEffect(() => {
+            if (userDetails) {
+              localStorage.setItem("user_id", userDetails.id);
+            }
+          }, [userDetails]);
       const handleDetail = () => {
             setIsModalOpen(!isModalOpen);
             setIsNotifModalOpen(false);
