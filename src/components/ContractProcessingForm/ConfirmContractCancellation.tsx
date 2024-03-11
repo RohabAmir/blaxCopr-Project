@@ -25,7 +25,7 @@ const ConfirmContractCancellation: FC<ModalProps> = ({ closeModal }) => {
     try {
       await deleteContract(contractId).unwrap();
       closeModal();
-      router.push("/dashboard");
+      router.push("/");
     } catch (error) {
       console.error("Error deleting contract:", error);
     }

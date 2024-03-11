@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import { Grid } from "antd";
 import { Dropdown, FormSection } from "../Shared";
@@ -8,6 +8,15 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useAppContext } from "@/contexts/App";
 import { useDepositDataMutation } from "@/Store/services/paymentApi";
 import { getLocalData } from "@/utils";
+import {
+  Country,
+  State,
+  City,
+  ICountry,
+  IState,
+  ICity,
+} from "country-state-city";
+import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
 
 interface BankLocationProps {
   onNext: () => void;
@@ -24,8 +33,21 @@ const BankLocation: FC<BankLocationProps> = ({
   const [selectedBankLocation, setSelectedBankLocation] = useState<
     string | null
   >(null);
-
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [depositData, { isLoading, isError }] = useDepositDataMutation();
+  const [countries, setCountries] = useState([]);
+  useEffect(() => {
+    const countryData: any = Country.getAllCountries().map(
+      (country: ICountry) => ({
+        value: country.isoCode,
+        label: country.name,
+      })
+    );
+    setCountries(countryData);
+  }, []);
+
   const handleChange = (value: string) => {
     setSelectedCurrency(value);
     setSelectedBankLocation(value);
@@ -39,6 +61,8 @@ const BankLocation: FC<BankLocationProps> = ({
     },
   });
   const contractId = getLocalData("contract_id");
+  const { data: contractDetails } = useFetchContractDetailsQuery(contractId);
+
   const { handleSubmit, formState, reset } = methods;
 
   const onSubmit = async (data: any, event: any) => {
@@ -60,6 +84,11 @@ const BankLocation: FC<BankLocationProps> = ({
       console.error("FAILED TO SUBMIT DATA", error);
     }
   };
+
+  // const isContinuedDisabled = !(
+  //   contractDetails?.status === "COMPLETED" &&
+  //   contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+  // );
   return (
     <>
       <form className={styles.bankMain} onSubmit={handleSubmit(onSubmit)}>
@@ -83,7 +112,8 @@ const BankLocation: FC<BankLocationProps> = ({
             <Dropdown
               name="bankLocation"
               label="Bank Location"
-              options={[{ value: "US", label: "United States" }]}
+              options={countries}
+              // options={[{ value: "US", label: "United States" }]}
               onChange={handleChange}
               required
             />

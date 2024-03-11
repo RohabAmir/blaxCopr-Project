@@ -333,3 +333,8 @@
     font-size: 48px;
   }
 }
+@media screen and (max-width: 368px) {
+  .rootFormWrapper {
+    min-width: 265px !important;
+  }
+}

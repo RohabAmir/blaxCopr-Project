@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import styles from "./style.module.scss";
 import ClockIcon from "../../../public/icons/Clock.svg";
 import Image from "next/image";
@@ -9,8 +9,12 @@ import { useAppContext } from "@/contexts/App";
 import { useRouter } from "next/navigation";
 import { getLocalData } from "@/utils";
 import { useTransitionMutation } from "@/Store/services/contractApi";
+import ConfirmApproval from "../Shared/Modals/ConfirmApproval";
 
 const DisputOpened: FC = () => {
+  const contractId = getLocalData("contract_id");
+  const [transitionContract, { isLoading, isError, error }] =
+    useTransitionMutation();
   const { isMobile } = useAppContext();
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
@@ -18,28 +22,32 @@ const DisputOpened: FC = () => {
   const handleDisputeOpened = () => {
     router.push("/dispute");
   };
-  const contractId = getLocalData("contract_id");
+  const [showApproveModal, setApproveModal] = useState(false);
 
-  const [transitionContract, { isLoading, isError, error }] =
-    useTransitionMutation();
+  const handleApprove = () => {
+    setApproveModal(true);
+  };
+  const closeApprove = () => {
+    setApproveModal(false);
+  };
 
   //
-  const handleApprove = async () => {
-    const payload = {
-      contract: {
-        status: "APPROVE",
-      },
-    };
+  // const handleApprove = async () => {
+  //   const payload = {
+  //     contract: {
+  //       status: "APPROVE",
+  //     },
+  //   };
 
-    try {
-      console.log("mark as approve");
+  //   try {
+  //     console.log("mark as approve");
 
-      await transitionContract({ id: contractId, ...payload });
-      router.push("/dashboard");
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
+  //     await transitionContract({ id: contractId, ...payload });
+  //     router.push("/");
+  //   } catch (error) {
+  //     console.log("error", error);
+  //   }
+  // };
   return (
     <>
       <div className={styles.agreementMain}>
@@ -52,7 +60,6 @@ const DisputOpened: FC = () => {
             />
             <div className={styles.flexTextDeposit}>
               <p className={styles.headingDeposit}>Disput opened</p>
-              {/* <p className={styles.subHeadingDeposit}>Amount: $10.030.00</p> */}
             </div>
           </div>
 
@@ -70,6 +77,11 @@ const DisputOpened: FC = () => {
           />
         </div>
       </div>
+      {showApproveModal && (
+        <div className={styles.modalBackdrop}>
+          <ConfirmApproval onClose={closeApprove} />
+        </div>
+      )}
     </>
   );
 };

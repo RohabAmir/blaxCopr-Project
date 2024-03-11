@@ -257,102 +257,112 @@ const StepCompliance: FC<StepComplianceProps> = ({
   };
 
   return (
-    <form className={styles.compilanceMain} onSubmit={handleSubmit(onSubmit)}>
-      <FormProvider {...methods}>
-        <Flex className={styles.compilanceBox}>
-          <Button
-            name="Back"
-            leftIcon={IconType.BackArrow}
-            type={ButtonType.Secondary}
-            onClickHandler={handleBackClick}
-            size={isMobile ? "middle" : "large"}
-          />
-          <h1
-            // level={!screens["md"] ? 2 : 3}
-            className={!isMobile ? styles.textHeadingComplilance : ""}
-          >
-            Compliance
-          </h1>
-          {/* <span style={{ width: "110px" }}></span> */}
-        </Flex>
-        <Flex
-          vertical
-          align="center"
-          style={{
-            maxWidth: "550px",
-            margin: "auto",
-          }}
-        >
-          <div className={styles.innerWrapper}>
-            <Flex
-              vertical
-              align="center"
-              justify="center"
-              gap={20}
-              {...getRootProps()}
-              className={styles.dragDropContainer}
+    <form
+      style={{ overflow: "hidden" }}
+      className={styles.compilanceMain}
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div style={{ padding: "0 24px" }}>
+        <FormProvider {...methods}>
+          <Flex className={styles.compilanceBox}>
+            <Button
+              name="Back"
+              leftIcon={IconType.BackArrow}
+              type={ButtonType.Secondary}
+              onClickHandler={handleBackClick}
+              size={isMobile ? "middle" : "large"}
+            />
+            <h1
+              // level={!screens["md"] ? 2 : 3}
+              className={!isMobile ? styles.textHeadingComplilance : ""}
             >
-              <DownloadOutlined />
-              <Text className={styles.upload}>Upload Documents.</Text>
-              <Text className={styles.details}>
-                Drag and drop a file less than 5 MB. <br /> Attach any
-                supporting documents <br /> related to the agreement
-              </Text>
-              <Button name="Or select file" isSubmit={false} />
-              <input {...getInputProps()} />
-            </Flex>
-            {/* Uploaded files list */}
-            <Flex vertical align="flex-start" style={{ width: "100%" }}>
-              <Title level={4}>Uploaded Files</Title>
-              <div className={styles.uploadedFiles}>
-                {uploadedFiles.map((file, index) => (
-                  <div key={index} className={styles.listItem}>
-                    <div className={styles.listItemLeft}>
-                      <CheckCircleOutlined />
-                      <span>{file.document}</span>
-                    </div>
-                    <div className={styles.listItemRight}>
-                      <Text strong>Uploaded</Text>
-                      <CloseCircleOutlined
-                        onClick={() =>
-                          removeFile(index, uploadedFiles[index].id)
-                        }
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-              {error && <Text type="danger">{error}</Text>}
-            </Flex>
-            <Flex align="center" style={{ marginBottom: "24px" }}>
-              <Image className={styles.shield} src={ShieldIcon} alt="shield" />
-              <Text
-                style={{
-                  color: "#454745",
-                }}
+              Compliance
+            </h1>
+            {/* <span style={{ width: "110px" }}></span> */}
+          </Flex>
+          <Flex
+            vertical
+            align="center"
+            style={{
+              maxWidth: "550px",
+              margin: "auto",
+            }}
+          >
+            <div className={styles.innerWrapper}>
+              <Flex
+                vertical
+                align="center"
+                justify="center"
+                gap={20}
+                {...getRootProps()}
+                className={styles.dragDropContainer}
               >
-                All your data is secured with encryption both during
-                transmission and while stored, utilizing 256-bit AES and SSL/TLS
-                encryption technologies.
-              </Text>
-            </Flex>
-          </div>
-        </Flex>
-        <Flex
-          vertical
-          align="flex-end"
-          style={{ width: "100%", margin: "auto" }}
-        >
-          <Button
-            name="Next"
-            type={ButtonType.Primary}
-            isSubmit
-            isLoading={isLoading}
-            fullWidth={isMobile}
-            customDisabled={uploadedFiles.length === 0} // Disable if no files uploaded
-          />
-        </Flex>
-      </FormProvider>
+                <DownloadOutlined />
+                <Text className={styles.upload}>Upload Documents.</Text>
+                <Text className={styles.details}>
+                  Drag and drop a file less than 5 MB. <br /> Attach any
+                  supporting documents <br /> related to the agreement
+                </Text>
+                <Button name="Or select file" isSubmit={false} />
+                <input {...getInputProps()} />
+              </Flex>
+              {/* Uploaded files list */}
+              <Flex vertical align="flex-start" style={{ width: "100%" }}>
+                <Title level={4}>Uploaded Files</Title>
+                <div className={styles.uploadedFiles}>
+                  {uploadedFiles.map((file, index) => (
+                    <div key={index} className={styles.listItem}>
+                      <div className={styles.listItemLeft}>
+                        <CheckCircleOutlined />
+                        <span>{file.document}</span>
+                      </div>
+                      <div className={styles.listItemRight}>
+                        <Text strong>Uploaded</Text>
+                        <CloseCircleOutlined
+                          onClick={() =>
+                            removeFile(index, uploadedFiles[index].id)
+                          }
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {error && <Text type="danger">{error}</Text>}
+              </Flex>
+              <Flex align="center" style={{ marginBottom: "24px" }}>
+                <Image
+                  className={styles.shield}
+                  src={ShieldIcon}
+                  alt="shield"
+                />
+                <Text
+                  style={{
+                    color: "#454745",
+                  }}
+                >
+                  All your data is secured with encryption both during
+                  transmission and while stored, utilizing 256-bit AES and
+                  SSL/TLS encryption technologies.
+                </Text>
+              </Flex>
+            </div>
+          </Flex>
+          <Flex
+            vertical
+            align="flex-end"
+            // style={{ width: "100%", margin: "auto" }}
+          >
+            <Button
+              name="Next"
+              type={ButtonType.Primary}
+              isSubmit
+              isLoading={isLoading}
+              fullWidth={isMobile}
+              customDisabled={uploadedFiles.length === 0} // Disable if no files uploaded
+            />
+          </Flex>
+        </FormProvider>
+      </div>
     </form>
   );
 };

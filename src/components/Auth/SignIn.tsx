@@ -15,6 +15,8 @@ import { useAppContext } from "@/contexts/App";
 import { useLoginUserMutation } from "@/Store/services/authApi";
 import { useRouter } from "next/navigation";
 import { setJWTToken } from "@/utils/jwtTokens";
+import { signIn } from "next-auth/react";
+import Cookies from "js-cookie";
 
 interface LoginProps {
   email: string;
@@ -64,11 +66,21 @@ const SignIn: FC = () => {
   const onSubmit: SubmitHandler<LoginProps> = async (data) => {
     const result = await loginUser(data).unwrap();
 
-            if (result?.access_token) {
-                  setJWTToken(result.access_token); // Store the token in cookies
-            }
-            router.push("/dashboard");
-      };
+    console.log(result);
+
+    if (result?.access_token) {
+      setJWTToken(result.access_token); // Store the token in cookies
+    }
+    router.push("/");
+  };
+  // const setJWTToken = (token: any) => {
+  //   Cookies.set("token", token, {
+  //     expires: 7,
+  //     path: "/",
+  //     secure: true,
+  //     sameSite: "Lax",
+  //   });
+  // };
 
   function isErrorWithMessage(error: any): error is { message: string } {
     return error && typeof error.message === "string";
@@ -87,7 +99,7 @@ const SignIn: FC = () => {
         <Flex
           vertical
           align={isMobile ? "flex-start" : "center"}
-          style={{ width: "100%", minWidth: "350px" }}
+          style={{ width: "100%" }}
         >
           <Title level={isMobile ? 3 : 1}>Log in to Blaxcorp</Title>
           {!isMobile && (

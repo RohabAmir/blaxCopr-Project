@@ -21,54 +21,50 @@ import { storeLocalData, getLocalData } from "@/utils";
 import Link from "next/link";
 import { useAppContext } from "@/contexts/App";
 
-
-
 const Create: FC<any> = ({ handleStepChange, step }) => {
-      const contractId = getLocalData("contract_id");
-      const { data: userDetails } = useGetUserDetailsQuery();
-      const [postContractDetails, { isLoading, isError, error }] =
-            usePostContractDetailsMutation();
-      const [updateContractDetails] = useUpdateContractDetailsMutation();
-      const {
-            data: contractDetails,
-            isSuccess,
-            refetch,
-      } = useFetchContractDetailsQuery(contractId, {
-            skip: !contractId, // Skip querying if no ID
+  const contractId = getLocalData("contract_id");
+  const { data: userDetails } = useGetUserDetailsQuery();
+  const [postContractDetails, { isLoading, isError, error }] =
+    usePostContractDetailsMutation();
+  const [updateContractDetails] = useUpdateContractDetailsMutation();
+  const {
+    data: contractDetails,
+    isSuccess,
+    refetch,
+  } = useFetchContractDetailsQuery(contractId, {
+    skip: !contractId, // Skip querying if no ID
+  });
+
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+  const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null);
+  const { isMobile } = useAppContext();
+
+  const methods = useForm({
+    defaultValues: {
+      contractName: "",
+      role: "",
+      currency: "",
+      InspectionPeriod: "",
+    },
+  });
+  const { handleSubmit, formState, reset } = methods;
+  const { isDirty } = formState;
+
+  useEffect(() => {
+    if (isSuccess && contractDetails) {
+      methods.reset({
+        contractName: contractDetails.contractName,
+        role: contractDetails.createrRole,
+        currency: contractDetails.currency,
+        InspectionPeriod: contractDetails.inspectionPeriod,
       });
+      setSelectedRole(contractDetails.createrRole);
+    }
+  }, [contractDetails, isSuccess, methods]);
 
-      const [selectedCurrency, setSelectedCurrency] = useState<string | null>(
-            null
-      );
-      const [selectedRole, setSelectedRole] = useState<string | null>(null);
-      const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null);
-      const { isMobile } = useAppContext();
-
-      const methods = useForm({
-            defaultValues: {
-                  contractName: "",
-                  role: "",
-                  currency: "",
-                  InspectionPeriod: "",
-            },
-      });
-      const { handleSubmit, formState, reset } = methods;
-      const { isDirty } = formState;
-
-      useEffect(() => {
-            if (isSuccess && contractDetails) {
-                  methods.reset({
-                        contractName: contractDetails.contractName,
-                        role: contractDetails.createrRole,
-                        currency: contractDetails.currency,
-                        InspectionPeriod: contractDetails.inspectionPeriod,
-                  });
-                  setSelectedRole(contractDetails.createrRole);
-            }
-      }, [contractDetails, isSuccess, methods]);
-
-      // Determine if the role dropdown should be disabled
-      const isRoleSelected = !!selectedRole; // This checks if a role has already been selected
+  // Determine if the role dropdown should be disabled
+  const isRoleSelected = !!selectedRole; // This checks if a role has already been selected
 
   const handlechange = (value: string) => {
     setSelectedCurrency(value);
@@ -92,19 +88,19 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
     label: (index + 1).toString(),
   }));
 
-      // Function to handle form submission
-      const onSubmit = async (data: any) => {
-            const contractId = getLocalData("contract_id");
-            let payload = {
-                  contract: {
-                      contractName: data.contractName,
-                      inspectionPeriod: data.InspectionPeriod,
-                      createrRole: data.role,
-                      currency: data.currency,
-                      // Add status as "INCOMPLETE" only for new contracts (POST requests)
-                      ...(contractId == null ? { status: "INCOMPLETE" } : {})
-                  },
-              };
+  // Function to handle form submission
+  const onSubmit = async (data: any) => {
+    const contractId = getLocalData("contract_id");
+    let payload = {
+      contract: {
+        contractName: data.contractName,
+        inspectionPeriod: data.InspectionPeriod,
+        createrRole: data.role,
+        currency: data.currency,
+        // Add status as "INCOMPLETE" only for new contracts (POST requests)
+        ...(contractId == null ? { status: "INCOMPLETE" } : {}),
+      },
+    };
 
     if (contractId && isDirty) {
       try {
@@ -138,7 +134,7 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
     <form className={styles.createMain} onSubmit={handleSubmit(onSubmit)}>
       <FormProvider {...methods}>
         <Flex className={styles.createFlex}>
-          <Link href="/dashboard">
+          <Link href="/">
             <Button
               name="Back"
               leftIcon={IconType.BackArrow}
@@ -146,120 +142,61 @@ const Create: FC<any> = ({ handleStepChange, step }) => {
               size={isMobile ? "middle" : "large"}
             />
           </Link>
-
-                              {isMobile && (
-                                    <div className={styles.stepperFlexMain}>
-                                          <div
-                                                className={
-                                                      styles.stepperFlexNew
-                                                }
-                                          >
-                                                <Image
-                                                      src={OKIcon}
-                                                      alt="ok icon"
-                                                />
-                                                <span
-                                                      className={
-                                                            styles.spanStepper
-                                                      }
-                                                >
-                                                      create
-                                                </span>
-                                          </div>
-                                          <div
-                                                className={
-                                                      styles.stepperFlexNew
-                                                }
-                                          >
-                                                <Image
-                                                      src={CurrentIcon}
-                                                      alt="ok icon"
-                                                />
-                                                <span
-                                                      className={
-                                                            styles.spanStepper
-                                                      }
-                                                >
-                                                      details
-                                                </span>
-                                          </div>
-                                          <div
-                                                className={
-                                                      styles.stepperFlexNew
-                                                }
-                                          >
-                                                <Image
-                                                      src={CurrentIcon}
-                                                      alt="ok icon"
-                                                />
-                                                <span
-                                                      className={
-                                                            styles.spanStepper
-                                                      }
-                                                >
-                                                      compilance
-                                                </span>
-                                          </div>{" "}
-                                          <div
-                                                className={
-                                                      styles.stepperFlexNew
-                                                }
-                                          >
-                                                <Image
-                                                      src={CurrentIcon}
-                                                      alt="ok icon"
-                                                />
-                                                <span
-                                                      className={
-                                                            styles.spanStepper
-                                                      }
-                                                >
-                                                      agreement
-                                                </span>
-                                          </div>
-                                    </div>
-                              )}
-                              <Title
-                                    level={!isMobile ? 2 : 3}
-                                    className={styles.headingMain}
-                              >
-                                    {" "}
-                                    Create new contract
-                              </Title>
-                              <span></span>
-                        </Flex>
-                        <Flex className={styles.mainContainerCreate}>
-                              <Flex className={styles.createInput}>
-                                    <Flex vertical className="w-full" gap={20}>
-                                          <TextInput
-                                                name="contractName"
-                                                label="Contract Name"
-                                                required
-                                          />
-                                          <Dropdown
-                                                name="role"
-                                                label="My role"
-                                                options={roleOptions}
-                                                onChange={handlechange}
-                                                required
-                                                disabled={isRoleSelected} // Disable the dropdown if a role is selected
-                                          />
-                                          <Dropdown
-                                                name="currency"
-                                                label="Currency"
-                                                options={currencyOptions}
-                                                onChange={handlechange}
-                                                required
-                                          />
-                                          <Dropdown
-                                                name="InspectionPeriod"
-                                                label="Inspection Period(days)"
-                                                options={inspectionOptions}
-                                                onChange={handlechange}
-                                                required
-                                          />
-                                    </Flex>
-                              </Flex>
+          {/* 
+          {isMobile && (
+            <div className={styles.stepperFlexMain}>
+              <div className={styles.stepperFlexNew}>
+                <Image src={OKIcon} alt="ok icon" />
+                <span className={styles.spanStepper}>create</span>
+              </div>
+              <div className={styles.stepperFlexNew}>
+                <Image src={CurrentIcon} alt="ok icon" />
+                <span className={styles.spanStepper}>details</span>
+              </div>
+              <div className={styles.stepperFlexNew}>
+                <Image src={CurrentIcon} alt="ok icon" />
+                <span className={styles.spanStepper}>compilance</span>
+              </div>{" "}
+              <div className={styles.stepperFlexNew}>
+                <Image src={CurrentIcon} alt="ok icon" />
+                <span className={styles.spanStepper}>agreement</span>
+              </div>
+            </div>
+          )} */}
+          <Title level={!isMobile ? 2 : 3} className={styles.headingMain}>
+            {" "}
+            Create new contract
+          </Title>
+          <span></span>
+        </Flex>
+        <Flex className={styles.mainContainerCreate}>
+          <Flex className={styles.createInput}>
+            <Flex vertical className="w-full" gap={20}>
+              <TextInput name="contractName" label="Contract Name" required />
+              <Dropdown
+                name="role"
+                label="My role"
+                options={roleOptions}
+                onChange={handlechange}
+                required
+                disabled={isRoleSelected} // Disable the dropdown if a role is selected
+              />
+              <Dropdown
+                name="currency"
+                label="Currency"
+                options={currencyOptions}
+                onChange={handlechange}
+                required
+              />
+              <Dropdown
+                name="InspectionPeriod"
+                label="Inspection Period(days)"
+                options={inspectionOptions}
+                onChange={handlechange}
+                required
+              />
+            </Flex>
+          </Flex>
 
           <Flex className={styles.createInput}>
             <Flex vertical>

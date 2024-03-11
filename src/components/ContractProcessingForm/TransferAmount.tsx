@@ -58,9 +58,10 @@ const TransferAmount: FC<TransferProps> = ({ onNext, onBack }) => {
               />
             </div>
             <div className={styles.flexTextTransfer}>
-              <p className={styles.headingTransfer}>Send a manual transfer</p>
+              <p className={styles.headingTransfer}>Link a payment method</p>
               <p className={styles.subHeadingTransfer}>
-                Send a wire transfer from your bank
+                For your first transaction with any new party, please be aware
+                that card payments are not permitted.{" "}
               </p>
             </div>
           </div>

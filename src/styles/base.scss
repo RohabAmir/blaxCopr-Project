@@ -1,15 +1,24 @@
 $breakpoints: (
-  'xs': 0,       // Extra small screen / phone
-  'sm': 576px,   // Small screen / phone
-  'md': 768px,   // Medium screen / tablet
-  'lg': 992px,   // Large screen / desktop
-  'xl': 1200px,  // Extra large screen / wide desktop
-  'xxl': 1600px  // Extra extra large screen / full hd
+  "xs": 0,
+  // Extra small screen / phone
+  "sm": 576px,
+  // Small screen / phone
+  "md": 768px,
+  // Medium screen / tablet
+  "lg": 992px,
+  // Large screen / desktop
+  "xl": 1200px,
+  // Extra large screen / wide desktop
+  "xxl": 1600px // Extra extra large screen / full hd,
 );
-$default-breakpoint: 'xs';
+$default-breakpoint: "xs";
 
 @mixin break-level($breakpoint-name) {
-  $breakpoint-value: if(map-has-key($breakpoints, $breakpoint-name), map-get($breakpoints, $breakpoint-name), map-get($breakpoints, $default-breakpoint));
+  $breakpoint-value: if(
+    map-has-key($breakpoints, $breakpoint-name),
+    map-get($breakpoints, $breakpoint-name),
+    map-get($breakpoints, $default-breakpoint)
+  );
   @if $breakpoint-value == 0 {
     @content;
   } @else {

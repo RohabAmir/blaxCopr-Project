@@ -13,7 +13,7 @@ import {
   useTransitionContractMutation,
 } from "@/Store/services/contractApi";
 import { getLocalData } from "@/utils";
-import Dispute from "@/app/(dashboard)/dispute/page";
+import Dispute from "@/app/dispute/page";
 import { useRouter } from "next/navigation";
 import ConfirmDisputeOpening from "../Shared/Modals/ConfirmDisputeOpening";
 import ConfirmApproval from "../Shared/Modals/ConfirmApproval";

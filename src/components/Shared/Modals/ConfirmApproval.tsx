@@ -31,7 +31,7 @@ const ConfirmApproval: FC<ModalProps> = ({ onClose }) => {
       console.log("mark as approve");
 
       await transitionContract({ id: contractId, ...payload });
-      router.push("/dashboard");
+      router.push("/");
     } catch (error) {
       console.log("error", error);
     }

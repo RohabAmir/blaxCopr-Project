@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useState, useCallback, useEffect } from "react";
 import styles from "./style.module.scss";
-import { FormSection } from "../Shared";
+import { FormSection, VerifyProfileBar } from "../Shared";
 import { Flex, Row, Col, Grid } from "antd";
 import { Button } from "../Shared";
 import { ButtonType, IconType } from "@/types";
@@ -98,7 +98,7 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
       toast.success("Moving To Payment Flow");
       // Delay before navigating to dashboard
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push("/");
       }, 1000);
     } catch (error) {
       // Handle error here, perhaps with a toast notification

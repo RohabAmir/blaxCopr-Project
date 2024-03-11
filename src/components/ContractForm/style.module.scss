@@ -181,6 +181,8 @@
   border-radius: 100px;
   border: 1px solid rgba(22, 51, 0, 0.12);
   background: #fff;
+  color: #0e0f0c;
+  // background-color: rgb(159, 232, 112);
   padding: 4px 8px 4px 16px;
   font-family: Inter;
   font-size: 16px;
@@ -563,7 +565,7 @@
 .selectAfter {
   @extend .select;
   border-radius: 100px;
-  background: #9fe870;
+  background-color: #fff;
 }
 // =============================================
 // ======compilance==============
@@ -645,6 +647,10 @@
 //   cursor: pointer;
 //   // display: flex;
 // }
+.ant-flex-justify-space-between {
+  justify-content: space-between !important;
+  align-items: baseline !important;
+}
 // =-----------------------------------------------------------------------------------------------------------------
 // --------STEP CREATE------------------
 @media screen and (max-width: 750px) {
@@ -668,7 +674,7 @@
   }
   .createFlex {
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
     align-items: flex-start;
   }
   .headingMain {
@@ -698,7 +704,7 @@
   }
   .createFlex {
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
     align-items: flex-start;
     padding: 8px;
   }
@@ -744,7 +750,7 @@
   }
   .createFlex {
     flex-direction: column;
-    gap: 6px;
+    gap: 16px;
     align-items: flex-start;
     padding: 6px;
   }

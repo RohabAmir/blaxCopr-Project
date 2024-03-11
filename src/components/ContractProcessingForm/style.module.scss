@@ -324,6 +324,7 @@
   margin-bottom: 48px;
   max-width: 1190px;
   margin: 0 auto;
+  padding: 0 24px;
 }
 .detailBox {
   display: flex;
@@ -736,6 +737,7 @@
 .inlineSubText {
   font-weight: 600;
   font-size: 14px;
+  color: #0e0f0c;
 }
 .btnReportBg {
   display: flex;
@@ -756,8 +758,9 @@
   background: #f8d65b;
 }
 .btnReportText {
-  font-size: 14;
+  font-size: 14px;
   font-weight: 600;
+  color: #0e0f0c;
 }
 .noScroll {
   overflow: hidden;
@@ -949,6 +952,7 @@
   width: 100%;
   max-width: 1190px;
   margin: 0 auto;
+  padding: 0 24px;
 }
 .flexBtnResp {
   display: flex;
@@ -1004,6 +1008,7 @@
     flex-direction: column;
     width: 100%;
     align-items: flex-start;
+    padding: 0 24px;
   }
   .detailBox {
     width: 100%;
@@ -1014,6 +1019,7 @@
   }
   .transactionDetails {
     margin-bottom: 20px;
+    padding: 0 24px;
   }
   .textHeadingDetails {
     font-size: 14px;
@@ -1053,7 +1059,7 @@
     gap: 12px;
   }
   .flexDeposit {
-    align-items: flex-start;
+    align-items: center;
     display: flex;
   }
 }

@@ -40,7 +40,7 @@ import { storeLocalData, getLocalData } from "@/utils";
 import { useRouter } from "next/navigation";
 
 import { useAppContext } from "@/contexts/App";
-import Dispute from "../../app/(dashboard)/dispute/page";
+import Dispute from "../../app/dispute/page";
 
 const ContractProcessingForm: FC = () => {
   const router = useRouter();
@@ -108,7 +108,13 @@ const ContractProcessingForm: FC = () => {
   const formattedDate = `${date.getDate()} ${date.toLocaleString("default", {
     month: "short",
   })}, ${date.getFullYear()}`;
-
+  const handleCopyText = (event: any) => {
+    const textToCopy = event.target.previousSibling.textContent.trim();
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => alert("Copied to clipboard"))
+      .catch((error) => console.error("Failed to copy:", error));
+  };
   const handlePreviousComponent = () => {
     if (previousComponent !== null) {
       setCurrentComponent(previousComponent);
@@ -206,8 +212,9 @@ const ContractProcessingForm: FC = () => {
       setOpenMessage(true);
     }
     if (
-      contractDetails?.status === "APPROVE" &&
-      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+      (contractDetails?.status === "APPROVE" &&
+        contractDetails?.contractPayments?.paymentStatus === "DEPOSITED") ||
+      contractDetails?.contractPayments?.paymentStatus === "WITHDRAWAL"
     ) {
       setGoInvoice(true);
     }
@@ -216,125 +223,22 @@ const ContractProcessingForm: FC = () => {
     contractDetails?.status,
   ]);
 
-  const renderSellerComponents = () => {
-    if (withDrawlMethod) {
-      return (
-        <>
-          <Stepper currentStep={3} />
-          <WithDrawlBuyerWaiting
-            onNext={handleNextComponent}
-            contractDetails={contractDetails}
-          />
-        </>
-      );
-    } else if (inspectionPeriod) {
-      return (
-        <>
-          <Stepper currentStep={4} />
-          <InspectedPeriod
-            onNext={handleNextComponent}
-            contractDetails={contractDetails}
-          />
-        </>
-      );
-    } else if (dispute) {
-      return (
-        <>
-          <Stepper currentStep={4} />
-          <DisputOpened />
-        </>
-      );
-    } else if (invoice) {
-      return (
-        <>
-          <Stepper currentStep={5} />
-          <Invoice />
-        </>
-      );
-    } else {
-      switch (currentComponent) {
-        case 1:
-          return (
-            <>
-              <Stepper currentStep={2} />
-              <SetupWithDrawl
-                onNext={handleNextComponent}
-                contractDetails={contractDetails}
-              />
-            </>
-          );
-        case 2:
-          return (
-            <>
-              <Stepper currentStep={2} />
-              <AddWithDrawlDisbursement
-                onNext={handleNextComponent}
-                onBack={handlePreviousComponent}
-              />
-            </>
-          );
-        case 3:
-          return (
-            <>
-              <Stepper currentStep={3} />
-              <WithDrawlMethod
-                onNext={handleNextComponent}
-                contractDetails={contractDetails}
-              />
-            </>
-          );
-        case 4:
-          return (
-            <>
-              <Stepper currentStep={3} />
-              <WithDrawlBuyerWaiting
-                onNext={handleNextComponent}
-                contractDetails={contractDetails}
-              />
-            </>
-          );
-        case 5:
-          return (
-            <>
-              <Stepper currentStep={4} />
-              <InspectedPeriod
-                onNext={handleNextComponent}
-                contractDetails={contractDetails}
-              />
-            </>
-          );
-        case 6:
-          return (
-            <>
-              <Stepper currentStep={4} />
-              <DisputOpened />
-            </>
-          );
-        case 7:
-          return (
-            <>
-              <Stepper currentStep={5} />
-              <Invoice />
-            </>
-          );
-        default:
-          return null;
-      }
-    }
+  const handleState = () => {
+    setInspection(true);
   };
 
   const renderBuyerComponents = () => {
     if (isDepositSuccessful) {
       return (
         <>
-          <Stepper currentStep={3} />
-          <SuccessfulDeposit onNext={handleNextComponent} />;
+          {!isMobile && <Stepper currentStep={3} />}
+          <SuccessfulDeposit onNext={handleState} />;
         </>
       );
     } else if (inspection) {
       return (
         <>
-          <Stepper currentStep={4} />
+          {!isMobile && <Stepper currentStep={4} />}
           <Inspection onNext={handleNextComponent} />
         </>
       );
@@ -348,7 +252,7 @@ const ContractProcessingForm: FC = () => {
     } else if (openMessage) {
       return (
         <>
-          <Stepper currentStep={4} />
+          {!isMobile && <Stepper currentStep={4} />}
           <DisputOpened />
         </>
       );
@@ -357,14 +261,14 @@ const ContractProcessingForm: FC = () => {
         case 1:
           return (
             <>
-              <Stepper currentStep={2} />
+              {!isMobile && <Stepper currentStep={2} />}
               <Deposit onNext={handleNextComponent} />
             </>
           );
         case 2:
           return (
             <>
-              <Stepper currentStep={2} />
+              {!isMobile && <Stepper currentStep={2} />}
               <TransferAmount
                 onNext={handleNextComponent}
                 onBack={handlePreviousComponent}
@@ -385,7 +289,7 @@ const ContractProcessingForm: FC = () => {
         case 4:
           return (
             <>
-              <Stepper currentStep={2} />
+              {!isMobile && <Stepper currentStep={2} />}
               <BankDetails
                 onNext={handleNextComponent}
                 onBack={handlePreviousComponent}
@@ -396,8 +300,116 @@ const ContractProcessingForm: FC = () => {
         case 5:
           return (
             <>
-              <Stepper currentStep={2} />
+              {!isMobile && <Stepper currentStep={2} />}
               <PendingDeposit />
+            </>
+          );
+
+        default:
+          return null;
+      }
+    }
+  };
+
+  const renderSellerComponents = () => {
+    if (withDrawlMethod) {
+      return (
+        <>
+          {!isMobile && <Stepper currentStep={3} />}
+          <WithDrawlBuyerWaiting
+            onNext={handleNextComponent}
+            contractDetails={contractDetails}
+          />
+        </>
+      );
+    } else if (inspectionPeriod) {
+      return (
+        <>
+          {!isMobile && <Stepper currentStep={4} />}
+          <InspectedPeriod
+            onNext={handleNextComponent}
+            contractDetails={contractDetails}
+          />
+        </>
+      );
+    } else if (dispute) {
+      return (
+        <>
+          {!isMobile && <Stepper currentStep={4} />}
+          <DisputOpened />
+        </>
+      );
+    } else if (invoice) {
+      return (
+        <>
+          {!isMobile && <Stepper currentStep={5} />}
+          <Invoice />
+        </>
+      );
+    } else {
+      switch (currentComponent) {
+        case 1:
+          return (
+            <>
+              {!isMobile && <Stepper currentStep={2} />}
+              <SetupWithDrawl
+                onNext={handleNextComponent}
+                contractDetails={contractDetails}
+              />
+            </>
+          );
+        case 2:
+          return (
+            <>
+              {!isMobile && <Stepper currentStep={2} />}
+              <AddWithDrawlDisbursement
+                onNext={handleNextComponent}
+                onBack={handlePreviousComponent}
+              />
+            </>
+          );
+        case 3:
+          return (
+            <>
+              {!isMobile && <Stepper currentStep={3} />}
+              <WithDrawlMethod
+                onNext={handleNextComponent}
+                contractDetails={contractDetails}
+              />
+            </>
+          );
+        case 4:
+          return (
+            <>
+              {!isMobile && <Stepper currentStep={3} />}
+              <WithDrawlBuyerWaiting
+                onNext={handleNextComponent}
+                contractDetails={contractDetails}
+              />
+            </>
+          );
+        case 5:
+          return (
+            <>
+              {!isMobile && <Stepper currentStep={4} />}
+              <InspectedPeriod
+                onNext={handleNextComponent}
+                contractDetails={contractDetails}
+              />
+            </>
+          );
+        case 6:
+          return (
+            <>
+              {!isMobile && <Stepper currentStep={4} />}
+              <DisputOpened />
+            </>
+          );
+        case 7:
+          return (
+            <>
+              {!isMobile && <Stepper currentStep={5} />}
+              <Invoice />
             </>
           );
         default:
@@ -433,7 +445,7 @@ const ContractProcessingForm: FC = () => {
       // Default rendering for the StepAgreement component
       return (
         <>
-          <Stepper currentStep={1} />
+          {!isMobile && <Stepper currentStep={1} />}
           <StepAgreement contractDetails={contractDetails} />
         </>
       );
@@ -442,8 +454,6 @@ const ContractProcessingForm: FC = () => {
 
   return (
     <Flex vertical className="w-full">
-      <VerifyProfileBar />
-
       {/* -------------------------Useful Code---------------------------------- */}
 
       <Flex className="w-full">
@@ -462,6 +472,7 @@ const ContractProcessingForm: FC = () => {
                     className={styles.copyIcon}
                     src={CopyIcon}
                     alt="copy icon"
+                    onClick={handleCopyText}
                   />
                 </span>
               </div>
@@ -516,7 +527,11 @@ const ContractProcessingForm: FC = () => {
         <Flex
           vertical
           align="center"
-          style={{ width: "100%", padding: "0 24px" }}
+          style={
+            isMobile
+              ? { width: "90%", padding: "0 12px" }
+              : { padding: "0 12px", width: "100%" }
+          }
         >
           {isMobile && (
             <>
@@ -540,5 +555,6 @@ const ContractProcessingForm: FC = () => {
       </Flex>
     </Flex>
   );
+  //useFetchContractDetailsQueryuseFetchContractDetailsQuery #1076ED
 };
 export default ContractProcessingForm;
