@@ -7,14 +7,14 @@ import {
 } from "@/Store/services/onfidoApi";
 import { ICountry, IState, Country, State } from "country-state-city";
 import iso2ToIso3 from "country-iso-2-to-3";
-import { Onfido } from "onfido-sdk-ui";
 
 
 interface ModalProps {
       closeModal: () => void;
+      onReceiveToken: (token: string) => void;
 }
 
-const ConfirmVerificationModal: FC<ModalProps> = ({ closeModal }) => {
+const ConfirmVerificationModal: FC<ModalProps> = ({ closeModal, onReceiveToken }) => {
       const [createApplicant, { isLoading, isError, error }] =
             useCreateApplicantMutation();
       const { data: sdkTokenData, refetch: fetchOnfidoSdkToken } =
@@ -29,8 +29,6 @@ const ConfirmVerificationModal: FC<ModalProps> = ({ closeModal }) => {
       const [states, setStates] = useState<IState[]>([]);
       const [selectedState, setSelectedState] = useState<string | null>(null);
       const [successMessage, setSuccessMessage] = useState<string | null>(null);
-      const onfidoContainerRef = useRef(null);
-      const [onfidoInitiated, setOnfidoInitiated] = useState(false);
 
       useEffect(() => {
             const allCountries = Country.getAllCountries();
@@ -49,48 +47,11 @@ const ConfirmVerificationModal: FC<ModalProps> = ({ closeModal }) => {
 
       useEffect(() => {
             if (sdkTokenData) {
-                  closeModal();
-                  // When SDK Token is fetched --> initializing Onfido SDK
+              onReceiveToken(sdkTokenData.token); // Change this line
+              // No direct call to closeModal here
             }
-      }, [sdkTokenData, closeModal]);
+      }, [sdkTokenData, onReceiveToken]); // Adjust dependency array
 
-      // Initialize Onfido SDK
-      const initOnfido = () => {
-            if (
-                  onfidoContainerRef.current &&
-                  sdkTokenData &&
-                  !onfidoInitiated
-            ) {
-                  Onfido.init({
-                        token: sdkTokenData.token,
-                        containerId: onfidoContainerRef.current,
-                        steps: [
-                              {
-                                    type: "document",
-                              },
-                              {
-                                    type: "face",
-                                    options: {
-                                          requestedVariant: "video",
-                                    },
-                              },
-                              "complete",
-                        ],
-                        onComplete: (data: any) => {
-                              console.log("Onfido verification complete", data);
-                              // You can now handle the verification result
-                        },
-                        onError: (error: any) => {
-                              console.error("Onfido SDK error:", error);
-                        },
-                  });
-                  setOnfidoInitiated(true);
-            }
-      };
-
-      useEffect(() => {
-            initOnfido();
-      }, [sdkTokenData]);
 
       const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault(); // Prevent default form submission
@@ -293,7 +254,7 @@ const ConfirmVerificationModal: FC<ModalProps> = ({ closeModal }) => {
                               >
                                     &times;
                               </button>
-                              <div ref={onfidoContainerRef} />
+                              
                         </div>
                         
                   </form>
