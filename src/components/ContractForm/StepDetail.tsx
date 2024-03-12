@@ -19,13 +19,8 @@ import { useFetchContractDetailsQuery } from "@/Store/services/contractApi";
 import { storeLocalData, getLocalData } from "@/utils";
 import { useAppContext } from "@/contexts/App";
 import { useDeleteTransactionMutation } from "@/Store/services/contractApi";
+import { calculateTransactionSummary } from "@/utils/CalculateSummary";
 
-import {
-  updateBuyerPrice,
-  updateSubTotal,
-  updateEscrowPrice,
-} from "@/Store/services/contractSlice";
-import { useDispatch } from "react-redux";
 
 interface Transaction {
   id?: number; // Include 'id' as optional for new transactions
@@ -92,58 +87,9 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
     "Marine Vehicles": 0.02,
     Aircraft: 0.015,
     " Jewelry": 0.025,
+  
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const feeStructures: FeeStructure[] = [
-    {
-      min: 1.0,
-      max: 9999.99,
-      baseFee: 100.0,
-      percentageFee: 0.008,
-      categoryFees: categoryFee,
-    },
-
-    {
-      min: 10000.0,
-      max: 49999.99,
-      baseFee: 150.0,
-      percentageFee: 0.006,
-      categoryFees: categoryFee,
-    },
-
-    {
-      min: 50000.0,
-      max: 99999.99,
-      baseFee: 200.0,
-      percentageFee: 0.005,
-      categoryFees: categoryFee,
-    },
-
-    {
-      min: 100000.0,
-      max: 249999.99,
-      baseFee: 250.0,
-      percentageFee: 0.004,
-      categoryFees: categoryFee,
-    },
-
-    {
-      min: 250000.0,
-      max: 499999.99,
-      baseFee: 300.0,
-      percentageFee: 0.003,
-      categoryFees: categoryFee,
-    },
-
-    {
-      min: 500000.0,
-      max: 999999.99,
-      baseFee: 350.0,
-      percentageFee: 0.0025,
-      categoryFees: categoryFee,
-    },
-  ];
 
   // Convert categoryFee to an array of options
   const options = Object.keys(categoryFee).map((key) => ({
@@ -165,7 +111,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
   });
   console.log("contractData>>", contractDetails);
   const { isMobile } = useAppContext();
-  const dispatch = useDispatch();
+
   const methods = useForm<FormValues>({
     defaultValues: {
       transactions: [
@@ -192,7 +138,6 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
     name: "transactions",
   });
 
-  console.log("fields", fields);
 
   const { handleSubmit, reset, formState, watch, control } = methods;
   const { isDirty } = formState;
@@ -217,74 +162,35 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
 
   // useEffect hook adjusted to include dynamic escrow fee calculation and other transaction summaries
   useEffect(() => {
+
     let totalTransactionAmount = 0;
-    let totalCategoryFee = 0;
-    let percentageFee = 0;
-    let wirefeeTransfer = 25;
-
-    // Calculate total amount and category fees
-    watchedTransactions.forEach(
-      (transaction: { price: string; category: string | number }) => {
-        const price = parseFloat(transaction.price) || 0;
-        const categoryFeePercentage = categoryFee[transaction.category] || 0;
-        totalTransactionAmount += price;
-        totalCategoryFee += price * categoryFeePercentage;
-      }
+      let totalCategoryFee = 0;
+      // Calculate total amount and category fees
+      watchedTransactions.forEach(
+        (transaction: { price: string; category: string | number }) => {
+          const price = parseFloat(transaction.price) || 0;
+          const categoryFeePercentage = categoryFee[transaction.category] || 0;
+          totalTransactionAmount += price;
+          totalCategoryFee += price * categoryFeePercentage;
+        }
+      );
+    // Call the utility function with the necessary parameters
+    const summary = calculateTransactionSummary(
+      watchedTransactions,
+      watchedShippingCost,
+      watchedCollectionServiceUpgrade,
+      watchedLienHolderUpgrade,
+      watchedEscrowFeePaidBy
     );
-
-    // Find applicable fee structure
-    const applicableFeeStructure = feeStructures.find(
-      (fs) =>
-        totalTransactionAmount >= fs.min && totalTransactionAmount <= fs.max
-    );
-
-    const baseFee = applicableFeeStructure ? applicableFeeStructure.baseFee : 0;
-    let remainingAmount = totalTransactionAmount;
-    for (const fee of feeStructures) {
-      if (remainingAmount > fee.max) {
-        percentageFee += fee.max * fee.percentageFee;
-        remainingAmount -= fee.max;
-      } else {
-        percentageFee += remainingAmount * fee.percentageFee;
-        break;
-      }
-    }
-
-    // Calculate subtotal and buyer price
-    const shippingCost = parseFloat(watchedShippingCost) || 0;
-    const serviceUpgradeCost =
-      (watchedCollectionServiceUpgrade ? 60 : 0) +
-      (watchedLienHolderUpgrade ? 60 : 0);
-    const dynamicEscrowFee =
-      baseFee + percentageFee + totalCategoryFee + wirefeeTransfer;
-    let dynamicSubTotal =
-      totalTransactionAmount + shippingCost + serviceUpgradeCost;
-    let dynamicBuyerPrice =
-      dynamicSubTotal +
-      (watchedEscrowFeePaidBy === "BUYER" ? dynamicEscrowFee : 0);
-
-    setSubTotal(dynamicSubTotal);
-    setBuyerPrice(dynamicBuyerPrice);
-    setEscrowFee(dynamicEscrowFee);
-    setShippingFee(shippingCost);
-
-    // Optionally, update Redux or local state as needed
-    dispatch(updateSubTotal(subTotal));
-    dispatch(updateBuyerPrice(buyerPrice));
-    dispatch(updateEscrowPrice(escrowFee));
-  }, [
-    watchedTransactions,
-    watchedShippingCost,
-    watchedCollectionServiceUpgrade,
-    watchedLienHolderUpgrade,
-    watchedEscrowFeePaidBy,
-    dispatch,
-    feeStructures,
-    subTotal,
-    buyerPrice,
-    categoryFee,
-    escrowFee,
-  ]);
+  
+    // Update component state with the results
+    setSubTotal(summary.subTotal);
+    setBuyerPrice(summary.buyerPrice);
+    setEscrowFee(summary.escrowFee);
+    setShippingFee(summary.shippingFee);
+  }, [watchedTransactions, watchedShippingCost, watchedCollectionServiceUpgrade, watchedLienHolderUpgrade, watchedEscrowFeePaidBy, categoryFee]);
+  
+  
 
   //for fetching the contractDetails field values and populating them
   useEffect(() => {
@@ -313,10 +219,6 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
           contractDetails.shipping?.collectionServiceUpgrade,
         lienHolderUpgrade: contractDetails.shipping?.lienHolderUpgrade,
       });
-      // Calculate and update summary values
-      // const { subTotal, buyerPrice } = calculateSummary(contractDetails);
-      // setSubTotal(subTotal);
-      // setBuyerPrice(buyerPrice);
     }
   }, [contractDetails, isSuccess, methods]);
 
@@ -333,13 +235,9 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
     if (transactionId) {
       try {
         console.log("transactionId", transactionId);
-        // Call the deleteTransaction mutation with the transaction ID
         await deleteTransaction(transactionId).unwrap();
-
-        // Update the state only after successful deletion
         remove(index);
       } catch (error) {
-        // Handle any errors here (e.g., show an error message to the user)
         console.error("Error deleting the transaction:", error);
       }
     } else {
@@ -386,9 +284,6 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
       shipping: shippingPayload,
     };
 
-    dispatch(updateSubTotal(subTotal));
-    dispatch(updateBuyerPrice(buyerPrice));
-    dispatch(updateEscrowPrice(escrowFee));
 
     if ((transactionIds.length > 0 || shippingId) && isDirty) {
       //Second step patch request
@@ -475,6 +370,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                 <TextInput
                   name={`transactions.${index}.price`}
                   label={`price (${contractDetails?.currency})`}
+                  type="number"
                   required
                 />
               </div>
@@ -533,11 +429,12 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                 <TextInput
                   name="shippingCost"
                   label={`Shipping cost (${contractDetails?.currency})`}
+                  type="number"
                   placeholder="$500.00"
                   required
                 />
               </div>
-              <div className={styles.detailsItem}>
+              <div style={{ marginTop:"12px"}} className={styles.detailsItem}>
                 <Dropdown
                   name="shippingMethod"
                   label="Shipping method"
@@ -658,12 +555,6 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
               <div className={styles.flexDetails}>
                 <p className={styles.total}>Shipping fee:</p>
                 <p className={styles.amount}>
-                  {/* {` $ ${
-                                                            contractDetails
-                                                                  ?.shipping
-                                                                  ?.shippingCost ||
-                                                            ""
-                                                      }`} */}
                   ${shippingFee.toFixed(2)}
                 </p>
               </div>

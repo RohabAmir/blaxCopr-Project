@@ -1186,6 +1186,11 @@
 "core-util-is@~1.0.0":
   "version" "1.0.2"
 
+"country-iso-2-to-3@^1.1.0":
+  "integrity" "sha512-+xaB6XPuuLuSQEjejWXjff7s5AMyisPk3jBmIqM7aymup79mEcinNkUiIpe4VedSPWCT+/bMW/EDJvRaiDaWKw=="
+  "resolved" "https://registry.npmjs.org/country-iso-2-to-3/-/country-iso-2-to-3-1.1.0.tgz"
+  "version" "1.1.0"
+
 "country-state-city@^3.2.1":
   "integrity" "sha512-kxbanqMc6izjhc/EHkGPCTabSPZ2G6eG4/97akAYHJUN4stzzFEvQPZoF8oXDQ+10gM/O/yUmISCR1ZVxyb6EA=="
   "resolved" "https://registry.npmjs.org/country-state-city/-/country-state-city-3.2.1.tgz"
@@ -3182,6 +3187,11 @@
   "version" "1.4.0"
   dependencies:
     "wrappy" "1"
+
+"onfido-sdk-ui@^14.19.0":
+  "integrity" "sha512-7CAOaq7AOdNdooZy4fYVqo4+nwj6qy3Elts/c6yDG2VqSfakysBff7UJiu+GwLrKd6ZET/QBugpRfRzqJsy5Jw=="
+  "resolved" "https://registry.npmjs.org/onfido-sdk-ui/-/onfido-sdk-ui-14.19.0.tgz"
+  "version" "14.19.0"
 
 "opener@~1.4.1":
   "version" "1.4.1"

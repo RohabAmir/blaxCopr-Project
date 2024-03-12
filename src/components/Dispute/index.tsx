@@ -42,6 +42,13 @@ interface FileMessage {
   fileUrl: string;
 }
 
+interface File {
+  name: string;
+  id: string;
+  size: number;
+  created: string;
+}
+
 export default function App() {
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
@@ -81,7 +88,6 @@ export default function App() {
   const randomizedUsers = document.location.search.includes("agent")
     ? userData
     : userData.reverse();
-  const isAgent = document.location.search.includes("agent");
 
   const pubnub = new Pubnub({
     publishKey: "pub-c-d55d262c-357a-44c3-9365-bf9086788fc3",
@@ -107,12 +113,13 @@ export default function App() {
   };
   const senderColor = "#ffab91";
   const receiverColor = "#9fa7df";
+
   async function handleFileShare() {
     if (!selectedFile || !channel) return;
     if (selectedFileName) setSelectedFileName("");
     const isAgent = document.location.search.includes("agent");
-    console.log("Sending file as:", isAgent ? "Agent" : "Non-Agent");
-    console.log("selected file-----------", selectedFile);
+    // console.log("Sending file as:", isAgent ? "Agent" : "Non-Agent");
+    // console.log("selected file-----------", selectedFile);
 
     try {
       const result = await pubnub.sendFile({
@@ -134,13 +141,40 @@ export default function App() {
         name: selectedFileName,
       });
       setUploadedMessage(res);
-      console.log("res ----------", res);
+      // console.log("res ----------", res);
     } catch (error) {
       console.error("Error sending file:", error);
     }
   }
 
+  // const [fileList, setFileList] = useState<File[]>([]);
+
+  // function listFiles(channel: any, limit: any) {
+  //   pubnub
+  //     .listFiles({ channel: channel, limit: limit })
+  //     .then((result) => {
+  //       console.log("Files status: ", result.status);
+  //       console.log("Next page token: ", result.next);
+  //       console.log("File count: ", result.count);
+  //       // setFileList(result.data);
+
+  //       result.data.forEach((file) => {
+  //         // console.log("File ID: ", file.id);
+  //         console.log("File Name: ", file.name);
+  //         // console.log("File Size: ", file.size);
+  //         // console.log("File Created: ", file.created);
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error listing files: ", error);
+  //     });
+  // }
+  // useEffect(() => {
+  //   listFiles("SupportChannel", 4);
+  // }, []);
+
   async function handleSend(event: React.SyntheticEvent) {
+    console.log("in handle send function-------------");
     event.preventDefault();
     if (!text || !channel) return;
     await channel.sendText(text);
@@ -148,11 +182,13 @@ export default function App() {
   }
 
   async function handleMessage(message: any) {
+    // console.log("message----------", message);
     if (chat && !users.find((user) => user.id === message.userId)) {
       const user = await chat.getUser(message.userId);
       if (user) setUsers((users) => [...users, user]);
     }
-
+    // console.log("text messages-------------->>>", message.text);
+    // console.log("file messages-------------->>>", message.fileUrl);
     let newMessage: TextMessage | FileMessage;
     if (message.text) {
       newMessage = {
@@ -160,7 +196,8 @@ export default function App() {
         timetoken: message.timetoken,
         text: message.text,
       };
-    } else if (message.fileUrl || message.file) {
+    } else if (message.content.fileUrl) {
+      // console.log("file messages>>>>>>", message.file);
       const fileUrl =
         message.fileUrl || "Extract file URL here based on actual structure";
       newMessage = {
@@ -168,32 +205,16 @@ export default function App() {
         timetoken: message.timetoken,
         fileUrl: message.fileUrl,
       };
-    } else {
-      return;
     }
     setMessages((messages: any) => [...messages, newMessage]);
     // updateLocalStorage([...messages, newMessage]);
   }
 
-  // function updateLocalStorage(updatedMessages: any) {
-  //   console.log("uploaded messagesss-----", messages);
-  //   localStorage.setItem("chatMessages", JSON.stringify(updatedMessages));
-  // }
-  // //
-  // useEffect(() => {
-  //   // Retrieve stored messages from localStorage
-  //   const storedMessages = JSON.parse(
-  //     localStorage.getItem("chatMessages") || "[]"
-  //   );
-  //   console.log("uploaded messagesss stored-----", messages);
-
-  //   setMessages(storedMessages);
-  // }, []);
-
-  //
-
   useEffect(() => {
+    console.log("initlize chat useeffect-------------");
+
     async function initializeChat() {
+      // console.log("initlize chat-------------");
       const chat = await Chat.init({
         publishKey: "pub-c-d55d262c-357a-44c3-9365-bf9086788fc3",
         subscribeKey: "sub-c-e7c4cb17-38b5-4dd3-89ee-4b04d84d254a",
@@ -223,8 +244,8 @@ export default function App() {
           setTypers("");
         }
       });
-      const channelHistory = await channel.getHistory({ count: 10000 });
-
+      const channelHistory = await channel.getHistory({ count: 100000 });
+      // console.log("channelHistory", channelHistory);
       channelHistory.messages.forEach(async (historicalMessage: any) => {
         await handleMessage(historicalMessage);
       });
@@ -233,7 +254,7 @@ export default function App() {
     if (contractDetails) {
       initializeChat();
     }
-  }, [contractDetails]);
+  }, []);
 
   useEffect(() => {
     if (!messageListRef.current) return;
@@ -247,41 +268,54 @@ export default function App() {
     );
   }, [channel]);
 
+  const testFileMessage = () => {
+    const dummyFileMessage = {
+      userId: "test-user",
+      timetoken: "123456789",
+      fileUrl:
+        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FImage&psig=AOvVaw1ZbasjsAXBGzIR9WY2c1Is&ust=1710238445040000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCMDy99j864QDFQAAAAAdAAAAABAE", // Use a dummy URL
+      text: null,
+    };
+    setMessages((currentMessages: any) => [
+      ...currentMessages,
+      dummyFileMessage,
+    ]);
+  };
+
   useEffect(() => {
-    pubnub.addListener({
-      file: function (event: any) {
-        const isMessagePresent = messages.some(
-          (msg) =>
-            msg.timetoken === event.timetoken && msg.userId === event.publisher
+    const handleFileEvent = (event: any) => {
+      // console.log("File message received:", event);
+      const fileUrl = pubnub.getFileUrl({
+        channel: event.channel,
+        id: event.file.id,
+        name: event.file.name,
+      });
+
+      const newFileMessage = {
+        userId: event.publisher,
+        timetoken: event.timetoken,
+        fileUrl,
+        text: null,
+      };
+
+      setMessages((currentMessages: any) => {
+        const isMessagePresent = currentMessages.some(
+          (msg: any) => msg.timetoken === event.timetoken
         );
-        if (!isMessagePresent) {
-          console.log("file messages are here--");
-          const fileUrl: any = pubnub.getFileUrl({
-            channel: event.channel,
-            id: event.file.id,
-            name: event.file.name,
-          });
+        return isMessagePresent
+          ? currentMessages
+          : [...currentMessages, newFileMessage];
+      });
+    };
 
-          const fileMessage = {
-            userId: event.publisher,
-            timetoken: event.timetoken,
-            fileUrl,
-            text: null,
-          };
-
-          setMessages((messages: any) => [...messages, fileMessage]);
-        }
-      },
-    });
-
-    pubnub.subscribe({
-      channels: ["SupportChannel"],
-    });
+    pubnub.addListener({ file: handleFileEvent });
+    pubnub.subscribe({ channels: ["SupportChannel"] });
 
     return () => {
       pubnub.unsubscribeAll();
+      pubnub.removeListener({ file: handleFileEvent });
     };
-  }, [messages]);
+  }, [pubnub]);
 
   const renderMessagePart = useCallback(
     (messagePart: MixedTextTypedElement) => {
@@ -320,11 +354,14 @@ export default function App() {
           src={message.fileUrl}
           alt="Uploaded Image"
           className={styles.uploadedImage}
+          width={500}
+          height={300}
         />
       );
     }
 
     const fileName = message.fileUrl.split("/").pop();
+
     return (
       <a
         href={message.fileUrl}
@@ -373,7 +410,9 @@ export default function App() {
         </div>
         <div className={styles.chatBox}>
           {/* empty div to contain some fake text*/}
-          <div> </div>
+
+          <div style={screens["md"] ? { width: "22%" } : { width: "0" }}> </div>
+
           <main className={styles.main}>
             <header className={styles.header}>
               <span
@@ -447,7 +486,12 @@ export default function App() {
                           </time>
                         </h3>
                         <p className={styles.p}>
-                          {!message.fileUrl && (
+                          {/* {!message.fileUrl && (
+                            <span className={styles.span}>{message.text}</span>
+                          )}
+
+                          {message.fileUrl && renderFileLink(message)} */}
+                          {message.text && (
                             <span className={styles.span}>{message.text}</span>
                           )}
 
@@ -518,6 +562,8 @@ export default function App() {
             </div>
           )}
         </div>
+        <button onClick={testFileMessage}>Test File Message</button>
+
         {/* <button onClick={fetchHistory}>click</button> */}
       </div>
     </>

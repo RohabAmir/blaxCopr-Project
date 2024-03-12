@@ -9,6 +9,7 @@ import AccountDetailForm from "@/app/(forms)/account-details-form/page";
 import { ROUTES } from "@/constants";
 import { removeLocalData } from "@/utils";
 import { useDeleteContractMutation } from "@/Store/services/contractApi";
+import { UseDispatch, useDispatch } from "react-redux";
 import Spinner from "@/utils/Spinner";
 
 interface CardDetails {
@@ -39,6 +40,7 @@ const CardContainer: FC<CardContainerProps> = ({
   userDetails,
   refetchAllContractDetails,
 }) => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [deleteContract] = useDeleteContractMutation();
 
@@ -66,42 +68,9 @@ const CardContainer: FC<CardContainerProps> = ({
 
   const createOnClickHandler = () => {
     setLoading(true);
-
     removeContractLocalData();
   };
 
-  return (
-    <>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <div className={styles.grid}>
-          <div className={styles.cardContainerMainPlus}>
-            <Link href={ROUTES.CONTRACT_FORM}>
-              <button className={styles.button}>
-                <Image
-                  src={PlusIcon}
-                  alt="plus icon"
-                  onClick={createOnClickHandler}
-                />
-              </button>
-            </Link>
-            <p className={styles.titleScreen}>Create</p>
-          </div>
-          {filteredCardList?.map((data: any, idx: any) => {
-            return (
-              <Card
-                key={idx}
-                data={data}
-                onDelete={handleDeleteContract}
-                userDetails={userDetails}
-              />
-            );
-          })}
-        </div>
-      )}
-    </>
-  );
   return (
     <>
       {loading ? (

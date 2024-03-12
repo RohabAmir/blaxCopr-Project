@@ -23,6 +23,11 @@ const AppBar: FC = () => {
   const [isNotifModalOpen, setIsNotifModalOpen] = useState(false);
   const { data: userDetails } = useGetUserDetailsQuery();
 
+  useEffect(() => {
+    if (userDetails) {
+      localStorage.setItem("user_id", userDetails.id);
+    }
+  }, [userDetails]);
   const handleDetail = () => {
     setIsModalOpen(!isModalOpen);
     setIsNotifModalOpen(false);

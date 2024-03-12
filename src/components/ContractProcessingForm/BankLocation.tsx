@@ -101,6 +101,7 @@ const BankLocation: FC<BankLocationProps> = ({
                 type={ButtonType.Secondary}
                 size={!isMobile ? "large" : "middle"}
                 onClickHandler={onBack}
+                
               />
             )}
             <p className={styles.transferHeading}>Bank location</p>

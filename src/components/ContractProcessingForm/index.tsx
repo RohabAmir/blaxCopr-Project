@@ -20,6 +20,7 @@ import PendingDeposit from "./PendingDeposit";
 import SuccessfulDeposit from "./SuccessfulDeposit";
 import Inspection from "./Inspection";
 import DisputOpened from "./DisputOpened";
+import DisputOpenedSeller from "./seller/DisputOpenedSeller";
 import Invoice from "./Invoice";
 import InvoiceMerchandise from "./InvoiceMerchandise";
 import SetupWithDrawl from "./seller/SetupWithdrawl";
@@ -336,7 +337,7 @@ const ContractProcessingForm: FC = () => {
       return (
         <>
           {!isMobile && <Stepper currentStep={4} />}
-          <DisputOpened />
+          <DisputOpenedSeller />
         </>
       );
     } else if (invoice) {
@@ -418,6 +419,89 @@ const ContractProcessingForm: FC = () => {
     }
   };
 
+  // const renderBuyerComponents = () => {
+  //   if (isDepositSuccessful) {
+  //     return (
+  //       <>
+  //         {!isMobile && <Stepper currentStep={3} />}
+  //         <SuccessfulDeposit onNext={handleNextComponent} />;
+  //       </>
+  //     );
+  //   } else if (inspection) {
+  //     return (
+  //       <>
+  //         {!isMobile && <Stepper currentStep={4} />}
+  //         <Inspection onNext={handleNextComponent} />
+  //       </>
+  //     );
+  //   } else if (goInvoice) {
+  //     return (
+  //       <>
+  //         {!isMobile && <Stepper currentStep={5} />}
+  //         <Invoice />
+  //       </>
+  //     );
+  //   } else if (openMessage) {
+  //     return (
+  //       <>
+  //         {!isMobile && <Stepper currentStep={4} />}
+  //         <DisputOpened />
+  //       </>
+  //     );
+  //   } else {
+  //     switch (currentComponent) {
+  //       case 1:
+  //         return (
+  //           <>
+  //             {!isMobile && <Stepper currentStep={2} />}
+  //             <Deposit onNext={handleNextComponent} />
+  //           </>
+  //         );
+  //       case 2:
+  //         return (
+  //           <>
+  //             {!isMobile && <Stepper currentStep={2} />}
+  //             <TransferAmount
+  //               onNext={handleNextComponent}
+  //               onBack={handlePreviousComponent}
+  //             />
+  //           </>
+  //         );
+  //       case 3:
+  //         return (
+  //           <>
+  //             {!isMobile && <Stepper currentStep={2} />}
+  //             <BankLocation
+  //               onNext={handleNextComponent}
+  //               onBack={handlePreviousComponent}
+  //               onResponse={handleResponse}
+  //             />
+  //           </>
+  //         );
+  //       case 4:
+  //         return (
+  //           <>
+  //             {!isMobile && <Stepper currentStep={2} />}
+  //             <BankDetails
+  //               onNext={handleNextComponent}
+  //               onBack={handlePreviousComponent}
+  //               responseGet={response}
+  //             />
+  //           </>
+  //         );
+  //       case 5:
+  //         return (
+  //           <>
+  //             {!isMobile && <Stepper currentStep={2} />}
+  //             <PendingDeposit />
+  //           </>
+  //         );
+  //       default:
+  //         return null;
+  //     }
+  //   }
+  // };
+
   const renderComponents = (): React.ReactNode => {
     const currentStep = DetermineCurrentStep();
 
@@ -427,7 +511,10 @@ const ContractProcessingForm: FC = () => {
         <>
           {renderSellerComponents()}
           {currentComponent !== 2 && (
-            <StepAgreement contractDetails={contractDetails} />
+            <StepAgreement
+              contractDetails={contractDetails}
+              refetchContractDetails={refetchContractDetails}
+            />
           )}
         </>
       );
@@ -436,9 +523,14 @@ const ContractProcessingForm: FC = () => {
       return (
         <>
           {renderBuyerComponents()}
-          {currentComponent !== 2 && (
-            <StepAgreement contractDetails={contractDetails} />
-          )}
+          {currentComponent !== 2 &&
+            currentComponent !== 3 &&
+            currentComponent !== 4 && (
+              <StepAgreement
+                contractDetails={contractDetails}
+                refetchContractDetails={refetchContractDetails}
+              />
+            )}
         </>
       );
     } else {
@@ -446,7 +538,10 @@ const ContractProcessingForm: FC = () => {
       return (
         <>
           {!isMobile && <Stepper currentStep={1} />}
-          <StepAgreement contractDetails={contractDetails} />
+          <StepAgreement
+            contractDetails={contractDetails}
+            refetchContractDetails={refetchContractDetails}
+          />
         </>
       );
     }

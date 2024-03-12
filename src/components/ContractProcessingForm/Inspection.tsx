@@ -10,7 +10,7 @@ import { Grid } from "antd";
 import { useAppContext } from "@/contexts/App";
 import {
   useFetchContractDetailsQuery,
-  useTransitionContractMutation,
+  useTransitionMutation,
 } from "@/Store/services/contractApi";
 import { getLocalData } from "@/utils";
 import Dispute from "@/app/dispute/page";
@@ -30,7 +30,6 @@ const Inspection: FC<InspectionProps> = ({ onNext }) => {
   const reportIssue = () => {
     setShowConfirmModal(true);
   };
-
   const closeModal = () => {
     setShowConfirmModal(false);
   };

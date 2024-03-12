@@ -62,7 +62,6 @@ const DisputOpened: FC = () => {
               <p className={styles.headingDeposit}>Disput opened</p>
             </div>
           </div>
-
           <Button
             name="Go to messages"
             fullWidth={!screens["sm"]}

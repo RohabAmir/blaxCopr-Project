@@ -125,16 +125,8 @@ const PersonalDetails: FC<PersonalDetailsProps> = ({ userDetails }) => {
             />
           </div>
         </div>
-        <div className={styles.btnEnd}>
-          <Button
-            name="Save"
-            fullWidth={!screens.sm}
-            isSubmit
-            customDisabled={!isDirty}
-          />
-        </div>
-        {/* Dynamically handling success and error messages from api  */}
-        {successMessage ? (
+         {/* Dynamically handling success and error messages from api  */}
+         {successMessage ? (
           <div style={{ color: "green" }}>{successMessage}</div>
         ) : (
           isError &&
@@ -146,6 +138,14 @@ const PersonalDetails: FC<PersonalDetailsProps> = ({ userDetails }) => {
             </div>
           )
         )}
+        <div className={styles.btnEnd}>
+          <Button
+            name="Save"
+            fullWidth={!screens.sm}
+            isSubmit
+            customDisabled={!isDirty}
+          />
+        </div>
       </FormProvider>
     </form>
   );

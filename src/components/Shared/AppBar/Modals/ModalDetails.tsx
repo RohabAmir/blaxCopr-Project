@@ -21,7 +21,7 @@ const ModalDetails: FC<ModalDetailsProps> = ({ onClose }) => {
       const logoutClickHandler = () => {
             try {
                   handleLogout();
-                  router.push("/auth");
+                  router.push("/auth?page=sign-in");
             } catch (error) {
                   console.log("eror", error);
             }

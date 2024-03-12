@@ -17,11 +17,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useUpdateContractDetailsMutation } from "@/Store/services/contractApi";
 import { useCompleteContractDetailsMutation } from "@/Store/services/contractApi";
 import { toast } from "react-toastify";
+import { calculateTransactionSummary } from "@/utils/CalculateSummary";
 import Stepper from "./Stepper";
 import SetupWithDrawl from "./seller/SetupWithdrawl";
 
 interface stepAgreementProps {
   contractDetails: any;
+  refetchContractDetails : any;
 }
 
 interface SignatureState {
@@ -35,7 +37,7 @@ interface ContractDetails {
   // Add other necessary fields
 }
 
-const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
+const StepAgreement: FC<stepAgreementProps> = ({ contractDetails, refetchContractDetails }) => {
   const contractId = getLocalData("contract_id");
   const { data: userDetails } = useGetUserDetailsQuery();
   console.log("contractDetails>>>", contractDetails);
@@ -47,16 +49,9 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
   const router = useRouter();
   const { isMobile } = useAppContext();
   const searchParams = useSearchParams();
-  const roleType = userDetails?.id === contractDetails?.buyerId;
-
-  const { subTotal, buyerPrice, escrowPrice } = useSelector(
-    (state: RootState) => state.contract
-  );
-
-  // const { buyerPrice, subTotal, escrowPrice } = useSelector(
-  //       (state: any) => state.contract
-  // );
-
+  const [subTotal, setSubTotal] = useState<number>(0);
+  const [buyerPrice, setBuyerPrice] = useState<number>(0);
+  const [escrowFee, setEscrowFee] = useState<number>(0);
   const [modalState, setModalState] = useState({
     buyer: false,
     seller: false,
@@ -70,6 +65,7 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
     searchParams.get("editing") ? true : false
   );
 
+  const roleType = userDetails?.id === contractDetails?.buyerId;
   const isContractSignedByBoth = firstPartySigned && secondPartySigned;
   const isContractKeysAvailable =
     contractDetails?.buyerSign && contractDetails?.sellerSign;
@@ -81,8 +77,8 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
     contractDetails?.status !== "COMPLETED";
 
   // Determine if both parties are involved in the contract
-  const bothPartiesInvolved =
-    contractDetails?.buyerId && contractDetails?.sellerId;
+  const bothPartiesInvolved = contractDetails?.buyerId && contractDetails?.sellerId;
+  const bothPartiesSigned = contractDetails?.buyerSign && contractDetails?.sellerSign
 
   const handleNextButtonClick = async () => {
     try {
@@ -96,7 +92,7 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
         ...payload,
       }).unwrap();
       toast.success("Moving To Payment Flow");
-      // Delay before navigating to dashboard
+      // Delay before navigating to payment
       setTimeout(() => {
         router.push("/");
       }, 1000);
@@ -176,42 +172,75 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
     document.body.removeChild(anchor);
   };
 
+  useEffect(() => {
+    if (contractDetails) {
+      const transactions = contractDetails.transactions.map((t: any) => ({
+        price: t.price.toString(),
+        category: t.category,
+      }));
+  
+      const shippingCostInput = contractDetails.shipping?.shippingCost?.toString() || "0";
+      const collectionServiceUpgrade = !!contractDetails.shipping?.collectionServiceUpgrade;
+      const lienHolderUpgrade = !!contractDetails.shipping?.lienHolderUpgrade;
+      const escrowFeePaidBy = contractDetails.shipping?.escrowFeePaidBy || "";
+  
+      // Call your utility function
+      const summary = calculateTransactionSummary(
+        transactions,
+        shippingCostInput,
+        collectionServiceUpgrade,
+        lienHolderUpgrade,
+        escrowFeePaidBy
+      );
+  
+      // Update state with the results
+      setSubTotal(summary.subTotal);
+      setBuyerPrice(summary.buyerPrice);
+      setEscrowFee(summary.escrowFee);
+    }
+  }, [contractDetails]);
+  
+
+
+
   return (
     <>
       <div className={styles.agreementMain}>
         {!isMobile && isNotSellerOrContractNotCompleted && (
           <>
-            <Flex vertical className="w-full">
-              <FormSection title="Agreement">
-                <div className={styles.main}>
-                  <div
-                    className={styles.flexText}
-                    onClick={() => openModal("buyer")}
-                  >
-                    <p className={styles.textHeading}>
-                      {roleType ? "Buyer signs here " : "Seller signs here"}
-                    </p>
+           {!bothPartiesSigned && (
+             <Flex vertical className="w-full">
+             <FormSection title="Agreement">
+               <div className={styles.main}>
+                 <div
+                   className={styles.flexText}
+                   onClick={() => openModal("buyer")}
+                 >
+                   <p className={styles.textHeading}>
+                     {roleType ? "Buyer signs here " : "Seller signs here"}
+                   </p>
 
-                    <Button
-                      name="Review & Sign"
-                      type={ButtonType.Primary}
-                      size={isMobile ? "small" : "large"}
-                    />
-                  </div>
-                  {modalState.buyer && (
-                    <ConfirmContractReview
-                      userDetails={userDetails}
-                      contractDetails={contractDetails}
-                      onContractUpdate={handleContractUpdate}
-                      firstPartySigned={firstPartySigned}
-                      secondPartySigned={secondPartySigned}
-                      isEditedBeforeSign={isEditedBeforeSign}
-                      closeModal={() => closeModal("buyer")}
-                    />
-                  )}
-                </div>
-              </FormSection>
-            </Flex>
+                   <Button
+                     name="Review & Sign"
+                     type={ButtonType.Primary}
+                     size={isMobile ? "small" : "large"}
+                   />
+                 </div>
+                 {modalState.buyer && (
+                   <ConfirmContractReview
+                     userDetails={userDetails}
+                     contractDetails={contractDetails}
+                     onContractUpdate={handleContractUpdate}
+                     firstPartySigned={firstPartySigned}
+                     secondPartySigned={secondPartySigned}
+                     isEditedBeforeSign={isEditedBeforeSign}
+                     closeModal={() => closeModal("buyer")}
+                   />
+                 )}
+               </div>
+             </FormSection>
+           </Flex>
+           )}
             {!bothPartiesInvolved && (
               <Flex
                 vertical
@@ -499,7 +528,7 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
             <div className={styles.main}>
               <div className={styles.flexTextColor}>
                 <p className={styles.subHeading}>Subtotal</p>
-                <p className={styles.textHeadingDetails}>{` $ ${subTotal}`}</p>
+                <p className={styles.textHeadingDetails}>{` $ ${subTotal.toFixed(2)}`}</p>
               </div>
             </div>
             <div className={styles.main}>
@@ -522,7 +551,7 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
               <div className={styles.flexTextColor}>
                 <p className={styles.subHeading}>Escrow fee</p>
                 <p className={styles.textHeadingDetails}>
-                  {` $ ${escrowPrice}`}
+                  {` $ ${escrowFee.toFixed(2)}`}
                 </p>
               </div>
             </div>
@@ -530,7 +559,7 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
               <div className={styles.flexTextColor}>
                 <p className={styles.subHeading}>Buyer price</p>
                 <p className={styles.textHeadingDetails}>
-                  {` $ ${buyerPrice}`}
+                  {` $ ${buyerPrice.toFixed(2)}`}
                 </p>
               </div>
             </div>
@@ -556,7 +585,6 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails }) => {
             name="Next"
             type={ButtonType.Primary}
             onClickHandler={handleNextButtonClick}
-            // isLoading={isLoading}
             fullWidth={isMobile}
             customDisabled={!isNextButtonEnabled || isCompleting}
           />

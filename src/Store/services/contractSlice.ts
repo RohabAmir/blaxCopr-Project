@@ -1,42 +1,5 @@
-// import { createSlice } from '@reduxjs/toolkit';
-// import { storeLocalData } from '@/utils';
-
-// const initialState = {
-//   subTotal: 0,      // for storing the subtotal price
-//   buyerPrice: 0,    // for storing the buyer's price
-//   escrowPrice: 0,    // for storing the escrow price
-
-// };
-
-// const contractSlice = createSlice({
-//   name: 'contract',
-//   initialState,
-//   reducers: {
-//     // Reducer to update the subTotal
-//     updateSubTotal: (state, action) => {
-//       state.subTotal = action.payload;
-//       storeLocalData('contract', JSON.stringify(state));
-//     },
-//     // Reducer to update the buyerPrice
-//     updateBuyerPrice: (state, action) => {
-//       state.buyerPrice = action.payload;
-//       storeLocalData('contract', JSON.stringify(state));
-//     },
-//      // Reducer to update the buyerPrice
-//      updateEscrowPrice: (state, action) => {
-//       state.escrowPrice = action.payload;
-//       storeLocalData('contract', JSON.stringify(state));
-//     },
-//   },
-// });
-
-// // Exporting the action creators
-// export const { updateSubTotal, updateBuyerPrice, updateEscrowPrice } = contractSlice.actions;
-
-// // Exporting the reducer
-// export default contractSlice.reducer;
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { removeLocalData } from '@/utils';
 
 // Define a type for the slice state
 interface ContractState {

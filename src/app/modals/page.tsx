@@ -1,9 +1,9 @@
 // 1
-import { FC } from "react";
-import Modals_C from "@/components/Shared/Modals/ConfirmDisputeOpening";
-const ConfirmDisputeOpening: FC = () => <Modals_C />;
+// import { FC } from "react";
+// import Modals_C from "@/components/Shared/Modals/ConfirmDisputeOpening";
+// const ConfirmDisputeOpening: FC = () => <Modals_C />;
 
-export default ConfirmDisputeOpening;
+// export default ConfirmDisputeOpening;
 // ----------------------------------------------------------------------------------------------------------
 
 // 2
@@ -15,11 +15,11 @@ export default ConfirmDisputeOpening;
 // ----------------------------------------------------------------------------------------------------------
 
 // 3
-// import { FC } from "react";
-// import Modals_C from "@/components/Shared/Modals/ConfirmContractReview";
-// const ConfirmContractReview: FC = () => <Modals_C />;
+import { FC } from "react";
+import Modals_C from "@/components/Shared/Modals/ConfirmContractReview";
+const ConfirmContractReview: FC = () => <Modals_C />;
 
-// export default ConfirmContractReview;
+export default ConfirmContractReview;
 
 // ----------------------------------------------------------------------------------------------------------
 
