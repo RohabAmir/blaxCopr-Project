@@ -450,7 +450,7 @@ const ContractProcessingForm: FC = () => {
 
   return (
     <Flex vertical className="w-full">
-      <VerifyProfileBar />
+      {/* <VerifyProfileBar /> */}
 
       {/* -------------------------Useful Code---------------------------------- */}
 
@@ -529,7 +529,7 @@ const ContractProcessingForm: FC = () => {
         >
           {isMobile && (
             <>
-              {/* <div className={styles.flexBtnResp}>
+              <div className={styles.flexBtnResp}>
                                           <Button
                                                 name="Action"
                                                 type={ButtonType.Tertioary}
@@ -540,7 +540,7 @@ const ContractProcessingForm: FC = () => {
                                                 type={ButtonType.Tertioary}
                                                 fullWidth={!screens["md"]}
                                           />
-                                          </div> */}
+                                          </div>
             </>
           )}
 
