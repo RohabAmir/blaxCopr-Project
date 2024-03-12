@@ -34,10 +34,19 @@ export const OnfidoApi = createApi({
                       };
                   },
             }),
+            OnfidoData: builder.query<any, void>({
+                  query: () => {
+                        return {
+                             url: `/onfido/get-onfido-data`,
+                              method: "GET",
+                        };
+                  },
+            }),
 
       }),
 });
 export const {
     useOnfidoSdkTokenQuery,
-    useCreateApplicantMutation
+    useCreateApplicantMutation,
+    useOnfidoDataQuery
 } = OnfidoApi;
