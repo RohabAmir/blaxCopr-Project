@@ -62,10 +62,7 @@ const Header: FC = () => {
             <>
                   <div className={styles.header}>
                         {sdkToken ? (
-                              <div  
-                                    className={styles.onfido}
-                                    id="onfido-mount"
-                              ></div>
+                              <div  className={styles.onfido} id="onfido-mount"></div>
                         ) : (
                               <>
                                     <div className={styles.flexRow}>
