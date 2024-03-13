@@ -31,23 +31,6 @@ const DisputOpened: FC = () => {
     setApproveModal(false);
   };
 
-  //
-  // const handleApprove = async () => {
-  //   const payload = {
-  //     contract: {
-  //       status: "APPROVE",
-  //     },
-  //   };
-
-  //   try {
-  //     console.log("mark as approve");
-
-  //     await transitionContract({ id: contractId, ...payload });
-  //     router.push("/");
-  //   } catch (error) {
-  //     console.log("error", error);
-  //   }
-  // };
   return (
     <>
       <div className={styles.agreementMain}>

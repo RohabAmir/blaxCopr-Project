@@ -42,11 +42,20 @@ export const OnfidoApi = createApi({
                         };
                   },
             }),
+            OnfidoWorkflowId: builder.query<any, void>({
+                  query: () => {
+                        return {
+                             url: `/onfido/run-workflow`,
+                              method: "GET",
+                        };
+                  },
+            }),
 
       }),
 });
 export const {
     useOnfidoSdkTokenQuery,
     useCreateApplicantMutation,
-    useOnfidoDataQuery
+    useOnfidoDataQuery,
+    useOnfidoWorkflowIdQuery
 } = OnfidoApi;

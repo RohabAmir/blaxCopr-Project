@@ -4,12 +4,15 @@ import styles from "./style.module.scss";
 import TargetIcon from "../../../../public/icons/Target.svg";
 import VectorIcon from "../../../../public/icons/Vector.svg";
 import ConfirmVerificationModal from "../Modals/ConfirmVerificationModal";
+import { useOnfidoWorkflowIdQuery } from "@/Store/services/onfidoApi";
 import { Onfido } from "onfido-sdk-ui";
 
 const Header: FC = () => {
       const [VerificationModal, setVerificationModal] = useState(false);
       const [sdkToken, setSdkToken] = useState<string | null>(null);
+      const [workflowId, setWorkflowId] = useState<string | null>(null);
       const [onfidoInitiated, setOnfidoInitiated] = useState(false);
+      console.log("workflowId" , workflowId)
 
       const handleClick = () => {
             setVerificationModal(true);
@@ -18,8 +21,9 @@ const Header: FC = () => {
             setVerificationModal(false);
       };
 
-      const handleReceiveToken = (token: string) => {
+      const handleReceiveToken = (token: string, id:string) => {
             setSdkToken(token);
+            setWorkflowId(id);
             closeModal(); 
       };
 
@@ -30,22 +34,11 @@ const Header: FC = () => {
                   Onfido.init({
                         token: sdkToken,
                         containerId: "onfido-mount",
-                        steps: [
-                              {
-                                    type: "document",
-                              },
-                              {
-                                    type: "face",
-                                    options: {
-                                          requestedVariant: "video",
-                                    },
-                              },
-                              "complete",
-                        ],
                         onComplete: (data: any) => {
                               console.log("Onfido verification complete", data);
                               // You can now handle the verification result
                         },
+                        workflowRunId: workflowId,
                         onError: (error: any) => {
                               console.error("Onfido SDK error:", error);
                         },
@@ -56,7 +49,7 @@ const Header: FC = () => {
 
       useEffect(() => {
             initOnfido();
-      }, [sdkToken]);
+      }, [sdkToken, workflowId]);
 
       return (
             <>

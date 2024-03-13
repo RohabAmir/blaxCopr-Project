@@ -46,9 +46,14 @@ const Dashboard: FC = () => {
             refetchOnfidoData(); //Refecth all onfido data
       }, [refetchUserDetails, refetchAllContractDetails, refetchOnfidoData]);
 
+      const shouldShowHeader = () => {
+            // If there's no data object, or there's a data object but is_verified is not true
+            return !onfidoData?.data || (onfidoData?.data && !onfidoData.data.is_verified);
+      };
+
       return (
             <div className={styles.main}>
-                    { onfidoData?.data?.is_verified && <Header /> }
+                      { shouldShowHeader() && <Header /> }
                   <h1 className={styles.nav}>My Contracts</h1>
                   <Navbar
                         navs={NavList}

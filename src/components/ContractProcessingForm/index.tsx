@@ -20,7 +20,7 @@ import PendingDeposit from "./PendingDeposit";
 import SuccessfulDeposit from "./SuccessfulDeposit";
 import Inspection from "./Inspection";
 import DisputOpened from "./DisputOpened";
-import DisputOpenedSeller from "./seller/DisputOpenedSeller";
+import DisputOpenedSeller from "./DisputeOpenedSeller";
 import Invoice from "./Invoice";
 import InvoiceMerchandise from "./InvoiceMerchandise";
 import SetupWithDrawl from "./seller/SetupWithdrawl";
@@ -190,7 +190,9 @@ const ContractProcessingForm: FC = () => {
     }
     if (
       contractDetails?.status === "APPROVE" &&
-      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED"
+      contractDetails?.contractPayments?.paymentStatus === "DEPOSITED" ||
+      contractDetails?.contractPayments?.paymentStatus === "WITHDRAWAL"
+
     ) {
       setInvoice(true);
     }

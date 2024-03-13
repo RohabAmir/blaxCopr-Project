@@ -94,7 +94,7 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails, refetchContrac
       toast.success("Moving To Payment Flow");
       // Delay before navigating to payment
       setTimeout(() => {
-        router.push("/");
+        refetchContractDetails();
       }, 1000);
     } catch (error) {
       // Handle error here, perhaps with a toast notification

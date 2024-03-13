@@ -4,6 +4,7 @@ import styles from "./style.module.scss";
 import {
       useCreateApplicantMutation,
       useOnfidoSdkTokenQuery,
+      useOnfidoWorkflowIdQuery
 } from "@/Store/services/onfidoApi";
 import { ICountry, IState, Country, State } from "country-state-city";
 import iso2ToIso3 from "country-iso-2-to-3";
@@ -11,7 +12,7 @@ import iso2ToIso3 from "country-iso-2-to-3";
 
 interface ModalProps {
       closeModal: () => void;
-      onReceiveToken: (token: string) => void;
+      onReceiveToken: (token: string, id: string) => void;
 }
 
 const ConfirmVerificationModal: FC<ModalProps> = ({ closeModal, onReceiveToken }) => {
@@ -19,6 +20,7 @@ const ConfirmVerificationModal: FC<ModalProps> = ({ closeModal, onReceiveToken }
             useCreateApplicantMutation();
       const { data: sdkTokenData, refetch: fetchOnfidoSdkToken } =
             useOnfidoSdkTokenQuery();
+      const { data:workflowId, refetch:fetchWorkflowId } = useOnfidoWorkflowIdQuery();
       const [dob, setDob] = useState<string>("");
       const [buildingNumber, setBuildingNumber] = useState<string>("");
       const [street, setStreet] = useState<string>("");
@@ -41,16 +43,15 @@ const ConfirmVerificationModal: FC<ModalProps> = ({ closeModal, onReceiveToken }
                   setStates(usStates);
             } else {
                   setStates([]);
-                  setSelectedState(null); // Reset selected state if not USA
+                  setSelectedState(null); 
             }
       }, [country]);
 
       useEffect(() => {
-            if (sdkTokenData) {
-              onReceiveToken(sdkTokenData.token); // Change this line
-              // No direct call to closeModal here
+            if (sdkTokenData && workflowId) {
+              onReceiveToken(sdkTokenData.token, workflowId.id); 
             }
-      }, [sdkTokenData, onReceiveToken]); // Adjust dependency array
+      }, [sdkTokenData, onReceiveToken, workflowId]); // Adjust dependency array
 
 
       const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -73,6 +74,7 @@ const ConfirmVerificationModal: FC<ModalProps> = ({ closeModal, onReceiveToken }
                   await createApplicant({ data: payload }).unwrap();
                   setTimeout(() => {
                         fetchOnfidoSdkToken();
+                        fetchWorkflowId();
                   }, 1000);
             } catch (error) {
                   // Handle error in creating applicant
