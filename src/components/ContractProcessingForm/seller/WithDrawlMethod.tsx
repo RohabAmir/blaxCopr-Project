@@ -12,36 +12,43 @@ import Image from "next/image";
 import { Button } from "../../Shared";
 import { ButtonType, IconType } from "@/types";
 import { Grid } from "antd";
+import { useGetPaymentRecipientQuery } from "@/Store/services/paymentApi";
 
 interface addWithDrawlMethodProps {
   onNext: () => void;
-  contractDetails : any;
+  contractDetails: any;
 }
 
-const WithDrawlMethod: FC<addWithDrawlMethodProps> = ({onNext, contractDetails}) => {
-  const contractId = getLocalData('contract_id');
-  const[transistion] = useTransitionMutation();
+const WithDrawlMethod: FC<addWithDrawlMethodProps> = ({
+  onNext,
+  contractDetails,
+}) => {
+  const contractId = getLocalData("contract_id");
+  const [transistion] = useTransitionMutation();
+  const { data: paymentRecipientData } = useGetPaymentRecipientQuery();
+  console.log("payment recipient data", paymentRecipientData);
+
   const { useBreakpoint } = Grid;
   const screens: any = useBreakpoint();
 
   const handleMarkAsSent = async () => {
     try {
-          const payload = {
-                contract: {
-                      status: "DELIVERED",
-                },
-          };
-          await transistion({
-                id: contractId,
-                ...payload,
-          }).unwrap();
-           // Call onNext on successful API call
-        onNext();
+      const payload = {
+        contract: {
+          status: "DELIVERED",
+        },
+      };
+      await transistion({
+        id: contractId,
+        ...payload,
+      }).unwrap();
+      // Call onNext on successful API call
+      onNext();
     } catch (error) {
-          // Handle error here, perhaps with a toast notification
-          toast.error("Error completing contract.");
+      // Handle error here, perhaps with a toast notification
+      toast.error("Error completing contract.");
     }
-};
+  };
 
   return (
     <>
@@ -65,7 +72,7 @@ const WithDrawlMethod: FC<addWithDrawlMethodProps> = ({onNext, contractDetails})
               </div>
             </div>
 
-            <button className={styles.btnSent} onClick={handleMarkAsSent} >
+            <button className={styles.btnSent} onClick={handleMarkAsSent}>
               <Image className={styles.iconOk} src={OklIcon} alt="ok icon" />
               <span className={styles.inlineSubText}>Mark as Sent</span>
             </button>
@@ -86,7 +93,9 @@ const WithDrawlMethod: FC<addWithDrawlMethodProps> = ({onNext, contractDetails})
                 <p className={styles.headingDeposit}>
                   Funds succesfully deposited in escrow
                 </p>
-                <p className={styles.subHeadingDeposit}>Amount: {`$${contractDetails?.contractPayments?.escrowFee}`}</p>
+                <p className={styles.subHeadingDeposit}>
+                  Amount: {`$${contractDetails?.contractPayments?.escrowFee}`}
+                </p>
               </div>
             </div>
           </div>

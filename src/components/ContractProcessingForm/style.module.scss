@@ -937,6 +937,17 @@
 // }
 
 // ====================================================
+.tooltip {
+  // position: absolute;
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  /* Adjust the positioning to fit your layout */
+  // top: 0px;
+  // left: 100%;
+}
 
 .agreementMain {
   max-width: 650px;

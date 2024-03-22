@@ -23,7 +23,7 @@ import SetupWithDrawl from "./seller/SetupWithdrawl";
 
 interface stepAgreementProps {
   contractDetails: any;
-  refetchContractDetails : any;
+  refetchContractDetails: any;
 }
 
 interface SignatureState {
@@ -37,7 +37,10 @@ interface ContractDetails {
   // Add other necessary fields
 }
 
-const StepAgreement: FC<stepAgreementProps> = ({ contractDetails, refetchContractDetails }) => {
+const StepAgreement: FC<stepAgreementProps> = ({
+  contractDetails,
+  refetchContractDetails,
+}) => {
   const contractId = getLocalData("contract_id");
   const { data: userDetails } = useGetUserDetailsQuery();
   console.log("contractDetails>>>", contractDetails);
@@ -77,8 +80,10 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails, refetchContrac
     contractDetails?.status !== "COMPLETED";
 
   // Determine if both parties are involved in the contract
-  const bothPartiesInvolved = contractDetails?.buyerId && contractDetails?.sellerId;
-  const bothPartiesSigned = contractDetails?.buyerSign && contractDetails?.sellerSign
+  const bothPartiesInvolved =
+    contractDetails?.buyerId && contractDetails?.sellerId;
+  const bothPartiesSigned =
+    contractDetails?.buyerSign && contractDetails?.sellerSign;
 
   const handleNextButtonClick = async () => {
     try {
@@ -92,12 +97,10 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails, refetchContrac
         ...payload,
       }).unwrap();
       toast.success("Moving To Payment Flow");
-      // Delay before navigating to payment
       setTimeout(() => {
-        router.push("/");
+        refetchContractDetails();
       }, 1000);
     } catch (error) {
-      // Handle error here, perhaps with a toast notification
       toast.error("Error completing contract.");
     }
   };
@@ -178,12 +181,14 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails, refetchContrac
         price: t.price.toString(),
         category: t.category,
       }));
-  
-      const shippingCostInput = contractDetails.shipping?.shippingCost?.toString() || "0";
-      const collectionServiceUpgrade = !!contractDetails.shipping?.collectionServiceUpgrade;
+
+      const shippingCostInput =
+        contractDetails.shipping?.shippingCost?.toString() || "0";
+      const collectionServiceUpgrade =
+        !!contractDetails.shipping?.collectionServiceUpgrade;
       const lienHolderUpgrade = !!contractDetails.shipping?.lienHolderUpgrade;
       const escrowFeePaidBy = contractDetails.shipping?.escrowFeePaidBy || "";
-  
+
       // Call your utility function
       const summary = calculateTransactionSummary(
         transactions,
@@ -192,55 +197,78 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails, refetchContrac
         lienHolderUpgrade,
         escrowFeePaidBy
       );
-  
+
       // Update state with the results
       setSubTotal(summary.subTotal);
       setBuyerPrice(summary.buyerPrice);
       setEscrowFee(summary.escrowFee);
     }
   }, [contractDetails]);
-  
-
-
+  console.log("contract details,,,,", roleType);
+  const buyerSign = contractDetails?.buyerSign;
+  const sellerSign = contractDetails?.sellerSign;
 
   return (
     <>
       <div className={styles.agreementMain}>
         {!isMobile && isNotSellerOrContractNotCompleted && (
           <>
-           {!bothPartiesSigned && (
-             <Flex vertical className="w-full">
-             <FormSection title="Agreement">
-               <div className={styles.main}>
-                 <div
-                   className={styles.flexText}
-                   onClick={() => openModal("buyer")}
-                 >
-                   <p className={styles.textHeading}>
-                     {roleType ? "Buyer signs here " : "Seller signs here"}
-                   </p>
-
-                   <Button
-                     name="Review & Sign"
-                     type={ButtonType.Primary}
-                     size={isMobile ? "small" : "large"}
-                   />
-                 </div>
-                 {modalState.buyer && (
-                   <ConfirmContractReview
-                     userDetails={userDetails}
-                     contractDetails={contractDetails}
-                     onContractUpdate={handleContractUpdate}
-                     firstPartySigned={firstPartySigned}
-                     secondPartySigned={secondPartySigned}
-                     isEditedBeforeSign={isEditedBeforeSign}
-                     closeModal={() => closeModal("buyer")}
-                   />
-                 )}
-               </div>
-             </FormSection>
-           </Flex>
-           )}
+            {!bothPartiesSigned && (
+              <Flex vertical className="w-full">
+                <FormSection title="Agreement">
+                  <div className={styles.main}>
+                    <div
+                      className={styles.flexText}
+                      onClick={() => openModal("buyer")}
+                    >
+                      <p className={styles.textHeading}>
+                        {roleType ? "Buyer signs here " : "Seller signs here"}
+                      </p>
+                      {roleType ? (
+                        buyerSign ? (
+                          <Button
+                            name="Signed"
+                            type={ButtonType.Primary}
+                            size={isMobile ? "small" : "large"}
+                            customDisabled
+                          />
+                        ) : (
+                          <Button
+                            name="Review & Sign"
+                            type={ButtonType.Primary}
+                            size={isMobile ? "small" : "large"}
+                          />
+                        )
+                      ) : sellerSign ? (
+                        <Button
+                          name="Signed"
+                          type={ButtonType.Primary}
+                          size={isMobile ? "small" : "large"}
+                          customDisabled
+                        />
+                      ) : (
+                        <Button
+                          name="Review & Sign"
+                          type={ButtonType.Primary}
+                          size={isMobile ? "small" : "large"}
+                        />
+                      )}
+                    </div>
+                    {modalState.buyer && (
+                      <ConfirmContractReview
+                        userDetails={userDetails}
+                        contractDetails={contractDetails}
+                        onContractUpdate={handleContractUpdate}
+                        firstPartySigned={firstPartySigned}
+                        secondPartySigned={secondPartySigned}
+                        isEditedBeforeSign={isEditedBeforeSign}
+                        closeModal={() => closeModal("buyer")}
+                      />
+                    )}
+                  </div>
+                </FormSection>
+              </Flex>
+            )}
             {!bothPartiesInvolved && (
               <Flex
                 vertical
@@ -528,7 +556,9 @@ const StepAgreement: FC<stepAgreementProps> = ({ contractDetails, refetchContrac
             <div className={styles.main}>
               <div className={styles.flexTextColor}>
                 <p className={styles.subHeading}>Subtotal</p>
-                <p className={styles.textHeadingDetails}>{` $ ${subTotal.toFixed(2)}`}</p>
+                <p
+                  className={styles.textHeadingDetails}
+                >{` $ ${subTotal.toFixed(2)}`}</p>
               </div>
             </div>
             <div className={styles.main}>

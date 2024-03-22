@@ -4,13 +4,11 @@ import { authApi } from "./services/authApi";
 import { contractApi } from "./services/contractApi";
 import { paymentApi } from "./services/paymentApi";
 import { OnfidoApi } from "./services/onfidoApi";
-import  authReducer  from './services/authSlice';
 import contractReducer from "./services/contractSlice"
 
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
     contract: contractReducer,
     [authApi.reducerPath]: authApi.reducer,
     [contractApi.reducerPath]: contractApi.reducer,

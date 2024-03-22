@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import styles from "./style.module.scss";
 import WarningIcon from "../../../public/icons/Dash.svg";
 import { Flex, Grid } from "antd";
@@ -19,16 +19,37 @@ interface BankDetailsProps {
 }
 
 const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipText, setTooltipText] = useState("");
   const handleCopyText = (event: any) => {
     const textToCopy = event.target.previousSibling.textContent.trim();
     navigator.clipboard
       .writeText(textToCopy)
-      .then(() => alert("Copied to clipboard"))
+      .then(() => {
+        setTooltipText("Copied!");
+        setShowTooltip(true);
+        setTimeout(() => setShowTooltip(false), 2000);
+      })
       .catch((error) => console.error("Failed to copy:", error));
   };
+
+  // const handleCopyText = (event: any) => {
+  //   const textToCopy = event.currentTarget
+  //     .querySelector("span")
+  //     .textContent.trim();
+
+  //   navigator.clipboard
+  //     .writeText(textToCopy)
+  //     .then(() => {
+  //       setTooltipText("Copied!");
+  //       setShowTooltip(true);
+  //       setTimeout(() => setShowTooltip(false), 2000);
+  //     })
+  //     .catch((error) => console.error("Failed to copy:", error));
+  // };
+
   const { isMobile } = useAppContext();
-  // console.log("response-----------", responseGet);
-  // console.log("after----", responseGet.data.responseData);
+
   return (
     <>
       <Flex vertical className="w-full">
@@ -66,6 +87,19 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
 
           {/* --------------------------------------- */}
           <Flex vertical className="w-full">
+            {showTooltip && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "50",
+                  left: "50",
+                  background: "#493939",
+                  color: "#fff",
+                }}
+              >
+                {tooltipText}
+              </div>
+            )}
             <FormSection>
               <div className={styles.main}>
                 <div className={styles.flexText}>

@@ -80,7 +80,7 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
         </div>
 
         {/* ---------------------------------- */}
-        <div className={styles.successfulDepositMain}>
+        {/* <div className={styles.successfulDepositMain}>
           <div className={styles.flexDeposit}>
             <div className={styles.iconBack}>
               <Image
@@ -100,7 +100,7 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
               </p>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* ---------------- */}
 
@@ -140,11 +140,6 @@ const SuccessfulDeposit: FC<depositSuccessProps> = ({ onNext }) => {
             <div className={styles.flexTextDepositSuccess}>
               <p className={styles.headingDeposit}>
                 Escrow fee deposit pending from seller
-              </p>
-              <p>
-                {contractDetails?.currency === "USD"
-                  ? `$${contractDetails?.contractPayments?.totlaAmountToDeposit}`
-                  : `€${contractDetails?.contractPayments?.totlaAmountToDeposit}`}
               </p>
             </div>
           </div>

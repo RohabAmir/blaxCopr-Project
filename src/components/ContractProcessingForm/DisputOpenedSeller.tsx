@@ -1,15 +1,21 @@
 import { FC } from "react";
-import styles from "./styles.module.scss"
-import ClockIcon from "../../../../public/icons/Clock.svg";
+// import styles from "./styles.module.scss";
+import ClockIcon from "../../../public/icons/Clock.svg";
 import Image from "next/image";
-import { Button } from "../../Shared";
+import { Button } from "../Shared";
 import { ButtonType } from "@/types";
 import { Grid } from "antd";
 import { useAppContext } from "@/contexts/App";
+import { useRouter } from "next/navigation";
+import styles from "./style.module.scss";
 
 const DisputOpenedSeller: FC = () => {
   const { isMobile } = useAppContext();
-
+  const router = useRouter();
+  const handleDisputeOpened = () => {
+    console.log("click");
+    router.push("/dispute");
+  };
   return (
     <>
       <div className={styles.agreementMain}>
@@ -29,6 +35,7 @@ const DisputOpenedSeller: FC = () => {
             name="Go to messages"
             fullWidth={isMobile}
             type={ButtonType.Primary}
+            onClickHandler={handleDisputeOpened}
           />
         </div>
       </div>

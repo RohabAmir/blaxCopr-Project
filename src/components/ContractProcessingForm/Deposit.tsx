@@ -26,6 +26,8 @@ const Deposit: FC<DepositProps> = ({ onNext }) => {
   const { useBreakpoint } = Grid;
 
   const screens: any = useBreakpoint();
+  const checkStatus = contractDetails?.contractPayments?.paymentStatus;
+  const checkContractStatus = contractDetails?.status;
   return (
     <>
       <div className={styles.depositContianer}>

@@ -14,9 +14,17 @@ export const paymentApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-
     getPaymentData: builder.query<any, any>({
       query: (id) => `/payment/payment-data/${id}`,
+    }),
+
+    getPaymentRecipient: builder.query<any, void>({
+      query: () => {
+        return {
+          url: `/payment/get-recipient`,
+          method: "GET",
+        };
+      },
     }),
 
     depositData: builder.mutation<any, any>({
@@ -28,7 +36,7 @@ export const paymentApi = createApi({
         };
       },
     }),
-    
+    // payment/get-recipient
     addAccount: builder.mutation<any, any>({
       query: (accountData) => {
         return {
@@ -38,7 +46,11 @@ export const paymentApi = createApi({
         };
       },
     }),
-
   }),
 });
-export const { useGetPaymentDataQuery, useDepositDataMutation, useAddAccountMutation } = paymentApi;
+export const {
+  useGetPaymentDataQuery,
+  useDepositDataMutation,
+  useAddAccountMutation,
+  useGetPaymentRecipientQuery,
+} = paymentApi;

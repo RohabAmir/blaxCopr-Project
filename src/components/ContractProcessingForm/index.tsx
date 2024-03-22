@@ -20,7 +20,7 @@ import PendingDeposit from "./PendingDeposit";
 import SuccessfulDeposit from "./SuccessfulDeposit";
 import Inspection from "./Inspection";
 import DisputOpened from "./DisputOpened";
-import DisputOpenedSeller from "./seller/DisputOpenedSeller";
+import DisputOpenedSeller from "./DisputOpenedSeller";
 import Invoice from "./Invoice";
 import InvoiceMerchandise from "./InvoiceMerchandise";
 import SetupWithDrawl from "./seller/SetupWithdrawl";
@@ -70,6 +70,8 @@ const ContractProcessingForm: FC = () => {
   const [goInvoice, setGoInvoice] = useState(false);
   const [openMessage, setOpenMessage] = useState(false);
   const [inspection, setInspection] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipText, setTooltipText] = useState("");
 
   const {
     data: contractDetails,
@@ -110,12 +112,20 @@ const ContractProcessingForm: FC = () => {
     month: "short",
   })}, ${date.getFullYear()}`;
   const handleCopyText = (event: any) => {
-    const textToCopy = event.target.previousSibling.textContent.trim();
+    const textToCopy = event.currentTarget
+      .querySelector("span")
+      .textContent.trim();
+
     navigator.clipboard
       .writeText(textToCopy)
-      .then(() => alert("Copied to clipboard"))
+      .then(() => {
+        setTooltipText("Copied!"); // Set the tooltip text
+        setShowTooltip(true); // Show the tooltip
+        setTimeout(() => setShowTooltip(false), 2000); // Hide after 2 seconds
+      })
       .catch((error) => console.error("Failed to copy:", error));
   };
+
   const handlePreviousComponent = () => {
     if (previousComponent !== null) {
       setCurrentComponent(previousComponent);
@@ -215,7 +225,8 @@ const ContractProcessingForm: FC = () => {
     if (
       (contractDetails?.status === "APPROVE" &&
         contractDetails?.contractPayments?.paymentStatus === "DEPOSITED") ||
-      contractDetails?.contractPayments?.paymentStatus === "WITHDRAWAL"
+      contractDetails?.contractPayments?.paymentStatus === "WITHDRAWAL" ||
+      contractDetails?.contractPayments?.paymentStatus === "WITHDRAWAL_FAILED"
     ) {
       setGoInvoice(true);
     }
@@ -263,6 +274,7 @@ const ContractProcessingForm: FC = () => {
           return (
             <>
               {!isMobile && <Stepper currentStep={2} />}
+
               <Deposit onNext={handleNextComponent} />
             </>
           );
@@ -558,7 +570,7 @@ const ContractProcessingForm: FC = () => {
               <Title level={screens["sm"] ? 2 : 3}>
                 {contractDetails?.contractName || ""}
               </Title>
-              <div className={styles.flexTransaction}>
+              <div className={styles.flexTransaction} onClick={handleCopyText}>
                 <span className={styles.transactionText}>
                   Transaction #10942007
                 </span>
@@ -567,9 +579,11 @@ const ContractProcessingForm: FC = () => {
                     className={styles.copyIcon}
                     src={CopyIcon}
                     alt="copy icon"
-                    onClick={handleCopyText}
                   />
                 </span>
+                {showTooltip && (
+                  <div className={styles.tooltip}>{tooltipText}</div>
+                )}
               </div>
             </Flex>
 
@@ -630,18 +644,18 @@ const ContractProcessingForm: FC = () => {
         >
           {isMobile && (
             <>
-              {/* <div className={styles.flexBtnResp}>
-                                          <Button
-                                                name="Action"
-                                                type={ButtonType.Tertioary}
-                                                fullWidth={!screens["md"]}
-                                          />
-                                          <Button
-                                                name="Overview"
-                                                type={ButtonType.Tertioary}
-                                                fullWidth={!screens["md"]}
-                                          />
-                                          </div> */}
+              <div className={styles.flexBtnResp}>
+                <Button
+                  name="Action"
+                  type={ButtonType.Tertioary}
+                  fullWidth={!screens["md"]}
+                />
+                <Button
+                  name="Overview"
+                  type={ButtonType.Tertioary}
+                  fullWidth={!screens["md"]}
+                />
+              </div>
             </>
           )}
 

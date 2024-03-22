@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice Template</title>
+  </head>
+  <style>
+    html {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    @media screen and (max-width: 624px) {
+      th {
+        font-size: 14px;
+        padding: 2px 4px;
+      }
+      td {
+        font-size: 14px;
+        padding: 2px 4px;
+      }
+    }
+    @media screen and (max-width: 474px) {
+      th {
+        font-size: 12px;
+      }
+      td {
+        font-size: 12px;
+        padding: 0 2px !important;
+      }
+    }
+    @media screen and (max-width: 408px) {
+      th {
+        font-size: 11px;
+        padding: 0 2px !important;
+      }
+      td {
+        font-size: 11px;
+        padding: 0 2px !important;
+      }
+    }
+    @media screen and (max-width: 388px) {
+      th {
+        padding: 0 !important;
+      }
+      td {
+        padding: 0 !important;
+      }
+    }
+  </style>
+  <body>
+    <div
+      style="
+        font-family: sans-serif;
+        margin: 0 auto;
+
+        background-color: #fff;
+        color: #333;
+        max-width: 1200px;
+        width: 100%;
+      "
+    >
+      <h1
+        style="
+          text-align: center;
+          background-color: #163300;
+          color: #fff;
+          height: 38px;
+          padding: 4px;
+          margin-bottom: 0;
+        "
+      >
+        Merchandise
+      </h1>
+      <table style="width: 100%; border-collapse: collapse">
+        <tr>
+          <th style="padding: 2px 0; width: 80px; height: 96px">Actions</th>
+          <th style="padding: 2px 0; width: 80px; height: 96px">
+            Milestone No.
+          </th>
+          <th style="padding: 2px 0; width: 80px; height: 96px">Status</th>
+          <th style="padding: 2px 0; width: 80px; height: 96px">
+            Item Description
+          </th>
+          <th style="padding: 2px 0; width: 72px; height: 96px">
+            Inspection Period (calendar days)
+          </th>
+          <th style="padding: 2px 0; width: 80px; height: 96px">
+            Delivery Type
+          </th>
+          <th style="padding: 2px 0; width: 80px; height: 96px">Total</th>
+        </tr>
+        <tr>
+          <td
+            style="
+              padding: 2px 0;
+              width: 80px;
+              height: 96px;
+              text-align: center;
+              border-top: 1px solid #ddd;
+            "
+          >
+            N/A
+          </td>
+          <td
+            style="
+              padding: 2px 0;
+              width: 80px;
+              height: 96px;
+              text-align: center;
+              border-top: 1px solid #ddd;
+            "
+          >
+            1
+          </td>
+          <td
+            style="
+              padding: 2px 0;
+              width: 80px;
+              height: 96px;
+              text-align: center;
+              border-top: 1px solid #ddd;
+            "
+          >
+            Funds not secured
+          </td>
+          <td
+            style="
+              padding: 2px 0;
+              width: 80px;
+              height: 96px;
+              text-align: center;
+              border-top: 1px solid #ddd;
+            "
+          >
+            Item Name
+          </td>
+          <td
+            style="
+              padding: 2px 0;
+              width: 80px;
+              height: 96px;
+              text-align: center;
+              border-top: 1px solid #ddd;
+            "
+          >
+            5
+          </td>
+          <td
+            style="
+              padding: 2px 0;
+              width: 80px;
+              height: 96px;
+              text-align: center;
+              border-top: 1px solid #ddd;
+            "
+          >
+            Standard Shipping
+          </td>
+          <td
+            style="
+              padding: 2px 0;
+              width: 80px;
+              height: 96px;
+              text-align: center;
+              border-top: 1px solid #ddd;
+            "
+          >
+            $10,000.00
+          </td>
+        </tr>
+        <tr>
+          <td
+            colspan="6"
+            align="right"
+            style="
+              padding: 2px 60px 2px 0;
+              width: 80px;
+              height: 66px;
+              border-top: 1px solid #ddd;
+            "
+          >
+            Subtotal
+          </td>
+          <td
+            colspan="7"
+            align="center"
+            style="
+              padding: 2px 0 2px 0;
+              width: 80px;
+              height: 66px;
+              border-top: 1px solid #ddd;
+            "
+          >
+            $10,000.00
+          </td>
+        </tr>
+        <tr>
+          <td
+            colspan="6"
+            align="right"
+            style="
+              padding: 2px 60px 2px 0;
+              width: 80px;
+              height: 66px;
+              border-top: 1px solid #ddd;
+            "
+          >
+            Escrow Fee
+          </td>
+          <td
+            colspan="7"
+            align="center"
+            style="
+              padding: 2px 0 2px 0;
+              width: 80px;
+              height: 66px;
+              border-top: 1px solid #ddd;
+            "
+          >
+            $32.00
+          </td>
+        </tr>
+        <tr style="background-color: #9fe87029">
+          <td
+            colspan="6"
+            align="right"
+            style="
+              padding: 2px 60px 2px 0;
+              width: 80px;
+              height: 66px;
+              border-top: 1px solid #ddd;
+              font-weight: 600;
+            "
+          >
+            Total <br />Transaction ID: 34435456
+          </td>
+
+          <td
+            colspan="7"
+            align="center"
+            style="
+              padding: 2px 0 2px 0;
+              width: 80px;
+              height: 66px;
+              border-top: 1px solid #ddd;
+            "
+          >
+            $13,342.00
+          </td>
+        </tr>
+        <tr>
+          <td
+            colspan="7"
+            align="left"
+            style="
+              padding: 2px 0 2px 24px;
+              width: 80px;
+              height: 66px;
+              border-top: 1px solid #ddd;
+              font-weight: 600;
+            "
+          >
+            Additional Fees
+          </td>
+        </tr>
+        <tr>
+          <td
+            colspan="6"
+            align="right"
+            style="
+              padding: 2px 60px 2px 0;
+              width: 80px;
+              height: 66px;
+              border-top: 1px solid #ddd;
+              line-height: 18px;
+            "
+          >
+            If buyer pays by credit card or PayPal <br />
+            <span style="font-weight: 600"> Payment Processing Fee</span>
+          </td>
+
+          <td
+            colspan="7"
+            align="center"
+            style="
+              padding: 2px 0 2px 0;
+              width: 80px;
+              height: 96px;
+              border-top: 1px solid #ddd;
+            "
+          >
+            +$30.50 ($1,063.00 in Total)
+          </td>
+        </tr>
+        <tr>
+          <td
+            colspan="6"
+            align="right"
+            style="
+              padding: 2px 60px 2px 0;
+              width: 80px;
+              height: 66px;
+              border-top: 1px solid #ddd;
+              line-height: 18px;
+            "
+          >
+            If buyer pays by international wire transfer <br />
+            <span style="font-weight: 600"> Payment Processing Fee</span>
+          </td>
+
+          <td
+            colspan="7"
+            align="center"
+            style="
+              padding: 2px 0 2px 0;
+              width: 80px;
+              height: 96px;
+              border-top: 1px solid #ddd;
+            "
+          >
+            +$25.00 ($1,057.50 in Total)
+          </td>
+        </tr>
+        <tr>
+          <td
+            colspan="7"
+            align="right"
+            style="
+              padding: 2px 0 2px 0;
+              width: 80px;
+              height: 96px;
+              border-top: 1px solid #ddd;
+            "
+          >
+            All payments are in <strong>USD</strong>
+          </td>
+        </tr>
+      </table>
+      <h1
+        style="
+          text-align: center;
+          background-color: #163300;
+          color: #fff;
+          height: 38px;
+          padding: 4px;
+          margin-bottom: 0;
+          size: 16px;
+        "
+      >
+        Terms
+      </h1>
+      <table style="width: 100%; border-collapse: collapse">
+        <tr style="padding-top: 8px">
+          <td
+            style="
+              font-weight: 600;
+              margin-right: 34px;
+              text-align: right;
+              padding-right: 18px;
+              padding-top: 9px;
+            "
+          >
+            Transaction#:
+          </td>
+          <td align="left" style="padding-top: 9px">123445</td>
+        </tr>
+        <tr style="padding-top: 8px">
+          <td
+            style="
+              font-weight: 600;
+              margin-right: 34px;
+              text-align: right;
+              padding-right: 18px;
+              padding-top: 9px;
+            "
+          >
+            Escrow:
+          </td>
+          <td align="left" style="padding-top: 9px">0</td>
+        </tr>
+        <tr style="padding-top: 8px">
+          <td
+            style="
+              font-weight: 600;
+              margin-right: 34px;
+              text-align: right;
+              padding-right: 18px;
+              padding-top: 9px;
+            "
+          >
+            Transaction Title:
+          </td>
+          <td align="left" style="padding-top: 9px">Title</td>
+        </tr>
+        <tr style="padding-top: 8px">
+          <td
+            style="
+              font-weight: 600;
+              margin-right: 34px;
+              text-align: right;
+              padding-right: 18px;
+              padding-top: 9px;
+            "
+          >
+            Buyer:
+          </td>
+          <td align="left" style="padding-top: 9px">Name (name@gmail.com)</td>
+        </tr>
+        <tr style="padding-top: 8px">
+          <td
+            style="
+              font-weight: 600;
+              margin-right: 34px;
+              text-align: right;
+              padding-right: 18px;
+              padding-top: 9px;
+            "
+          >
+            Seller:
+          </td>
+          <td align="left" style="padding-top: 9px">(name@gmail.com)</td>
+        </tr>
+        <tr style="padding-top: 8px">
+          <td
+            style="
+              font-weight: 600;
+              margin-right: 34px;
+              text-align: right;
+              padding-right: 18px;
+              padding-top: 9px;
+            "
+          >
+            Inspection Period:
+          </td>
+          <td align="left" style="padding-top: 9px">5 days</td>
+        </tr>
+        <tr style="padding-top: 8px">
+          <td
+            style="
+              font-weight: 600;
+              margin-right: 34px;
+              text-align: right;
+              padding-right: 18px;
+              padding-top: 9px;
+            "
+          >
+            Escrow Fee paid by:
+          </td>
+          <td align="left" style="padding-top: 9px">
+            Buyer <br />
+            <span style="font-size: 12px"
+              >The buyer is responsible for the escrow fee in the event the
+              transaction is cancelled, or merchandise returned.</span
+            >
+          </td>
+        </tr>
+        <tr style="padding-top: 8px" style="padding-top: 9px">
+          <td
+            style="
+              font-weight: 600;
+              margin-right: 34px;
+              text-align: right;
+              padding-right: 18px;
+              padding-top: 9px;
+            "
+          >
+            Transaction fulfilled using:
+          </td>
+          <td align="left">Transaction Type</td>
+        </tr>
+        <tr style="padding-top: 8px" style="padding-top: 9px">
+          <td
+            style="
+              font-weight: 600;
+              margin-right: 34px;
+              text-align: right;
+              padding-right: 18px;
+              padding-top: 9px;
+            "
+          >
+            Shipping fee to be paid by:
+          </td>
+          <td align="left" style="padding-top: 9px">Seller</td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

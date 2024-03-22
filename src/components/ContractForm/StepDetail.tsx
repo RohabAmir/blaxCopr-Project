@@ -21,7 +21,6 @@ import { useAppContext } from "@/contexts/App";
 import { useDeleteTransactionMutation } from "@/Store/services/contractApi";
 import { calculateTransactionSummary } from "@/utils/CalculateSummary";
 
-
 interface Transaction {
   id?: number; // Include 'id' as optional for new transactions
   itemName: string;
@@ -87,9 +86,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
     "Marine Vehicles": 0.02,
     Aircraft: 0.015,
     " Jewelry": 0.025,
-  
   };
-
 
   // Convert categoryFee to an array of options
   const options = Object.keys(categoryFee).map((key) => ({
@@ -138,7 +135,6 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
     name: "transactions",
   });
 
-
   const { handleSubmit, reset, formState, watch, control } = methods;
   const { isDirty } = formState;
 
@@ -162,18 +158,17 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
 
   // useEffect hook adjusted to include dynamic escrow fee calculation and other transaction summaries
   useEffect(() => {
-
     let totalTransactionAmount = 0;
-      let totalCategoryFee = 0;
-      // Calculate total amount and category fees
-      watchedTransactions.forEach(
-        (transaction: { price: string; category: string | number }) => {
-          const price = parseFloat(transaction.price) || 0;
-          const categoryFeePercentage = categoryFee[transaction.category] || 0;
-          totalTransactionAmount += price;
-          totalCategoryFee += price * categoryFeePercentage;
-        }
-      );
+    let totalCategoryFee = 0;
+    // Calculate total amount and category fees
+    watchedTransactions.forEach(
+      (transaction: { price: string; category: string | number }) => {
+        const price = parseFloat(transaction.price) || 0;
+        const categoryFeePercentage = categoryFee[transaction.category] || 0;
+        totalTransactionAmount += price;
+        totalCategoryFee += price * categoryFeePercentage;
+      }
+    );
     // Call the utility function with the necessary parameters
     const summary = calculateTransactionSummary(
       watchedTransactions,
@@ -182,15 +177,20 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
       watchedLienHolderUpgrade,
       watchedEscrowFeePaidBy
     );
-  
+
     // Update component state with the results
     setSubTotal(summary.subTotal);
     setBuyerPrice(summary.buyerPrice);
     setEscrowFee(summary.escrowFee);
     setShippingFee(summary.shippingFee);
-  }, [watchedTransactions, watchedShippingCost, watchedCollectionServiceUpgrade, watchedLienHolderUpgrade, watchedEscrowFeePaidBy, categoryFee]);
-  
-  
+  }, [
+    watchedTransactions,
+    watchedShippingCost,
+    watchedCollectionServiceUpgrade,
+    watchedLienHolderUpgrade,
+    watchedEscrowFeePaidBy,
+    categoryFee,
+  ]);
 
   //for fetching the contractDetails field values and populating them
   useEffect(() => {
@@ -232,17 +232,21 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
     transactionId?: number
   ) => {
     event.preventDefault();
-    if (transactionId) {
-      try {
-        console.log("transactionId", transactionId);
-        await deleteTransaction(transactionId).unwrap();
+    if (fields.length > 1) {
+      if (transactionId) {
+        try {
+          console.log("transactionId", transactionId);
+          await deleteTransaction(transactionId).unwrap();
+          remove(index);
+        } catch (error) {
+          console.error("Error deleting the transaction:", error);
+        }
+      } else {
+        // If the transaction doesn't have an ID yet (e.g., it hasn't been saved to the server), just remove it from the form
         remove(index);
-      } catch (error) {
-        console.error("Error deleting the transaction:", error);
       }
     } else {
-      // If the transaction doesn't have an ID yet (e.g., it hasn't been saved to the server), just remove it from the form
-      remove(index);
+      console.error("At least one transaction is required.");
     }
   };
 
@@ -283,7 +287,6 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
       transactions: transactionsPayload,
       shipping: shippingPayload,
     };
-
 
     if ((transactionIds.length > 0 || shippingId) && isDirty) {
       //Second step patch request
@@ -369,7 +372,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
               <div className={styles.detailsItem}>
                 <TextInput
                   name={`transactions.${index}.price`}
-                  label={`price (${contractDetails?.currency})`}
+                  label={`Price (${contractDetails?.currency})`}
                   type="number"
                   required
                 />
@@ -420,8 +423,8 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
         {isShipping && (
           <FormSection
             title="Shipping "
-            buttonTitle="Remove"
-            buttonClickHandler={() => setShipping(false)}
+            // buttonTitle="Remove"
+            // buttonClickHandler={() => setShipping(false)}
             // size={!screens["sm"] ? "middle" : "large"}
           >
             <Flex style={{ width: "100%" }} className={styles.detialsCol}>
@@ -434,7 +437,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
                   required
                 />
               </div>
-              <div style={{ marginTop:"12px"}} className={styles.detailsItem}>
+              <div style={{ marginTop: "12px" }} className={styles.detailsItem}>
                 <Dropdown
                   name="shippingMethod"
                   label="Shipping method"
@@ -554,9 +557,7 @@ const StepDetail: FC<any> = ({ handleStepChange, step }) => {
               </div>
               <div className={styles.flexDetails}>
                 <p className={styles.total}>Shipping fee:</p>
-                <p className={styles.amount}>
-                  ${shippingFee.toFixed(2)}
-                </p>
+                <p className={styles.amount}>${shippingFee.toFixed(2)}</p>
               </div>
               {!isMobile && (
                 <div className={styles.flexDetailsLine}>

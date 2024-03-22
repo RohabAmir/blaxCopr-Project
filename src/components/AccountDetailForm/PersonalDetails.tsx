@@ -125,8 +125,8 @@ const PersonalDetails: FC<PersonalDetailsProps> = ({ userDetails }) => {
             />
           </div>
         </div>
-         {/* Dynamically handling success and error messages from api  */}
-         {successMessage ? (
+        {/* Dynamically handling success and error messages from api  */}
+        {successMessage ? (
           <div style={{ color: "green" }}>{successMessage}</div>
         ) : (
           isError &&

@@ -20,6 +20,7 @@ const DisputOpened: FC = () => {
   const screens: any = useBreakpoint();
   const router = useRouter();
   const handleDisputeOpened = () => {
+    console.log("click");
     router.push("/dispute");
   };
   const [showApproveModal, setApproveModal] = useState(false);
@@ -59,7 +60,7 @@ const DisputOpened: FC = () => {
               alt="warning icon"
             />
             <div className={styles.flexTextDeposit}>
-              <p className={styles.headingDeposit}>Disput opened</p>
+              <p className={styles.headingDeposit}>Dispute opened</p>
             </div>
           </div>
           <Button

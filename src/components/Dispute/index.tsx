@@ -42,13 +42,6 @@ interface FileMessage {
   fileUrl: string;
 }
 
-interface File {
-  name: string;
-  id: string;
-  size: number;
-  created: string;
-}
-
 export default function App() {
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
@@ -66,35 +59,47 @@ export default function App() {
   const contractId = getLocalData("contract_id");
   const { data: contractDetails } = useFetchContractDetailsQuery(contractId);
   const { data: userDetails } = useGetUserDetailsQuery();
-
+  const [currentBuyerId, setCurrentBuyerId] = useState(null);
+  const [currentSellerId, setCurrentSellerId] = useState(null);
   const userData = [
     {
-      id: JSON.stringify(contractDetails?.seller?.id),
+      id: JSON.stringify(contractDetails?.buyer?.id),
       data: {
-        name: contractDetails?.seller?.firstName,
+        name: contractDetails?.buyer?.firstName,
         // ...generateAvatarData(contractDetails?.seller?.firstName),
         custom: { avatar: "#9fa7df" },
       },
     },
     {
-      id: JSON.stringify(contractDetails?.buyer?.id),
+      id: JSON.stringify(contractDetails?.seller?.id),
       data: {
-        name: contractDetails?.buyer?.firstName,
+        name: contractDetails?.seller?.firstName,
         custom: { avatar: "#ffab91" },
       },
     },
   ];
+  const currentUserId = localStorage.getItem("user_id");
 
-  const randomizedUsers = document.location.search.includes("agent")
-    ? userData
-    : userData.reverse();
+  const status = contractDetails?.createrRole;
+
+  let randomizedUsers: any;
+
+  if (status === "BUYER") {
+    randomizedUsers = userData;
+  } else if (status === "SELLER") {
+    randomizedUsers = userData.reverse();
+  }
 
   const pubnub = new Pubnub({
-    publishKey: "pub-c-d55d262c-357a-44c3-9365-bf9086788fc3",
-    subscribeKey: "sub-c-e7c4cb17-38b5-4dd3-89ee-4b04d84d254a",
+    // publishKey: "pub-c-d55d262c-357a-44c3-9365-bf9086788fc3",
+    // subscribeKey: "sub-c-e7c4cb17-38b5-4dd3-89ee-4b04d84d254a",
+    publishKey: "pub-c-1323ff80-b300-4110-88f5-ccbab1237fb7",
+    subscribeKey: "sub-c-f15279f3-c298-4359-964f-8210538e8dfe",
     userId: `${localStorage.getItem("user_id")}`,
   });
+  // console.log("id", `${localStorage.getItem("user_id")}`);
   const generateAvatar = (name: any) => {
+    // console.log("first", name);
     const initials = name ? name.charAt(0).toUpperCase() : "";
     const colors = [, "#9fa7df", "#ffab91"];
     const colorIndex = initials.charCodeAt(0) % colors.length;
@@ -111,19 +116,21 @@ export default function App() {
       fontSize: "20px",
     };
   };
+
   const senderColor = "#ffab91";
   const receiverColor = "#9fa7df";
-
+  const [fileMessages, setFileMessages] = useState<FileMessage[]>([]);
   async function handleFileShare() {
     if (!selectedFile || !channel) return;
     if (selectedFileName) setSelectedFileName("");
     const isAgent = document.location.search.includes("agent");
-    // console.log("Sending file as:", isAgent ? "Agent" : "Non-Agent");
-    // console.log("selected file-----------", selectedFile);
+    console.log("Sending file as:", isAgent ? "Agent" : "Non-Agent");
+    console.log("selected file-----------", selectedFile);
 
     try {
       const result = await pubnub.sendFile({
-        channel: "SupportChannel",
+        // channel: "SupportChannel",
+        channel: "Chat",
         message: {
           text: "File sent",
         },
@@ -136,42 +143,22 @@ export default function App() {
 
       console.log("File sent successfully:", result);
       const res = pubnub.getFileUrl({
-        channel: "SupportChannel",
+        channel: "Chat",
         id: result.id,
         name: selectedFileName,
       });
+
       setUploadedMessage(res);
       // console.log("res ----------", res);
+      setFileMessages((fileMessages) => [
+        ...fileMessages,
+        { userId: result.id, timetoken: result.timetoken, fileUrl: res },
+      ]);
+      console.log("file message------------------===-", fileMessages);
     } catch (error) {
       console.error("Error sending file:", error);
     }
   }
-
-  // const [fileList, setFileList] = useState<File[]>([]);
-
-  // function listFiles(channel: any, limit: any) {
-  //   pubnub
-  //     .listFiles({ channel: channel, limit: limit })
-  //     .then((result) => {
-  //       console.log("Files status: ", result.status);
-  //       console.log("Next page token: ", result.next);
-  //       console.log("File count: ", result.count);
-  //       // setFileList(result.data);
-
-  //       result.data.forEach((file) => {
-  //         // console.log("File ID: ", file.id);
-  //         console.log("File Name: ", file.name);
-  //         // console.log("File Size: ", file.size);
-  //         // console.log("File Created: ", file.created);
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error listing files: ", error);
-  //     });
-  // }
-  // useEffect(() => {
-  //   listFiles("SupportChannel", 4);
-  // }, []);
 
   async function handleSend(event: React.SyntheticEvent) {
     console.log("in handle send function-------------");
@@ -182,22 +169,23 @@ export default function App() {
   }
 
   async function handleMessage(message: any) {
-    // console.log("message----------", message);
+    // console.log("message----------", message.content);
     if (chat && !users.find((user) => user.id === message.userId)) {
       const user = await chat.getUser(message.userId);
       if (user) setUsers((users) => [...users, user]);
     }
-    // console.log("text messages-------------->>>", message.text);
-    // console.log("file messages-------------->>>", message.fileUrl);
+
     let newMessage: TextMessage | FileMessage;
     if (message.text) {
+      // console.log("text messages-------------->>>", message.text);
       newMessage = {
         userId: message.userId,
         timetoken: message.timetoken,
         text: message.text,
       };
-    } else if (message.content.fileUrl) {
-      // console.log("file messages>>>>>>", message.file);
+    }
+    if (!message.text) {
+      console.log("file messages>>>>>>", message.file);
       const fileUrl =
         message.fileUrl || "Extract file URL here based on actual structure";
       newMessage = {
@@ -210,14 +198,13 @@ export default function App() {
     // updateLocalStorage([...messages, newMessage]);
   }
 
-  useEffect(() => {
-    console.log("initlize chat useeffect-------------");
+  //
 
+  useEffect(() => {
     async function initializeChat() {
-      // console.log("initlize chat-------------");
       const chat = await Chat.init({
-        publishKey: "pub-c-d55d262c-357a-44c3-9365-bf9086788fc3",
-        subscribeKey: "sub-c-e7c4cb17-38b5-4dd3-89ee-4b04d84d254a",
+        publishKey: "pub-c-1323ff80-b300-4110-88f5-ccbab1237fb7",
+        subscribeKey: "sub-c-f15279f3-c298-4359-964f-8210538e8dfe",
         userId: randomizedUsers[0].id,
         typingTimeout: 1000,
       });
@@ -230,7 +217,7 @@ export default function App() {
         (await chat.createUser(randomizedUsers[1].id, randomizedUsers[1].data));
       const { channel } = await chat.createDirectConversation({
         user: interlocutor,
-        channelData: { name: "SupportChannel" },
+        channelData: { name: "Chat" },
       });
 
       setChat(chat);
@@ -244,8 +231,8 @@ export default function App() {
           setTypers("");
         }
       });
-      const channelHistory = await channel.getHistory({ count: 100000 });
-      // console.log("channelHistory", channelHistory);
+      const channelHistory = await channel.getHistory({ count: 10000 });
+
       channelHistory.messages.forEach(async (historicalMessage: any) => {
         await handleMessage(historicalMessage);
       });
@@ -254,7 +241,7 @@ export default function App() {
     if (contractDetails) {
       initializeChat();
     }
-  }, []);
+  }, [contractDetails]);
 
   useEffect(() => {
     if (!messageListRef.current) return;
@@ -268,54 +255,41 @@ export default function App() {
     );
   }, [channel]);
 
-  const testFileMessage = () => {
-    const dummyFileMessage = {
-      userId: "test-user",
-      timetoken: "123456789",
-      fileUrl:
-        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FImage&psig=AOvVaw1ZbasjsAXBGzIR9WY2c1Is&ust=1710238445040000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCMDy99j864QDFQAAAAAdAAAAABAE", // Use a dummy URL
-      text: null,
-    };
-    setMessages((currentMessages: any) => [
-      ...currentMessages,
-      dummyFileMessage,
-    ]);
-  };
-
   useEffect(() => {
-    const handleFileEvent = (event: any) => {
-      // console.log("File message received:", event);
-      const fileUrl = pubnub.getFileUrl({
-        channel: event.channel,
-        id: event.file.id,
-        name: event.file.name,
-      });
-
-      const newFileMessage = {
-        userId: event.publisher,
-        timetoken: event.timetoken,
-        fileUrl,
-        text: null,
-      };
-
-      setMessages((currentMessages: any) => {
-        const isMessagePresent = currentMessages.some(
-          (msg: any) => msg.timetoken === event.timetoken
+    pubnub.addListener({
+      file: function (event: any) {
+        const isMessagePresent = messages.some(
+          (msg) =>
+            msg.timetoken === event.timetoken && msg.userId === event.publisher
         );
-        return isMessagePresent
-          ? currentMessages
-          : [...currentMessages, newFileMessage];
-      });
-    };
+        if (!isMessagePresent) {
+          console.log("file messages are here--");
+          const fileUrl: any = pubnub.getFileUrl({
+            channel: event.channel,
+            id: event.file.id,
+            name: event.file.name,
+          });
 
-    pubnub.addListener({ file: handleFileEvent });
-    pubnub.subscribe({ channels: ["SupportChannel"] });
+          const fileMessage = {
+            userId: event.publisher,
+            timetoken: event.timetoken,
+            fileUrl,
+            text: null,
+          };
+
+          setMessages((messages: any) => [...messages, fileMessage]);
+        }
+      },
+    });
+
+    pubnub.subscribe({
+      channels: ["Chat"],
+    });
 
     return () => {
       pubnub.unsubscribeAll();
-      pubnub.removeListener({ file: handleFileEvent });
     };
-  }, [pubnub]);
+  }, [messages]);
 
   const renderMessagePart = useCallback(
     (messagePart: MixedTextTypedElement) => {
@@ -354,8 +328,6 @@ export default function App() {
           src={message.fileUrl}
           alt="Uploaded Image"
           className={styles.uploadedImage}
-          width={500}
-          height={300}
         />
       );
     }
@@ -374,33 +346,75 @@ export default function App() {
       </a>
     );
   };
-
-  const fetchHistory = async () => {
-    try {
-      console.log("history-------");
-      const response = await pubnub.history({
-        channel: "SupportChannel",
-        count: 100,
-      });
-      console.log(response);
-    } catch (error) {
-      console.error("Error fetching history:", error);
-    }
-  };
-
   const handleTextChange = (e: any) => {
     const newText = e.target.value;
     if (newText !== text) {
       setText(newText);
     }
   };
+  const currUserId = userDetails?.id;
+
   const sellerFirstName = userDetails?.firstName?.toUpperCase();
   const buyerFirstName = contractDetails?.buyer?.firstName?.toUpperCase();
   const avatarCurrentUser = userDetails?.firstName?.toUpperCase();
   const avatarStyle = generateAvatar(avatarCurrentUser);
   const avatar = generateAvatar(avatarCurrentUser);
 
+  const handleHistoryMessage = (message: any) => {
+    if (message.entry.file) {
+      // console.log("filessssssss", message.entry.file);
+      const fileUrl = pubnub.getFileUrl({
+        channel: "Chat",
+        id: message.entry.file.id,
+        name: message.entry.file.name,
+      });
+
+      return {
+        userId: `${localStorage.getItem("user_id")}`,
+        timetoken: message.timetoken,
+        fileUrl,
+      };
+    }
+
+    // For text messages
+    return {
+      userId: message.entry.uuid,
+      timetoken: message.timetoken,
+      text: message.entry.message.text,
+    };
+  };
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        console.log("Fetching history...");
+        const response = await pubnub.history({
+          channel: "Chat",
+          count: 1000,
+        });
+
+        const historyMessages = response.messages.map(handleHistoryMessage);
+
+        setMessages((prevMessages: any) => [
+          ...prevMessages,
+          ...historyMessages,
+        ]);
+        console.log("History Messages:", response.messages);
+      } catch (error) {
+        console.error("Error fetching history:", error);
+      }
+    };
+
+    if (channel) {
+      setMessages([]);
+
+      fetchHistory();
+    }
+  }, [channel]);
+
   if (!chat || !channel) return <Spinner />;
+  // console.log("current user avatarr", userDetails);
+
+  const user = userDetails?.firstName;
 
   return (
     <>
@@ -410,8 +424,7 @@ export default function App() {
         </div>
         <div className={styles.chatBox}>
           {/* empty div to contain some fake text*/}
-
-          <div style={screens["md"] ? { width: "22%" } : { width: "0" }}> </div>
+          <div className={styles.emptyDiv}></div>
 
           <main className={styles.main}>
             <header className={styles.header}>
@@ -422,8 +435,15 @@ export default function App() {
                   alignItems: "center",
                 }}
               >
-                <aside className={styles.aside} style={avatarStyle}>
-                  {avatarCurrentUser?.charAt(0).toUpperCase()}
+                <aside
+                  className={styles.aside}
+                  style={
+                    currUserId
+                      ? { background: " #ffab91" }
+                      : { background: "#9fa7df" }
+                  }
+                >
+                  {avatarCurrentUser?.charAt(0).toUpperCase() || "U"}
                 </aside>
                 {/* <aside
                   className={styles.aside}
@@ -443,64 +463,70 @@ export default function App() {
 
             <section className={styles.section} ref={messageListRef}>
               <ol className={styles.ol}>
-                {messages.map((message, index) => {
-                  const user: any = users.find(
-                    (user) => user.id === message.userId
-                  );
-                  const isCurrentUser = user?.id === chat?.currentUser?.id;
-                  const isAgent = document.location.search.includes("agent");
+                {messages
+                  .sort((a, b) => {
+                    const timeTokenA = parseInt(a.timetoken);
+                    const timeTokenB = parseInt(b.timetoken);
+                    return timeTokenA - timeTokenB;
+                  })
+                  .map((message, index) => {
+                    const user: any = users.find(
+                      (user) => user.id === message.userId
+                    );
+                    // console.log("user data,", user?.name);
+                    const isCurrentUser = user?.id === chat?.currentUser?.id;
+                    const isAgent = document.location.search.includes("agent");
+                    console.log("user email,", user?.data);
 
-                  return (
-                    <li
-                      className={`${styles.li} ${
-                        isCurrentUser
-                          ? styles.sentMessage
-                          : styles.receivedMessage
-                      }`}
-                      key={`${message.timetoken}-${index}`}
-                    >
-                      <aside
-                        className={styles.aside}
-                        style={{
-                          backgroundColor: isCurrentUser
-                            ? senderColor
-                            : receiverColor,
-                        }}
+                    return (
+                      <li
+                        className={`${styles.li} ${
+                          isCurrentUser
+                            ? styles.sentMessage
+                            : styles.receivedMessage
+                        }`}
+                        key={`${message.timetoken}-${index}`}
                       >
-                        {user?.data?.name
-                          ? user.data.name.charAt(0).toUpperCase()
-                          : user?.name?.charAt(0).toUpperCase() || ""}{" "}
-                      </aside>
+                        <aside
+                          className={styles.aside}
+                          style={{
+                            backgroundColor: isCurrentUser
+                              ? senderColor
+                              : receiverColor,
+                          }}
+                        >
+                          {user?.data?.name
+                            ? user.data.name.charAt(0).toUpperCase()
+                            : user?.name?.charAt(0).toUpperCase() || "U"}{" "}
+                        </aside>
 
-                      <article className={styles.article}>
-                        <h3 className={styles.h3}>
-                          {user?.name?.toUpperCase() ||
-                            user?.email?.split("@")[0] ||
-                            userDetails?.firstName?.toUpperCase()}
-                          <time className={styles.time}>
-                            {TimetokenUtils.timetokenToDate(
-                              message.timetoken
-                            ).toLocaleTimeString([], {
-                              timeStyle: "short",
-                            })}
-                          </time>
-                        </h3>
-                        <p className={styles.p}>
-                          {/* {!message.fileUrl && (
-                            <span className={styles.span}>{message.text}</span>
-                          )}
+                        <article className={styles.article}>
+                          <h3 className={styles.h3}>
+                            {user?.name?.toUpperCase() ||
+                              user?.email?.split("@")[0] ||
+                              userDetails?.firstName?.toUpperCase() ||
+                              "user"}
+                            <time className={styles.time}>
+                              {TimetokenUtils.timetokenToDate(
+                                message.timetoken
+                              ).toLocaleTimeString([], {
+                                timeStyle: "short",
+                              })}
+                            </time>
+                          </h3>
+                          <p className={styles.p}>
+                            {message.text && (
+                              <span className={styles.span}>
+                                {message.text}
+                              </span>
+                            )}
 
-                          {message.fileUrl && renderFileLink(message)} */}
-                          {message.text && (
-                            <span className={styles.span}>{message.text}</span>
-                          )}
-
-                          {message.fileUrl && renderFileLink(message)}
-                        </p>
-                      </article>
-                    </li>
-                  );
-                })}
+                            {message.fileUrl && renderFileLink(message)}
+                          </p>
+                        </article>
+                      </li>
+                    );
+                  })}
               </ol>
             </section>
 
@@ -562,40 +588,34 @@ export default function App() {
             </div>
           )}
         </div>
-        <button onClick={testFileMessage}>Test File Message</button>
-
         {/* <button onClick={fetchHistory}>click</button> */}
       </div>
     </>
   );
 }
-//
-{
-  /* async function handleMessage(message: any) {
-    if (chat && !users.find((user) => user.id === message.userId)) {
-      const user = await chat.getUser(message.userId);
-      if (user) setUsers((users) => [...users, user]);
-    }
-    let newMessage: TextMessage | FileMessage;
-    if (message.text) {
-      console.log("message text-------------", message.text);
-      newMessage = {
-        userId: message.userId,
-        timetoken: message.timetoken,
-        text: message.text,
-      };
-    } else if (message.fileUrl) {
-      console.log("message file-------------", message.fileUrl);
 
-      newMessage = {
-        userId: message.userId,
-        timetoken: message.timetoken,
-        fileUrl: message.fileUrl,
-      };
-    } else {
-      return;
-    }
-    setMessages((messages: any) => [...messages, newMessage]);
-  }*/
-}
-// ================================================================================================
+// const [fileList, setFileList] = useState<File[]>([]);
+
+//   // function listFiles(channel: any, limit: any) {
+//   //   pubnub
+//   //     .listFiles({ channel: channel, limit: limit })
+//   //     .then((result) => {
+//   //       console.log("Files status: ", result.status);
+//   //       console.log("Next page token: ", result.next);
+//   //       console.log("File count: ", result.count);
+//   //       // setFileList(result.data);
+
+//   //       result.data.forEach((file) => {
+//   //         // console.log("File ID: ", file.id);
+//   //         console.log("File Name: ", file.name);
+//   //         // console.log("File Size: ", file.size);
+//   //         // console.log("File Created: ", file.created);
+//   //       });
+//   //     })
+//   //     .catch((error) => {
+//   //       console.error("Error listing files: ", error);
+//   //     });
+//   // }
+//   // useEffect(() => {
+//   //   listFiles("Chat", 4);
+//   // }, []);
