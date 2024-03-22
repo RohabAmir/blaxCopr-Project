@@ -8,7 +8,7 @@ import { Nav } from "@/types";
 import { useGetUserDetailsQuery } from "@/Store/services/authApi";
 import { useGetAllContractDetailsQuery } from "@/Store/services/contractApi";
 import { useOnfidoDataQuery } from "@/Store/services/onfidoApi";
-import Spinner from "@/utils/Spinner";
+import Spinner from "@/utils/spinner";
 import { useSession } from "next-auth/react";
 
 const Dashboard: FC = () => {
