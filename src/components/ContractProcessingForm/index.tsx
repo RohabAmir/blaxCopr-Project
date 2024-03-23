@@ -562,6 +562,11 @@ const ContractProcessingForm: FC = () => {
   return (
     <Flex vertical className="w-full">
       {/* -------------------------Useful Code---------------------------------- */}
+      <BankDetails
+        onNext={handleNextComponent}
+        onBack={handlePreviousComponent}
+        responseGet={response}
+      />
 
       <Flex className="w-full">
         <div className={styles.agreementContainer}>

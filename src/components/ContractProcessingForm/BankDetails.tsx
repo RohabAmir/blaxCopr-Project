@@ -17,27 +17,15 @@ interface BankDetailsProps {
   onBack: () => void;
   responseGet: any;
 }
+interface TooltipVisibility {
+  [key: string]: boolean;
+}
 
 const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipText, setTooltipText] = useState("");
-  const handleCopyText = (event: any) => {
-    const textToCopy = event.target.previousSibling.textContent.trim();
-    navigator.clipboard
-      .writeText(textToCopy)
-      .then(() => {
-        setTooltipText("Copied!");
-        setShowTooltip(true);
-        setTimeout(() => setShowTooltip(false), 2000);
-      })
-      .catch((error) => console.error("Failed to copy:", error));
-  };
-
-  // const handleCopyText = (event: any) => {
-  //   const textToCopy = event.currentTarget
-  //     .querySelector("span")
-  //     .textContent.trim();
-
+  // const handleCopyText = (event: any, id: any) => {
+  //   const textToCopy = event.target.previousSibling.textContent.trim();
   //   navigator.clipboard
   //     .writeText(textToCopy)
   //     .then(() => {
@@ -47,6 +35,23 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
   //     })
   //     .catch((error) => console.error("Failed to copy:", error));
   // };
+  const [tooltipVisibility, setTooltipVisibility] = useState<TooltipVisibility>(
+    {}
+  );
+
+  const handleCopyText = (event: any, id: any) => {
+    const textToCopy = event.target.previousSibling.textContent.trim();
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => {
+        setTooltipVisibility((prev) => ({ ...prev, [id]: true }));
+        setTimeout(
+          () => setTooltipVisibility((prev) => ({ ...prev, [id]: false })),
+          2000
+        );
+      })
+      .catch((error) => console.error("Failed to copy:", error));
+  };
 
   const { isMobile } = useAppContext();
 
@@ -87,19 +92,6 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
 
           {/* --------------------------------------- */}
           <Flex vertical className="w-full">
-            {showTooltip && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: "50",
-                  left: "50",
-                  background: "#493939",
-                  color: "#fff",
-                }}
-              >
-                {tooltipText}
-              </div>
-            )}
             <FormSection>
               <div className={styles.main}>
                 <div className={styles.flexText}>
@@ -119,11 +111,16 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
                         ? `$${responseGet?.data?.responseData?.totalAmountToDeposit}`
                         : `€${responseGet?.data?.responseData?.totalAmountToDeposit}`}{" "}
                     </span>
+                    {tooltipVisibility["1"] && (
+                      <div style={{ background: "#493939", color: "#fff" }}>
+                        Copied!
+                      </div>
+                    )}
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
-                      onClick={handleCopyText}
+                      onClick={(event) => handleCopyText(event, "1")}
                     />
                   </span>
                 </div>
@@ -152,11 +149,16 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
                     <span className={styles.currencyHeading}>
                       {responseGet?.data?.responseData?.referenceNo}
                     </span>
+                    {tooltipVisibility["2"] && (
+                      <div style={{ background: "#493939", color: "#fff" }}>
+                        Copied!
+                      </div>
+                    )}
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
-                      onClick={handleCopyText}
+                      onClick={(event) => handleCopyText(event, "2")}
                     />
                   </span>
                 </div>
@@ -181,11 +183,16 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
                     <span className={styles.currencyHeading}>
                       {responseGet?.data?.responseData?.currency}
                     </span>
+                    {tooltipVisibility["3"] && (
+                      <div style={{ background: "#493939", color: "#fff" }}>
+                        Copied!
+                      </div>
+                    )}
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
-                      onClick={handleCopyText}
+                      onClick={(event) => handleCopyText(event, "3")}
                     />
                   </span>
                 </div>
@@ -206,11 +213,16 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
                     <span className={styles.currencyHeading}>
                       {responseGet?.data?.responseData?.routingNumber}
                     </span>
+                    {tooltipVisibility["4"] && (
+                      <div style={{ background: "#493939", color: "#fff" }}>
+                        Copied!
+                      </div>
+                    )}
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
-                      onClick={handleCopyText}
+                      onClick={(event) => handleCopyText(event, "4")}
                     />
                   </span>
                 </div>
@@ -224,11 +236,16 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
                     <span className={styles.currencyHeading}>
                       {responseGet?.data?.responseData?.accountName}
                     </span>
+                    {tooltipVisibility["5"] && (
+                      <div style={{ background: "#493939", color: "#fff" }}>
+                        Copied!
+                      </div>
+                    )}
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
-                      onClick={handleCopyText}
+                      onClick={(event) => handleCopyText(event, "5")}
                     />
                   </span>
                 </div>
@@ -242,11 +259,16 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
                     <span className={styles.currencyHeading}>
                       {responseGet?.data?.responseData?.swift}
                     </span>
+                    {tooltipVisibility["6"] && (
+                      <div style={{ background: "#493939", color: "#fff" }}>
+                        Copied!
+                      </div>
+                    )}
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
-                      onClick={handleCopyText}
+                      onClick={(event) => handleCopyText(event, "6")}
                     />
                   </span>
                 </div>
@@ -260,11 +282,16 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
                     <span className={styles.currencyHeading}>
                       {responseGet?.data?.responseData?.accountNumber}
                     </span>
+                    {tooltipVisibility["7"] && (
+                      <div style={{ background: "#493939", color: "#fff" }}>
+                        Copied!
+                      </div>
+                    )}
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
-                      onClick={handleCopyText}
+                      onClick={(event) => handleCopyText(event, "7")}
                     />
                   </span>
                 </div>
@@ -282,11 +309,16 @@ const BankDetails: FC<BankDetailsProps> = ({ onBack, onNext, responseGet }) => {
                         {responseGet?.data?.responseData?.bankAddress}
                       </span>
                     </div>
+                    {tooltipVisibility["8"] && (
+                      <div style={{ background: "#493939", color: "#fff" }}>
+                        Copied!
+                      </div>
+                    )}
                     <Image
                       className={styles.copyIcon}
                       src={CopyIcon}
                       alt="copy icon"
-                      onClick={handleCopyText}
+                      onClick={(event) => handleCopyText(event, "8")}
                     />
                   </span>
                 </div>
